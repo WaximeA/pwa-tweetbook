@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>PWA Tweetbook</title>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+    html, body {
+      min-height: 100vh;
+      height: 100%;
+      font-family: sans-serif;
+      background-color: #FEFEFE;
+    }
+    form input {
+      display: block;
+      margin: 1rem;
+    }
+    tweetbook-app {
+      display: block;
+      background-color: #ffffff;
+    }
+    tweetbook-app header {
+      height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: solid #eeeeee 1px;
+    }
+    tweetbook-app img {
+      height: 42px;
+      width: 42px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <tweetbook-app>
+    <header><img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo">Tweetbook</header>
+  </tweetbook-app>
+  <script type="module" src="./src/components/tweetbook-app.js"></script>
+</body>
+</html>
