@@ -1,4 +1,4 @@
-import {LitElement, html, css} from 'lit-element/lit-element';
+import {LitElement, html, css} from 'lit-element';
 
 export default class ButtonAction extends LitElement {
 
@@ -7,8 +7,7 @@ export default class ButtonAction extends LitElement {
     }
 
     static get properties() {
-        return {
-        }
+        return {}
     }
 
     static get styles() {
@@ -17,9 +16,18 @@ export default class ButtonAction extends LitElement {
         `
     }
 
+    handleClick(action) {
+        this.dispatchEvent(new CustomEvent('action', {detail: action}));
+    }
+
+
     render() {
         return html` 
-            
+            <div class="button-action">
+                <button @click="${e => this.handleClick("response")}">Repondre</button>
+                <button @click="${e => this.handleClick("RT")}">RT</button>
+                <button @click="${e => this.handleClick("like")}">Like</button>
+            </div>
         `
     }
 }
