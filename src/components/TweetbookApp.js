@@ -1,8 +1,8 @@
 import {LitElement, html, css} from 'lit-element';
 import './data/TweetStore';
 import './modules/Tweet';
-import './navigation/FormAdd';
-import './navigation/TweetHeader';
+import './layout/navigation/FormAdd';
+import './layout/navigation/TweetHeader';
 
 class TweetbookApp extends LitElement {
 
