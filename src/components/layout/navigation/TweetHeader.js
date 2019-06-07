@@ -1,27 +1,53 @@
 import {LitElement, html, css} from 'lit-element/lit-element';
 
+import './TweetSidebar';
+
 export default class TweetHeader extends LitElement {
   static get styles() {
     return css`
       header {
         height: 48px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
         border-bottom: solid #eeeeee 1px;
         box-shadow: #aaaaaa 0px 3px 4px 0px
       }
-      header img {
+      
+      .brand {
+        display: inline-block;
+        margin: auto;
+        width: 70%;
+        text-align: center;
+      }
+      
+      .brand img {
+        display: inline-block;
+        vertical-align: text-bottom;
         height: 42px;
         width: 42px;
-        display: block;
+      }
+      
+      .brand span {
+        display: inline-block;
+        vertical-align: middle;
+        height: 42px;
+      }
+      
+      tweet-sidebar {
+        display: inline-block;
+        width: 10%;
       }
     `
   }
 
   render() {
     return html`
-      <header><img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo">Tweetbook</header>
+      <header>
+        <tweet-sidebar></tweet-sidebar>
+        <div class="brand">
+          <img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo">
+          <span>Tweetbook</span>
+        </div>
+      </header>
     `
   }
 }
