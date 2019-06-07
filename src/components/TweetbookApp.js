@@ -2,6 +2,7 @@ import {LitElement, html, css} from 'lit-element';
 import './data/TweetStore';
 import './modules/Tweet';
 import './navigation/FormAdd';
+import './navigation/TweetHeader';
 
 class TweetbookApp extends LitElement {
 
@@ -30,7 +31,7 @@ class TweetbookApp extends LitElement {
                 collection="tweets" 
                 @child-changed="${this.childChanged}"
             ></tweet-store>
-            <slot></slot>
+            <tweet-header></tweet-header>
             ${
                 this.tweets.map(item => html`<tweet-elem .tweet="${item}"/>`)
             }
