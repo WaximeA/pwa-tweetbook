@@ -17,6 +17,9 @@ class TweetbookApp extends LitElement {
     }
 
     firstUpdated(_changedProperties) {
+        document.addEventListener('response', console.log);
+        document.addEventListener('RT', console.log);
+        document.addEventListener('like', console.log);
     }
 
     childChanged(e) {
