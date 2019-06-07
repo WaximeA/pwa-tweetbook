@@ -49,6 +49,7 @@ export default class FormAdd extends LitElement {
 
     handleClick(e) {
         this.active = !this.active;
+        this.shadowRoot.querySelector('#new-tweet').focus();
     }
 
     render() {

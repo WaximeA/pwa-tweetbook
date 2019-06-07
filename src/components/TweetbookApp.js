@@ -17,7 +17,6 @@ class TweetbookApp extends LitElement {
     }
 
     firstUpdated(_changedProperties) {
-
     }
 
     childChanged(e) {
@@ -41,6 +40,11 @@ class TweetbookApp extends LitElement {
     static get styles() {
         return css`
             * {  box-sizing: border-box }
+            
+            tweet-elem {
+                max-width: 100%;
+                display: block;
+            }
         `;
     }
 }

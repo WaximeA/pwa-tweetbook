@@ -22,26 +22,33 @@ class TweetStore extends LitElement {
             ref.docChanges().forEach(change => {
                 const {newIndex, oldIndex, doc, type} = change;
                 if (type === 'added') {
-                    this.data = [...this.data, doc.data()];
+                    this.data = [...this.data, {id: doc.id, data: doc.data()}];
                     this.dataUpdated();
                 } else if (type === 'removed') {
-                    this.data.splice(oldIndex, 1);
+                    this.data = this.data.filter(item => {
+                        return item.id !== doc.id
+                    });
                     this.dataUpdated();
                 }
             });
         });
 
-        document.addEventListener('new-tweet', e => this.push(e))
+        document.addEventListener('new-tweet', e => this.push(e));
+        document.addEventListener('delete-tweet', e => this.delete(e));
     }
 
-    push(e) {
+    push({detail}) {
         firebase.firestore().collection(this.collection).add({
-            content: e.detail,
+            content: detail,
             date: new Date().getTime(),
             user: {
                 name: "Tanguy"
             }
         })
+    }
+
+    delete({detail}) {
+        firebase.firestore().collection(this.collection).doc(detail).delete()
     }
 
     dataUpdated() {

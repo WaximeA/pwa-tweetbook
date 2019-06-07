@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import {LitElement, html, css} from 'lit-element';
 
 export default class Tweet extends LitElement {
 
@@ -8,18 +8,17 @@ export default class Tweet extends LitElement {
     }
 
     static get properties() {
-        return  {
+        return {
             tweet: Object
         }
     }
 
-    firstUpdated(_changedProperties) {}
+    firstUpdated(_changedProperties) {
+    }
 
-    static get styles(){
+    static get styles() {
         return css`
             .tweet{
-                width: 100%;
-                max-width: 600px;
                 min-height: 80px;
                 display: flex;
                 border-bottom: 1px solid #cacaca;               
@@ -42,6 +41,22 @@ export default class Tweet extends LitElement {
             .content {
                 width: 90%;
             }
+            
+            .user-info-box {
+                display: flex;
+                justify-content: space-between;
+            }
+            
+            .delete {
+                width: 10%;
+                height: 100%;
+                text-align: right;
+                padding: 0 10px 0 0;
+            }
+            
+            .tweet-content {
+                width: 90%;
+            }
         `
     }
 
@@ -52,11 +67,18 @@ export default class Tweet extends LitElement {
                     <div class="user-pic"></div>
                 </div>
                 <div class="content">
-                    <div class="user-info">${this.tweet.user.name}</div>
-                    <div class="tweet-content">${this.tweet.content}</div>
+                    <div class="user-info-box">
+                        <div class="user-info">${this.tweet.data.user.name}</div>
+                        <div class="delete" @click="${e => this.deleteTweet(e)}"><i>X</i></div>
+                    </div>
+                    <div class="tweet-content">${this.tweet.data.content}</div>
                 </div>
             </div>
         `;
+    }
+
+    deleteTweet(e) {
+        document.dispatchEvent(new CustomEvent('delete-tweet', {detail: this.tweet.id}));
     }
 }
 
