@@ -24,13 +24,18 @@ export default class TweetSidebar extends LitElement {
       /* sidebar */    
       #menu-icon {  
         display: inline-block;
+        border:none;
+      }
+
+      #cross-icon {
+        border:none;
       }
         
       .collapse-button img {
         width: 20px;
         position: relative;
         left: 0%;
-        padding: 10px
+        padding: 12px;
       }
       
       #sidebar {

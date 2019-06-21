@@ -42,11 +42,11 @@ class TweetAuth extends LitElement {
         padding: 12px 20px 12px 20px;
       }
       
-      .button {
+      form .button {
         font-size: 15px;
         padding:0.3em 1.2em;
         margin: 0 0.3em 0.3em 0;
-        border-radius:2em;
+        border-radius: 5px;
         box-sizing: border-box;  
         text-decoration:none;
         font-weight:300;
@@ -103,7 +103,7 @@ class TweetAuth extends LitElement {
     <form @submit="${this.handleForm}">
        <input type="text" placeholder="Email" .value="${this.email}" @input="${e => this.email = e.target.value}">
        <input type="password" placeholder="Password" .value="${this.password}" @input="${e => this.password = e.target.value}">
-       <input type="password" placeholder="Verify your password" .value="${this.verifyPassword}" @input="${e => this.verifyPassword = e.target.value}">
+       <input type="password" placeholder="Repeat your password" .value="${this.verifyPassword}" @input="${e => this.verifyPassword = e.target.value}">
        <span class="errors ${this.errorMessage ? "active" : ""}" id="login-error">${this.errorMessage}</span>
        <button type="submit" class="button">Register</button>
      </form>

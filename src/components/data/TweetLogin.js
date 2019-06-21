@@ -44,7 +44,7 @@ class TweetLogin extends LitElement {
         font-size: 15px;
         padding:0.3em 1.2em;
         margin: 0 0.3em 0.3em 0;
-        border-radius:2em;
+        border-radius: 5px;
         box-sizing: border-box;  
         text-decoration:none;
         font-weight:300;
