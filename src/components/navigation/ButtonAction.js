@@ -24,9 +24,9 @@ export default class ButtonAction extends LitElement {
     render() {
         return html` 
             <div class="button-action">
-                <button @click="${e => this.handleClick("response")}">Repondre</button>
-                <button @click="${e => this.handleClick("RT")}">RT</button>
-                <button @click="${e => this.handleClick("like")}">Like</button>
+                <button @click="${() => this.handleClick("response")}">Repondre</button>
+                <button @click="${() => this.handleClick("RT")}">RT</button>
+                <button @click="${() => this.handleClick("like")}">Like</button>
             </div>
         `
     }
