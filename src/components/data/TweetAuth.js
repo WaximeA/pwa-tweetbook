@@ -11,6 +11,9 @@ class TweetAuth extends LitElement {
     this.email = '';
     this.password = '';
     this.verifyPassword = '';
+    this.name='';
+    this.surname='';
+    this.nickname='';
     this.errorMessage = '';
   }
 
@@ -19,6 +22,9 @@ class TweetAuth extends LitElement {
       email: String,
       password: String,
       verifyPassword: String,
+      name: String,
+      surname: String,
+      nickname: String,
       errorMessage: String
     }
   }
@@ -81,6 +87,11 @@ class TweetAuth extends LitElement {
       return console.error(this.errorMessage);
     }
 
+    if ((!this.name || !this.surname) || !this.nickname) {
+      this.errorMessage = 'Please fill Name, Surname, Nickname';
+      return console.error(this.errorMessage);
+    }
+
     if (this.password !== this.verifyPassword) {
       this.errorMessage = 'Password are not identicals.';
       return console.error(this.errorMessage);
@@ -104,6 +115,9 @@ class TweetAuth extends LitElement {
        <input type="text" placeholder="Email" .value="${this.email}" @input="${e => this.email = e.target.value}">
        <input type="password" placeholder="Password" .value="${this.password}" @input="${e => this.password = e.target.value}">
        <input type="password" placeholder="Repeat your password" .value="${this.verifyPassword}" @input="${e => this.verifyPassword = e.target.value}">
+       <input type="text" placeholder="Name" .value="${this.name}" @input="${e => this.name = e.target.value}">
+       <input type="text" placeholder="Surname" .value="${this.surname}" @input="${e => this.surname = e.target.value}">
+       <input type="text" placeholder="Twittax Nickname" .value="${this.nickname}" @input="${e => this.nickname = e.target.value}">
        <span class="errors ${this.errorMessage ? "active" : ""}" id="login-error">${this.errorMessage}</span>
        <button type="submit" class="button">Register</button>
      </form>

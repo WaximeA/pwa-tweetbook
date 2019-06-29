@@ -4,18 +4,23 @@ import '../../data/TweetAuth';
 import '../../data/TweetLogin';
 import '../../data/TweetLogout';
 
+import '@polymer/paper-tabs/paper-tabs.js';
+import '@polymer/paper-tabs/paper-tab.js';
+
 export default class TweetSidebar extends LitElement {
 
   constructor() {
     super();
     this.logged = false;
     this.active = false;
+    this.signUp = false;
   }
 
   static get properties() {
     return {
       logged: { type: Boolean },
-      active: { type: Boolean }
+      active: { type: Boolean },
+      signUp: { type: Boolean }
     }
   }
 
@@ -66,6 +71,10 @@ export default class TweetSidebar extends LitElement {
         text-align: center;
         padding: 10px 0 10px 0;
       }
+
+      tweet-auth{
+        display:none;
+      }
     `
   }
 
@@ -77,19 +86,27 @@ export default class TweetSidebar extends LitElement {
     this.active = !this.active;
   }
 
+  displaySignIn() {
+    this.shadowRoot.querySelector('tweet-auth').style.display = "none";
+    this.shadowRoot.querySelector('tweet-login').style.display = "block";
+  }
+
+  displaySignUp() {
+    this.shadowRoot.querySelector('tweet-auth').style.display = "block";
+    this.shadowRoot.querySelector('tweet-login').style.display = "none";
+  }
+
   handleLogin({detail}){
     if (detail.user && this.active) {
       this.displaySidebar();
     }
-
+    alert(detail.user);
     this.logged = true;
     localStorage.setItem('logged', true);
   }
 
   handleLogout() {
     this.displaySidebar();
-
-
     this.logged = false;
     localStorage.setItem('logged', false);
   }
@@ -100,15 +117,17 @@ export default class TweetSidebar extends LitElement {
       <div id="sidebar" class="${this.active ? 'display' : ''}">
         <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}><img src="./src/assets/images/cross-icon.png" alt="Side bar logo"></button>
         ${!this.logged ? html`
-            <tweet-auth></tweet-auth>
-            <tweet-login @user-logged="${this.handleLogin}"></tweet-login>
-          ` : html`
-            <div>
-              <!-- @todo = remplace image by the user informations component -->
-              <img src="./src/assets/images/user-info-component.png" alt="Tweetbook logo" style="width: 100%">
-            </div>
-            <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
-          `
+        <paper-tabs selected="0">
+          <paper-tab @click=${this.displaySignIn}>Sign In</paper-tab>
+          <paper-tab @click=${this.displaySignUp}>Sing Up</paper-tab>
+        </paper-tabs>
+        <tweet-auth></tweet-auth>
+        <tweet-login></tweet-login>`:html`
+        <div>
+        <!-- @todo = remplace image by the user informations component -->
+        <img src="./src/assets/images/user-info-component.png" alt="Tweetbook logo" style="width: 100%">
+        </div>
+        <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>`
         }
       </div>
     `
