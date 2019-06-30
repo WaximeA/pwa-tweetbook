@@ -1,6 +1,8 @@
 # pwa-tweetbook
 
-Run app : `$ npx polymer serve`
+Run app : 
+`$ npm install`
+`$ npx polymer serve`
 
 # Todo
 

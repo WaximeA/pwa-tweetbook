@@ -121,11 +121,10 @@ export default class TweetSidebar extends LitElement {
           <paper-tab @click=${this.displaySignIn}>Sign In</paper-tab>
           <paper-tab @click=${this.displaySignUp}>Sing Up</paper-tab>
         </paper-tabs>
-        <tweet-auth></tweet-auth>
-        <tweet-login></tweet-login>`:html`
-        <div>
-        <!-- @todo = remplace image by the user informations component -->
-        <img src="./src/assets/images/user-info-component.png" alt="Tweetbook logo" style="width: 100%">
+        <tweet-auth collection="usersInfo"></tweet-auth>
+        <tweet-login collection="usersInfo"></tweet-login>`:html`
+      <div>
+        <p @user-logged="${this.name}">yo</p>
         </div>
         <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>`
         }

@@ -31,9 +31,11 @@ class TweetbookApp extends LitElement {
                 @child-changed="${this.childChanged}"
             ></tweet-store>
             <tweet-header></tweet-header>
+            <div class="tweet-container">
             ${
                 this.tweets.map(item => html`<tweet-elem .tweet="${item}"/>`)
             }
+            </div>
            <form-add></form-add>
     `
     }
@@ -43,8 +45,15 @@ class TweetbookApp extends LitElement {
             * {  box-sizing: border-box }
             
             tweet-elem {
-                max-width: 100%;
+                width: 60%;
                 display: block;
+            }
+
+            .tweet-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
             }
         `;
     }

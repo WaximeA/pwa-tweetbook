@@ -15,6 +15,7 @@ class TweetAuth extends LitElement {
     this.surname='';
     this.nickname='';
     this.errorMessage = '';
+    this.collection='';
   }
 
   static get properties() {
@@ -25,7 +26,8 @@ class TweetAuth extends LitElement {
       name: String,
       surname: String,
       nickname: String,
-      errorMessage: String
+      errorMessage: String,
+      collection: String,
     }
   }
 
@@ -99,11 +101,20 @@ class TweetAuth extends LitElement {
 
     this.auth.createUserWithEmailAndPassword(this.email, this.password)
     .then(data => {
+      console.info(data);
       this.errorMessage = '';
-      console.info('User created', data);
+      firebase.firestore().collection(this.collection).doc(data.user.uid).set({
+          name: this.name,
+          surname: this.surname,
+          nickname: this.nickname,
+          follows:[],
+          followers:[]
+      }).then((user)=>{
+        console.info('User created', user);
+      });
     })
     .catch(error => {
-      this.errorMessage = 'An error occurred, verify you credentials and try again.';
+      this.errorMessage = 'An error occurred';
       console.error(error);
     });
   }
