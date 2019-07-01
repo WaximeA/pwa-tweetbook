@@ -109,12 +109,12 @@ class TweetAuth extends LitElement {
           nickname: this.nickname,
           follows:[],
           followers:[]
-      }).then((user)=>{
-        console.info('User created', user);
+      }).then(()=>{
+        document.dispatchEvent(new CustomEvent('user-registered', { detail:data.user.email}));
       });
     })
     .catch(error => {
-      this.errorMessage = 'An error occurred';
+      this.errorMessage = error;
       console.error(error);
     });
   }

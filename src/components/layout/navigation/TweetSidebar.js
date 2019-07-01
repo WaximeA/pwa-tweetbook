@@ -3,6 +3,7 @@ import {LitElement, html, css} from 'lit-element/lit-element';
 import '../../data/TweetAuth';
 import '../../data/TweetLogin';
 import '../../data/TweetLogout';
+import './UserInfo';
 
 import '@polymer/paper-tabs/paper-tabs.js';
 import '@polymer/paper-tabs/paper-tab.js';
@@ -14,13 +15,15 @@ export default class TweetSidebar extends LitElement {
     this.logged = false;
     this.active = false;
     this.signUp = false;
+    this.selectedTab = 0;
   }
 
   static get properties() {
     return {
       logged: { type: Boolean },
       active: { type: Boolean },
-      signUp: { type: Boolean }
+      signUp: { type: Boolean },
+      selectedTab: {type: Number}
     }
   }
 
@@ -80,6 +83,16 @@ export default class TweetSidebar extends LitElement {
 
   firstUpdated() {
     this.logged = localStorage.getItem('logged') === 'true' ? true : false;
+    document.addEventListener('user-registered', (data) => {
+      const email = data.detail;
+      this.displaySignIn();
+      document.dispatchEvent(new CustomEvent('fill-email', { detail: email}));
+    });
+    document.addEventListener('user-logged', (data) => {
+      this.handleLogin(data.detail);
+      console.log(data);
+      document.dispatchEvent(new CustomEvent('fill-user-info', { detail: data.detail}));
+    });
   }
 
   displaySidebar() {
@@ -87,20 +100,21 @@ export default class TweetSidebar extends LitElement {
   }
 
   displaySignIn() {
+    this.selectedTab = 0;
     this.shadowRoot.querySelector('tweet-auth').style.display = "none";
     this.shadowRoot.querySelector('tweet-login').style.display = "block";
   }
 
   displaySignUp() {
+    this.selectedTab = 1;
     this.shadowRoot.querySelector('tweet-auth').style.display = "block";
     this.shadowRoot.querySelector('tweet-login').style.display = "none";
   }
 
-  handleLogin({detail}){
-    if (detail.user && this.active) {
+  handleLogin(data){
+    if (data && this.active) {
       this.displaySidebar();
     }
-    alert(detail.user);
     this.logged = true;
     localStorage.setItem('logged', true);
   }
@@ -117,14 +131,14 @@ export default class TweetSidebar extends LitElement {
       <div id="sidebar" class="${this.active ? 'display' : ''}">
         <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}><img src="./src/assets/images/cross-icon.png" alt="Side bar logo"></button>
         ${!this.logged ? html`
-        <paper-tabs selected="0">
+        <paper-tabs selected="${this.selectedTab}">
           <paper-tab @click=${this.displaySignIn}>Sign In</paper-tab>
           <paper-tab @click=${this.displaySignUp}>Sing Up</paper-tab>
         </paper-tabs>
         <tweet-auth collection="usersInfo"></tweet-auth>
         <tweet-login collection="usersInfo"></tweet-login>`:html`
-      <div>
-        <p @user-logged="${this.name}">yo</p>
+        <div>
+        <user-info></user-info>
         </div>
         <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>`
         }

@@ -78,9 +78,16 @@ class TweetLogin extends LitElement {
         localStorage.setItem('logged', false);
       } else {
         localStorage.setItem('logged', true);
-        this.dispatchEvent(new CustomEvent('user-logged', { detail: { user }}));
+        const dbDocument = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
+        dbDocument.get().then((user) => {
+          document.dispatchEvent(new CustomEvent('user-logged', { detail: user.data()}));
+        });
       }
     });
+    document.addEventListener('fill-email', (data) => {
+      this.email=data.detail;
+    });
+  
   }
 
   handleForm(e) {
@@ -95,13 +102,11 @@ class TweetLogin extends LitElement {
     .then(() => {
       const document = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
       document.get().then((user) => {
-        console.log(user.data());
         this.dispatchEvent(new CustomEvent('user-logged', { detail: user.data()}));
       });
     })
     .catch(error => {
-      this.errorMessage = 'An error occurred, verify you credentials and try again.';
-      console.error(error);
+      this.errorMessage = error;
     });
   }
 
