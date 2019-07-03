@@ -1,31 +1,31 @@
-import { LitElement, html, css } from 'lit-element';
+import {LitElement, html, css} from 'lit-element';
 
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import {EventConstant} from "../../Constants/event.constant";
 
 class TweetLogin extends LitElement {
 
-  constructor() {
-    super();
-    this.auth = {};
-    this.email = '';
-    this.password = '';
-    this.errorMessage = '';
-    this.collection ='';
-  }
-
-  static get properties() {
-    return {
-      email: String,
-      password: String,
-      errorMessage: String,
-      collection: String
+    constructor() {
+        super();
+        this.auth = {};
+        this.email = '';
+        this.password = '';
+        this.errorMessage = '';
+        this.collection = '';
     }
-  }
 
-  static get styles()
-  {
-    return css`
+    static get properties() {
+        return {
+            email: String,
+            password: String,
+            errorMessage: String,
+            collection: String
+        }
+    }
+
+    static get styles() {
+        return css`
       :host {
         display: block
       }
@@ -67,52 +67,54 @@ class TweetLogin extends LitElement {
         display: block;
       }
     `
-  }
-
-  firstUpdated() {
-    this.auth = firebase.auth();
-
-    this.auth.onAuthStateChanged(user => {
-      if (!user) {
-        // handle logout
-        localStorage.setItem('logged', false);
-      } else {
-        const dbDocument = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
-        dbDocument.get().then((user) => {
-          console.log("je suis loggé");
-          document.dispatchEvent(new CustomEvent('user-logged', { detail: user.data()}));
-        });
-        localStorage.setItem('logged', true);
-      }
-    });
-    document.addEventListener('fill-email', (data) => {
-      this.email=data.detail;
-    });
-  
-  }
-
-  handleForm(e) {
-    e.preventDefault();
-
-    if ((!this.email || !this.password)) {
-      this.errorMessage = 'Email or Password missing';
-      console.error(this.errorMessage);
     }
 
-    this.auth.signInWithEmailAndPassword(this.email, this.password)
-    .then(() => {
-      const document = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
-      document.get().then((user) => {
-        this.dispatchEvent(new CustomEvent('user-logged', { detail: user.data()}));
-      });
-    })
-    .catch(error => {
-      this.errorMessage = error;
-    });
-  }
+    firstUpdated() {
+        this.auth = firebase.auth();
 
-  render() {
-    return html`
+        this.auth.onAuthStateChanged(user => {
+            if (!user) {
+                // handle logout
+                localStorage.setItem('logged', false);
+            } else {
+                const dbDocument = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
+                dbDocument.get().then((user) => {
+                    console.log("je suis loggé");
+                    document.dispatchEvent(new CustomEvent(EventConstant.USER_LOGGED, {detail: user.data()}));
+                    localStorage.setItem('user', JSON.stringify(user.data()))
+                });
+                localStorage.setItem('logged', true);
+            }
+        });
+        document.addEventListener(EventConstant.FILL_EMAIL, (data) => {
+            this.email = data.detail;
+        });
+
+    }
+
+    handleForm(e) {
+        e.preventDefault();
+
+        if ((!this.email || !this.password)) {
+            this.errorMessage = 'Email or Password missing';
+            console.error(this.errorMessage);
+        }
+
+        this.auth.signInWithEmailAndPassword(this.email, this.password)
+            .then(() => {
+                const document = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
+                document.get().then((user) => {
+                    this.dispatchEvent(new CustomEvent(EventConstant.USER_LOGGED, {detail: user.data()}));
+                    localStorage.setItem('user', JSON.stringify(user.data()));
+                });
+            })
+            .catch(error => {
+                this.errorMessage = error;
+            });
+    }
+
+    render() {
+        return html`
     <h4>Sign in</h4>
     <form @submit="${this.handleForm}">
        <input type="text" placeholder="email" .value="${this.email}" @input="${e => this.email = e.target.value}">
@@ -121,7 +123,7 @@ class TweetLogin extends LitElement {
        <button type="submit" class="button">Login</button>
      </form>
     `
-  }
+    }
 }
 
 customElements.define('tweet-login', TweetLogin);

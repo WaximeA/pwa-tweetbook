@@ -1,6 +1,7 @@
 import {LitElement} from "lit-element/lit-element";
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import {EventConstant} from "../../Constants/event.constant";
 
 class TweetStore extends LitElement {
     constructor() {
@@ -33,17 +34,24 @@ class TweetStore extends LitElement {
             });
         });
 
-        document.addEventListener('new-tweet', e => this.push(e));
-        document.addEventListener('delete-tweet', e => this.delete(e));
-    }
+        document.addEventListener(EventConstant.NEW_TWEET, e => this.push(e));
+        document.addEventListener(EventConstant.DElETE_TWEET, e => this.delete(e));
+        }
 
     push({detail}) {
+        const user = localStorage.getItem('user');
+        if (!user) {
+            throw new Error('User\'s not logged')
+        }
+        const userInfos = JSON.parse(user);
         firebase.firestore().collection(this.collection).add({
             content: detail,
             date: new Date().getTime(),
             user: {
-                name: "Tanguy"
+                name: userInfos.name
             }
+        }).then(resp => {
+            console.log(resp);
         });
     }
 
