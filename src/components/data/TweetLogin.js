@@ -11,13 +11,15 @@ class TweetLogin extends LitElement {
     this.email = '';
     this.password = '';
     this.errorMessage = '';
+    this.collection ='';
   }
 
   static get properties() {
     return {
       email: String,
       password: String,
-      errorMessage: String
+      errorMessage: String,
+      collection: String
     }
   }
 
@@ -75,10 +77,18 @@ class TweetLogin extends LitElement {
         // handle logout
         localStorage.setItem('logged', false);
       } else {
+        const dbDocument = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
+        dbDocument.get().then((user) => {
+          console.log("je suis loggé");
+          document.dispatchEvent(new CustomEvent('user-logged', { detail: user.data()}));
+        });
         localStorage.setItem('logged', true);
-        this.dispatchEvent(new CustomEvent('user-logged', { detail: { user }}));
       }
     });
+    document.addEventListener('fill-email', (data) => {
+      this.email=data.detail;
+    });
+  
   }
 
   handleForm(e) {
@@ -90,13 +100,14 @@ class TweetLogin extends LitElement {
     }
 
     this.auth.signInWithEmailAndPassword(this.email, this.password)
-    .then(user => {
-      console.info('User logged', user);
-      this.dispatchEvent(new CustomEvent('user-logged', { detail: { user }}));
+    .then(() => {
+      const document = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
+      document.get().then((user) => {
+        this.dispatchEvent(new CustomEvent('user-logged', { detail: user.data()}));
+      });
     })
     .catch(error => {
-      this.errorMessage = 'An error occurred, verify you credentials and try again.';
-      console.error(error);
+      this.errorMessage = error;
     });
   }
 

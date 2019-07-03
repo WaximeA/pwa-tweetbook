@@ -3,6 +3,10 @@ import {LitElement, html, css} from 'lit-element/lit-element';
 import '../../data/TweetAuth';
 import '../../data/TweetLogin';
 import '../../data/TweetLogout';
+import './UserInfo';
+
+import '@polymer/paper-tabs/paper-tabs.js';
+import '@polymer/paper-tabs/paper-tab.js';
 
 export default class TweetSidebar extends LitElement {
 
@@ -10,12 +14,16 @@ export default class TweetSidebar extends LitElement {
     super();
     this.logged = false;
     this.active = false;
+    this.signUp = false;
+    this.selectedTab = 0;
   }
 
   static get properties() {
     return {
       logged: { type: Boolean },
-      active: { type: Boolean }
+      active: { type: Boolean },
+      signUp: { type: Boolean },
+      selectedTab: {type: Number}
     }
   }
 
@@ -66,30 +74,54 @@ export default class TweetSidebar extends LitElement {
         text-align: center;
         padding: 10px 0 10px 0;
       }
+
+      tweet-auth{
+        display:none;
+      }
     `
   }
 
   firstUpdated() {
     this.logged = localStorage.getItem('logged') === 'true' ? true : false;
+    document.addEventListener('user-registered', (data) => {
+      const email = data.detail;
+      this.displaySignIn();
+      document.dispatchEvent(new CustomEvent('fill-email', { detail: email}));
+    });
+    document.addEventListener('user-logged', (data) => {
+      this.handleLogin(data.detail);
+      console.log(data);
+      document.dispatchEvent(new CustomEvent('fill-user-info', { detail: data.detail}));
+    });
   }
 
   displaySidebar() {
     this.active = !this.active;
   }
 
-  handleLogin({detail}){
-    if (detail.user && this.active) {
+  displaySignIn() {
+    this.shadowRoot.querySelector('tweet-auth').style.display = "none";
+    this.selectedTab = 0;
+    this.shadowRoot.querySelector('tweet-login').style.display = "block";
+  }
+
+  displaySignUp() {
+    this.shadowRoot.querySelector('tweet-login').style.display = "none";
+    this.selectedTab = 1;
+    this.shadowRoot.querySelector('tweet-auth').style.display = "block";
+
+  }
+
+  handleLogin(data){
+    if (data && this.active) {
       this.displaySidebar();
     }
-
     this.logged = true;
     localStorage.setItem('logged', true);
   }
 
   handleLogout() {
     this.displaySidebar();
-
-
     this.logged = false;
     localStorage.setItem('logged', false);
   }
@@ -100,15 +132,18 @@ export default class TweetSidebar extends LitElement {
       <div id="sidebar" class="${this.active ? 'display' : ''}">
         <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}><img src="./src/assets/images/cross-icon.png" alt="Side bar logo"></button>
         ${!this.logged ? html`
-            <tweet-auth></tweet-auth>
-            <tweet-login @user-logged="${this.handleLogin}"></tweet-login>
-          ` : html`
-            <div>
-              <!-- @todo = remplace image by the user informations component -->
-              <img src="./src/assets/images/user-info-component.png" alt="Tweetbook logo" style="width: 100%">
-            </div>
-            <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
-          `
+        <paper-tabs selected="${this.selectedTab}">
+          <paper-tab @click=${this.displaySignIn}>Sign In</paper-tab>
+          <paper-tab @click=${this.displaySignUp}>Sing Up</paper-tab>
+        </paper-tabs>
+        <tweet-auth collection="usersInfo"></tweet-auth>
+        <tweet-login collection="usersInfo"></tweet-login>`:html`
+        <div>
+        <user-info></user-info>
+        </div>
+        <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
+        <edit-info @edit-info="${this.handleLogout}"></edit-info>
+        `
         }
       </div>
     `

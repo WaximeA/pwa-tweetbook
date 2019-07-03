@@ -44,7 +44,7 @@ class TweetStore extends LitElement {
             user: {
                 name: "Tanguy"
             }
-        })
+        });
     }
 
     delete({detail}) {

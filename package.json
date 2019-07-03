@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/WaximeA/pwa-tweetbook#readme",
   "dependencies": {
+    "@polymer/paper-tabs": "^3.1.0",
     "firebase": "^6.1.0",
     "lit-element": "^2.1.0"
   },
