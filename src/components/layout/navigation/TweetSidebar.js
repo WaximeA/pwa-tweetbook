@@ -10,6 +10,7 @@ import './FormAdd';
 
 import '@polymer/paper-tabs/paper-tabs.js';
 import '@polymer/paper-tabs/paper-tab.js';
+import {EventConstant} from "../../../Constants/event.constant";
 
 export default class TweetSidebar extends LitElement {
 
@@ -96,19 +97,23 @@ export default class TweetSidebar extends LitElement {
 
   firstUpdated() {
     this.logged = localStorage.getItem('logged') === 'true' ? true : false;
-    document.addEventListener('user-registered', (data) => {
+    document.addEventListener(EventConstant.USER_REGISTERED, (data) => {
       const email = data.detail;
       this.displaySignIn();
-      document.dispatchEvent(new CustomEvent('fill-email', { detail: email}));
+      document.dispatchEvent(new CustomEvent(EventConstant.FILL_EMAIL, { detail: email}));
     });
-    document.addEventListener('user-logged', (data) => {
+    document.addEventListener(EventConstant.USER_LOGGED, (data) => {
       this.handleLogin(data.detail);
       console.log(data);
-      document.dispatchEvent(new CustomEvent('fill-user-info', { detail: data.detail}));
+      document.dispatchEvent(new CustomEvent(EventConstant.FILL_USER_INFOS, { detail: data.detail}));
     });
-    document.addEventListener('edit-info', () => {
-      document.dispatchEvent(new CustomEvent('fill-user-info', { detail: data.detail}));
+    document.addEventListener(EventConstant.EDIT_INFOS, () => {
+      document.dispatchEvent(new CustomEvent(EventConstant.FILL_USER_INFOS, { detail: data.detail}));
     });
+
+    document.addEventListener(EventConstant.DISPLAY_SIDEBAR, ({detail}) => {
+      this.active = detail;
+    })
   }
 
   displaySidebar() {

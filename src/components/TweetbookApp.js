@@ -2,6 +2,7 @@ import {LitElement, html, css} from 'lit-element';
 import './data/TweetStore';
 import './modules/Tweet';
 import './layout/navigation/TweetHeader';
+import {EventConstant} from "../Constants/event.constant";
 
 class TweetbookApp extends LitElement {
 
@@ -17,9 +18,9 @@ class TweetbookApp extends LitElement {
     }
 
     firstUpdated(_changedProperties) {
-        document.addEventListener('response', console.log);
-        document.addEventListener('RT', console.log);
-        document.addEventListener('like', console.log);
+        document.addEventListener(EventConstant.RESPONSE, console.log);
+        document.addEventListener(EventConstant.RT, console.log);
+        document.addEventListener(EventConstant.LIKE, console.log);
     }
 
     childChanged(e) {

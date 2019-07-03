@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit-element';
 
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import {EventConstant} from "../../../Constants/event.constant";
 
 class EditInfo extends LitElement {
 
@@ -46,7 +47,7 @@ class EditInfo extends LitElement {
     this.auth.signOut()
     .then(user => {
       console.info('User logout', user);
-      this.dispatchEvent(new CustomEvent('user-logout', { detail: { user }}));
+      this.dispatchEvent(new CustomEvent(EventConstant.USER_LOGOUT, { detail: { user }}));
     })
     .catch(error => {
       this.errorMessage = 'An error occurred during the logout.';

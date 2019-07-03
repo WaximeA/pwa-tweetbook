@@ -1,4 +1,5 @@
 import {LitElement, html, css} from 'lit-element/lit-element';
+import {EventConstant} from "../../../Constants/event.constant";
 
 export default class FormAdd extends LitElement {
 
@@ -56,7 +57,8 @@ export default class FormAdd extends LitElement {
 
     handleForm(e) {
         e.preventDefault();
-        document.dispatchEvent(new CustomEvent('new-tweet', {detail: this.newTweet}));
+        document.dispatchEvent(new CustomEvent(EventConstant.NEW_TWEET, {detail: this.newTweet}));
+        document.dispatchEvent(new CustomEvent(EventConstant.DISPLAY_SIDEBAR, {detail: false}));
         this.newTweet = "";
         this.active = false;
     }

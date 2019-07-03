@@ -1,4 +1,5 @@
 import {LitElement, html, css} from 'lit-element';
+import {EventConstant} from "../../Constants/event.constant";
 
 export default class ButtonAction extends LitElement {
 
@@ -17,16 +18,16 @@ export default class ButtonAction extends LitElement {
     }
 
     handleClick(action) {
-        this.dispatchEvent(new CustomEvent('action', {detail: action}));
+        this.dispatchEvent(new CustomEvent(EventConstant.TWEET_ACTION, {detail: action}));
     }
 
 
     render() {
         return html` 
             <div class="button-action">
-                <button @click="${() => this.handleClick("response")}">Repondre</button>
-                <button @click="${() => this.handleClick("RT")}">RT</button>
-                <button @click="${() => this.handleClick("like")}">Like</button>
+                <button @click="${() => this.handleClick(EventConstant.RESPONSE)}">Repondre</button>
+                <button @click="${() => this.handleClick(EventConstant.RT)}">RT</button>
+                <button @click="${() => this.handleClick(EventConstant.LIKE)}">Like</button>
             </div>
         `
     }

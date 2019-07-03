@@ -2,6 +2,7 @@ import {LitElement, html, css} from 'lit-element/lit-element';
 
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import {EventConstant} from "../../../Constants/event.constant";
 
 export default class UserInfo extends LitElement {
 
@@ -167,7 +168,7 @@ export default class UserInfo extends LitElement {
   }
 
   firstUpdated() {
-    document.addEventListener('fill-user-info', (data) => {
+    document.addEventListener(EventConstant.FILL_USER_INFOS, (data) => {
       console.info(data.detail);
       this.name = data.detail.name;
       this.surname = data.detail.surname;

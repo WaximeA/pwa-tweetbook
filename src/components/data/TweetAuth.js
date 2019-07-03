@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit-element';
 
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import {EventConstant} from "../../Constants/event.constant";
 
 class TweetAuth extends LitElement {
 
@@ -116,7 +117,7 @@ class TweetAuth extends LitElement {
           avatar: 'defaultAvatar.jpeg',
           banner: 'defaultBanner.jpg'
       }).then(()=>{
-        document.dispatchEvent(new CustomEvent('user-registered', { detail:data.user.email}));
+        document.dispatchEvent(new CustomEvent(EventConstant.USER_REGISTERED, { detail:data.user.email}));
       });
     })
     .catch(error => {

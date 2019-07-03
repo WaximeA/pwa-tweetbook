@@ -1,5 +1,6 @@
 import {LitElement, html, css} from 'lit-element';
 import '../navigation/ButtonAction';
+import {EventConstant} from "../../Constants/event.constant";
 
 export default class Tweet extends LitElement {
 
@@ -93,7 +94,7 @@ export default class Tweet extends LitElement {
     }
 
     deleteTweet(e) {
-        document.dispatchEvent(new CustomEvent('delete-tweet', {detail: this.tweet.id}));
+        document.dispatchEvent(new CustomEvent(EventConstant.DElETE_TWEET, {detail: this.tweet.id}));
     }
 }
 
