@@ -100,15 +100,16 @@ export default class TweetSidebar extends LitElement {
   }
 
   displaySignIn() {
-    this.selectedTab = 0;
     this.shadowRoot.querySelector('tweet-auth').style.display = "none";
+    this.selectedTab = 0;
     this.shadowRoot.querySelector('tweet-login').style.display = "block";
   }
 
   displaySignUp() {
+    this.shadowRoot.querySelector('tweet-login').style.display = "none";
     this.selectedTab = 1;
     this.shadowRoot.querySelector('tweet-auth').style.display = "block";
-    this.shadowRoot.querySelector('tweet-login').style.display = "none";
+
   }
 
   handleLogin(data){
@@ -140,7 +141,9 @@ export default class TweetSidebar extends LitElement {
         <div>
         <user-info></user-info>
         </div>
-        <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>`
+        <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
+        <edit-info @edit-info="${this.handleLogout}"></edit-info>
+        `
         }
       </div>
     `

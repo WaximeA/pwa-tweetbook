@@ -1,5 +1,8 @@
 import {LitElement, html, css} from 'lit-element/lit-element';
 
+import firebase from 'firebase/app';
+import 'firebase/storage';
+
 export default class UserInfo extends LitElement {
 
   constructor() {
@@ -10,6 +13,8 @@ export default class UserInfo extends LitElement {
     this.follows = [];
     this.followers = [];
     this.resume= "Hi, I'm an Eclatax Dev !";
+    this.avatar='';
+    this.banner='';
   }
 
   static get properties() {
@@ -19,7 +24,9 @@ export default class UserInfo extends LitElement {
       nickname: String,
       follows: Array,
       followers: Array,
-      resume: String
+      resume: String,
+      avatar: String,
+      banner: String
     }
   }
 
@@ -43,13 +50,12 @@ export default class UserInfo extends LitElement {
       position: fixed;
       width: 414px;
     }
-    .content {
+    .content {  
       position: absolute;
       width: 100%;
     }
     .image {
-      background: url('https://cdn.pixabay.com/photo/2015/10/29/14/39/web-1012468_960_720.jpg');
-      background-size: contain;
+      background-size: 71px 71px;
       border-radius: 50%;
       border: 3px solid white;
       height: 71px;
@@ -58,6 +64,8 @@ export default class UserInfo extends LitElement {
       top: 89px;
       width: 71px;
       transform-origin: 50% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
     }
     .name {
       font-size: 20px;
@@ -105,22 +113,56 @@ export default class UserInfo extends LitElement {
       position: absolute;
       top: 220px;
     }
-    .lives {
-      left: 12px;
-      position: absolute;
-      top: 312px;
+    .banner{
+      height: 135px;
+      width: 350px;
+      background-repeat: round;
     }
-    .problems {
-      left: 90px;
-      position: absolute;
-      top: 312px;
-    }
-    .count {
-      font-size: 15px;
-      font-weight: bold;
-      margin-right: 6px;
+
+    nav {
+      width: 100%;
+      height: 58px;
+      display: flex;
+      padding-top: 140px;
     }
     
+    nav h4 {
+      text-align: center;
+      font-size: 25px;
+      margin: 8px 0 2px 0;
+      color: #666;
+    }
+    
+    nav h6 {
+      text-align: center;
+      margin: 0;
+      font-family: sans-serif;
+      font-weight: 100;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    
+    .count {
+      display: inline-block;
+      float: left;
+      width: 125px;
+      height: 58px;
+      border-right: 1px solid #CCC;
+    }
+    
+    .following {
+      display: inline-block;
+      margin: 0 auto;
+      width: 125px;
+    }
+    
+    .followers {
+      display: inline-block;
+      float: right;
+      width: 125px;
+      height: 58px;
+      border-left: 1px solid #CCC;
+    }
     `
   }
 
@@ -132,6 +174,12 @@ export default class UserInfo extends LitElement {
       this.nickname = data.detail.nickname;
       this.followers = data.detail.followers;
       this.follows = data.detail.follows;
+      firebase.storage().ref("avatar").child(data.detail.avatar).getDownloadURL().then((url) => {
+        this.avatar = url;
+      });
+      firebase.storage().ref("banniere").child(data.detail.banner).getDownloadURL().then((url) => {
+        this.banner = url;
+      });
     });
   }
 
@@ -139,22 +187,29 @@ export default class UserInfo extends LitElement {
     return html`
     <div class="phone">
       <div class="content">
-        <div class="drop image"></div>
-        <div class="avatar"></div>
+        <div class="image" style="background-image: url('${this.avatar}');"></div>
+        <div class="banner" style="background-image: url('${this.banner}');"></div>
         <div class="name">${this.name} ${this.surname}</div>
         <div class="tag">@${this.nickname}</div>
         <div class="text">${this.resume}</div>
-        <div class="lives">
-          <span class="count">${this.followers.length}</span><span class="what">followers</span>
-        </div>
-        <div class="problems">
-          <span class="count">${this.follows.length}</span><span class="what">follows</span>
-        </div>
+        <nav>
+          <div class="count">
+            <h4>1537</h4>
+            <h6>Tweets</h6>
+          </div>
+          <div class="following">
+            <h4>${this.follows.length}</h4>
+            <h6>Following</h6>
+          </div>
+          <div class="followers">
+            <h4>${this.followers.length}</h4>
+            <h6>Followers</h6>
+          </div>
+        </nav>
         <div class="divider"></div>
         </div>
       </div>
     </div>
-  
     `
   }
 }

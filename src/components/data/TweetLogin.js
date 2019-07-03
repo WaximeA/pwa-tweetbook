@@ -77,11 +77,12 @@ class TweetLogin extends LitElement {
         // handle logout
         localStorage.setItem('logged', false);
       } else {
-        localStorage.setItem('logged', true);
         const dbDocument = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
         dbDocument.get().then((user) => {
+          console.log("je suis loggé");
           document.dispatchEvent(new CustomEvent('user-logged', { detail: user.data()}));
         });
+        localStorage.setItem('logged', true);
       }
     });
     document.addEventListener('fill-email', (data) => {

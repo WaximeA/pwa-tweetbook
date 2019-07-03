@@ -16,6 +16,8 @@ class TweetAuth extends LitElement {
     this.nickname='';
     this.errorMessage = '';
     this.collection='';
+    this.avatar='';
+    this.banner='';
   }
 
   static get properties() {
@@ -28,6 +30,8 @@ class TweetAuth extends LitElement {
       nickname: String,
       errorMessage: String,
       collection: String,
+      avatar: String,
+      banner: String
     }
   }
 
@@ -108,7 +112,9 @@ class TweetAuth extends LitElement {
           surname: this.surname,
           nickname: this.nickname,
           follows:[],
-          followers:[]
+          followers:[],
+          avatar: 'defaultAvatar.jpeg',
+          banner: 'defaultBanner.jpg'
       }).then(()=>{
         document.dispatchEvent(new CustomEvent('user-registered', { detail:data.user.email}));
       });
