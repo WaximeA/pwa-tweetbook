@@ -38,9 +38,19 @@ class TweetLogout extends LitElement {
         box-sizing: border-box;
         padding: 12px 20px 12px 20px;
       }
-      
-      .button-deconnect {
-        font-size: 15px;
+    
+      .button{
+        padding: 10px 30px;
+        text-decoration: none;
+        background-color: #f15a22;
+        color: #fff;
+        padding: 10px 30px;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: .2s;
+        &:hover
+          background-color: darken(#55acee, 10%);
+          cursor: pointer;
       }
     `
   }
@@ -65,9 +75,8 @@ class TweetLogout extends LitElement {
 
   render() {
     return html`
-    <hr>
     <form @submit="${this.handleForm}">
-       <button type="submit" class="button-deconnect">Log out</button>
+       <button type="submit" class="button">Logout</button>
      </form>
     `
   }

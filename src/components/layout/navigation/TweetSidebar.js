@@ -4,6 +4,9 @@ import '../../data/TweetAuth';
 import '../../data/TweetLogin';
 import '../../data/TweetLogout';
 import './UserInfo';
+import './EditInfo';
+import './FormAdd';
+
 
 import '@polymer/paper-tabs/paper-tabs.js';
 import '@polymer/paper-tabs/paper-tab.js';
@@ -78,6 +81,16 @@ export default class TweetSidebar extends LitElement {
       tweet-auth{
         display:none;
       }
+
+      .buttons{
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .user-info-footer{
+        padding-top:15px;
+      }
+
     `
   }
 
@@ -91,6 +104,9 @@ export default class TweetSidebar extends LitElement {
     document.addEventListener('user-logged', (data) => {
       this.handleLogin(data.detail);
       console.log(data);
+      document.dispatchEvent(new CustomEvent('fill-user-info', { detail: data.detail}));
+    });
+    document.addEventListener('edit-info', () => {
       document.dispatchEvent(new CustomEvent('fill-user-info', { detail: data.detail}));
     });
   }
@@ -141,8 +157,15 @@ export default class TweetSidebar extends LitElement {
         <div>
         <user-info></user-info>
         </div>
-        <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
-        <edit-info @edit-info="${this.handleLogout}"></edit-info>
+        <div class="user-info-footer">
+          <div class="buttons">
+            <edit-info @edit-info=""></edit-info>
+            <form-add></form-add>
+            <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
+          </div>
+          <div class="form-area">
+          </div>
+        </div>
         `
         }
       </div>

@@ -34,8 +34,22 @@ export default class FormAdd extends LitElement {
                 padding: 0.5rem 1rem;
                 width: 100%;
             }
+
             footer form input {
                 width: 100%;
+            }
+
+            button{
+                text-decoration: none;
+                background-color: #55acee;
+                color: #fff;
+                padding: 10px 30px;
+                font-weight: bold;
+                border-radius: 5px;
+                transition: .2s;
+                &:hover
+                  background-color: darken(#55acee, 10%);
+                  cursor: pointer;
             }
         `
     }
@@ -54,13 +68,13 @@ export default class FormAdd extends LitElement {
 
     render() {
         return html` 
-            <footer>
+
                 <form @submit="${this.handleForm}" class="${!this.active ? "inactive" : ""}">
                     <input type="text" name="" id="new-tweet" @input="${e => this.newTweet = e.target.value}" .value="${this.newTweet}">
                     <button type="submit">Send</button>
                 </form>
-                <button @click="${this.handleClick}" class="${this.active ? "inactive" : ""}">New Tweet</button>
-            </footer>
+                <button @click="${this.handleClick}" class="${this.active ? "inactive" : ""}">Tweet</button>
+
         `
     }
 }

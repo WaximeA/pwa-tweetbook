@@ -1,7 +1,6 @@
 import {LitElement, html, css} from 'lit-element';
 import './data/TweetStore';
 import './modules/Tweet';
-import './layout/navigation/FormAdd';
 import './layout/navigation/TweetHeader';
 
 class TweetbookApp extends LitElement {
@@ -36,7 +35,7 @@ class TweetbookApp extends LitElement {
                 this.tweets.map(item => html`<tweet-elem .tweet="${item}"/>`)
             }
             </div>
-           <form-add></form-add>
+       
     `
     }
 
