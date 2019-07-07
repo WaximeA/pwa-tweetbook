@@ -53,7 +53,13 @@ class TweetbookApp extends LitElement {
                 flex-direction: column;
                 align-items: center;
             }
+            
+            * { 
+                font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
             }
+
+            ::slotted(*) { font-family: Helvetica Neue,Helvetica,Arial,sans-serif;  }
+
         `;
     }
 }

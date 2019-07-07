@@ -38,6 +38,7 @@ class TweetAuth extends LitElement {
   static get styles()
   {
     return css`
+    
       :host {
         display: block
       }

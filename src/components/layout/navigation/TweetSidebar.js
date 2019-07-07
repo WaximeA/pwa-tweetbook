@@ -4,7 +4,7 @@ import '../../data/TweetAuth';
 import '../../data/TweetLogin';
 import '../../data/TweetLogout';
 import './UserInfo';
-import './EditInfo';
+import './FormEdit';
 import './FormAdd';
 
 
@@ -155,15 +155,13 @@ export default class TweetSidebar extends LitElement {
         <tweet-auth collection="usersInfo"></tweet-auth>
         <tweet-login collection="usersInfo"></tweet-login>`:html`
         <div>
-        <user-info></user-info>
+        <user-info collection="usersInfo"></user-info>
         </div>
         <div class="user-info-footer">
           <div class="buttons">
-            <edit-info @edit-info=""></edit-info>
+            <form-edit collection="usersInfo"></form-edit>
             <form-add></form-add>
             <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
-          </div>
-          <div class="form-area">
           </div>
         </div>
         `

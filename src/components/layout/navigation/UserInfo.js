@@ -2,6 +2,7 @@ import {LitElement, html, css} from 'lit-element/lit-element';
 
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import 'firebase/auth';
 
 export default class UserInfo extends LitElement {
 
@@ -15,6 +16,7 @@ export default class UserInfo extends LitElement {
     this.resume= "Hi, I'm an Eclatax Dev !";
     this.avatar='';
     this.banner='';
+    this.collection='';
   }
 
   static get properties() {
@@ -26,7 +28,8 @@ export default class UserInfo extends LitElement {
       followers: Array,
       resume: String,
       avatar: String,
-      banner: String
+      banner: String,
+      collection: String,
     }
   }
 
@@ -71,7 +74,7 @@ export default class UserInfo extends LitElement {
       font-size: 20px;
       position: absolute;
       top: 164px;
-      font-weight: 700;
+      font-weight: 600;
       left: 10px;
       letter-spacing: -0.3px;
     }
@@ -174,11 +177,31 @@ export default class UserInfo extends LitElement {
       this.nickname = data.detail.nickname;
       this.followers = data.detail.followers;
       this.follows = data.detail.follows;
+      this.resume = data.detail.resume
       firebase.storage().ref("avatar").child(data.detail.avatar).getDownloadURL().then((url) => {
         this.avatar = url;
       });
       firebase.storage().ref("banniere").child(data.detail.banner).getDownloadURL().then((url) => {
         this.banner = url;
+      });
+    });
+    document.addEventListener('edit-info', (data) => {
+      firebase.storage().ref("avatar/"+firebase.auth().currentUser.uid+'.'+data.detail.avatar.name.split('.').pop()).put(data.detail.avatar).then((metadata) => {
+        metadata.ref.getDownloadURL().then((url)=> {
+          this.avatar = url;
+        });
+      });
+      firebase.storage().ref("banniere/"+firebase.auth().currentUser.uid+'.'+data.detail.banner.name.split('.').pop()).put(data.detail.banner).then((metadata) => {
+        metadata.ref.getDownloadURL().then((url)=> {
+          this.banner = url;
+        });
+      });
+      firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid).update({
+        resume: data.detail.resume,
+        avatar: firebase.auth().currentUser.uid+'.'+data.detail.avatar.name.split('.').pop(),
+        banner: firebase.auth().currentUser.uid+'.'+data.detail.banner.name.split('.').pop()
+      }).then(()=>{
+        this.resume=data.detail.resume;
       });
     });
   }
