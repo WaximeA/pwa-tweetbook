@@ -43,13 +43,21 @@ export default class FormAdd extends LitElement {
                 text-decoration: none;
                 background-color: #55acee;
                 color: #fff;
-                padding: 10px 30px;
-                font-weight: bold;
+                padding: 8px 20px;
                 border-radius: 5px;
                 transition: .2s;
                 &:hover
                   background-color: darken(#55acee, 10%);
                   cursor: pointer;
+            }
+
+            textarea{
+                width: 330px;
+                height: 300px;
+                bottom: 2%;
+                left: 3%;
+                position: absolute;
+                resize: none;
             }
         `
     }
@@ -68,12 +76,11 @@ export default class FormAdd extends LitElement {
 
     render() {
         return html` 
-
-                <form @submit="${this.handleForm}" class="${!this.active ? "inactive" : ""}">
-                    <input type="text" name="" id="new-tweet" @input="${e => this.newTweet = e.target.value}" .value="${this.newTweet}">
-                    <button type="submit">Send</button>
-                </form>
                 <button @click="${this.handleClick}" class="${this.active ? "inactive" : ""}">Tweet</button>
+                <form @submit="${this.handleForm}" class="${!this.active ? "inactive" : ""}">
+                    <button type="submit">Send</button>
+                    <textarea name="" id="new-tweet" @input="${e => this.newTweet = e.target.value}" .value="${this.newTweet}">
+                </form>
 
         `
     }
