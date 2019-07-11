@@ -1,4 +1,6 @@
 import {LitElement, html, css} from 'lit-element';
+import '../navigation/ButtonAction';
+import {EventConstant} from "../../Constants/event.constant";
 
 export default class Tweet extends LitElement {
 
@@ -25,7 +27,7 @@ export default class Tweet extends LitElement {
                 flex-direction: row;
                 padding: 20px 15px;
             }
-            
+
             .user-pic-box {
                 width: 10%;
                 display: block;
@@ -38,7 +40,10 @@ export default class Tweet extends LitElement {
                 background: no-repeat url("/src/assets/images/user.svg");
             }
             
-            .content {
+            .content{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
                 width: 90%;
             }
             
@@ -60,6 +65,15 @@ export default class Tweet extends LitElement {
         `
     }
 
+    action({detail}) {
+        document.dispatchEvent(new CustomEvent(detail, {
+            detail: {
+                id: this.tweet.id,
+                like: this.tweet.data.like || 0
+            }
+        }));
+    };
+
     render() {
         return html`
             <div class="tweet">
@@ -67,18 +81,21 @@ export default class Tweet extends LitElement {
                     <div class="user-pic"></div>
                 </div>
                 <div class="content">
-                    <div class="user-info-box">
-                        <div class="user-info">${this.tweet.data.user.name}</div>
-                        <div class="delete" @click="${e => this.deleteTweet(e)}"><i>X</i></div>
+                    <div class="content-text">
+                        <div class="user-info-box">
+                            <div class="user-info">${this.tweet.data.user.name}</div>
+                            <div class="delete" @click="${e => this.deleteTweet(e)}"><i>X</i></div>
+                        </div>
+                        <div class="tweet-content">${this.tweet.data.content}</div>
                     </div>
-                    <div class="tweet-content">${this.tweet.data.content}</div>
+                    <button-action .tweet=${this.tweet.data} @action="${e => this.action(e)}"/>
                 </div>
             </div>
         `;
     }
 
     deleteTweet(e) {
-        document.dispatchEvent(new CustomEvent('delete-tweet', {detail: this.tweet.id}));
+        document.dispatchEvent(new CustomEvent(EventConstant.DElETE_TWEET, {detail: this.tweet.id}));
     }
 }
 

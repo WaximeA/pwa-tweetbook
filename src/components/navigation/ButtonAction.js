@@ -1,13 +1,16 @@
-import {LitElement, html, css} from 'lit-element/lit-element';
+import {LitElement, html, css} from 'lit-element';
+import {EventConstant} from "../../Constants/event.constant";
 
 export default class ButtonAction extends LitElement {
 
     constructor() {
         super();
+        this.tweet = {}
     }
 
     static get properties() {
         return {
+            tweet: Object
         }
     }
 
@@ -17,9 +20,18 @@ export default class ButtonAction extends LitElement {
         `
     }
 
+    handleClick(action) {
+        this.dispatchEvent(new CustomEvent(EventConstant.TWEET_ACTION, {detail: action}));
+    }
+
+
     render() {
         return html` 
-            
+            <div class="button-action">
+                <button @click="${() => this.handleClick(EventConstant.RESPONSE)}">Repondre</button>
+                <button @click="${() => this.handleClick(EventConstant.RT)}">RT</button>
+                <button @click="${() => this.handleClick(EventConstant.LIKE)}">Like (${this.tweet.like})</button>
+            </div>
         `
     }
 }

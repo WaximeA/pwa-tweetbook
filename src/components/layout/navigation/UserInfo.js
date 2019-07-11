@@ -3,6 +3,7 @@ import {LitElement, html, css} from 'lit-element/lit-element';
 import firebase from 'firebase/app';
 import 'firebase/storage';
 import 'firebase/auth';
+import {EventConstant} from "../../../Constants/event.constant";
 
 export default class UserInfo extends LitElement {
 
@@ -74,7 +75,7 @@ export default class UserInfo extends LitElement {
       font-size: 20px;
       position: absolute;
       top: 164px;
-      font-weight: 600;
+      font-weight: 700;
       left: 10px;
       letter-spacing: -0.3px;
     }
@@ -170,8 +171,7 @@ export default class UserInfo extends LitElement {
   }
 
   firstUpdated() {
-    document.addEventListener('fill-user-info', (data) => {
-      console.info(data.detail);
+    document.addEventListener(EventConstant.FILL_USER_INFOS, (data) => {
       this.name = data.detail.name;
       this.surname = data.detail.surname;
       this.nickname = data.detail.nickname;
