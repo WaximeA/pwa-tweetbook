@@ -157,7 +157,8 @@ export default class TweetSidebar extends LitElement {
           <paper-tab @click=${this.displaySignUp}>Sing Up</paper-tab>
         </paper-tabs>
         <tweet-auth collection="usersInfo"></tweet-auth>
-        <tweet-login collection="usersInfo"></tweet-login>`:html`
+        <tweet-login collection="usersInfo"></tweet-login>`
+        : html`
         <div>
         <user-info></user-info>
         </div>

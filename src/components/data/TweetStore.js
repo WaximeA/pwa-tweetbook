@@ -22,7 +22,7 @@ class TweetStore extends LitElement {
         firebase.initializeApp(document.config);
         firebase.firestore().collection(this.collection).onSnapshot(ref => {
             ref.docChanges().forEach(change => {
-                const {newIndex, oldIndex, doc, type} = change;
+                const {doc, type} = change;
                 if (type === 'added') {
                     this.data = [...this.data, {id: doc.id, data: doc.data()}];
                     this.dataUpdated();
