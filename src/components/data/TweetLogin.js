@@ -93,7 +93,6 @@ class TweetLogin extends LitElement {
 
     handleForm(e) {
         e.preventDefault();
-
         if ((!this.email || !this.password)) {
             this.errorMessage = 'Email or Password missing';
             console.error(this.errorMessage);
@@ -101,6 +100,7 @@ class TweetLogin extends LitElement {
 
         this.auth.signInWithEmailAndPassword(this.email, this.password)
             .then((e) => {
+                console.log(e);
                 const document = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
                 document.get().then((user) => {
                     this.setLogin(user);
@@ -124,7 +124,7 @@ class TweetLogin extends LitElement {
     }
 
     setLogin(user) {
-        this.dispatchEvent(new CustomEvent(EventConstant.USER_LOGGED, {detail: user.data()}));
+        document.dispatchEvent(new CustomEvent(EventConstant.USER_LOGGED, {detail: user.data()}));
         const userInfos = {...user.data(), id: user.id};
         localStorage.setItem('user', JSON.stringify(userInfos));
     }
