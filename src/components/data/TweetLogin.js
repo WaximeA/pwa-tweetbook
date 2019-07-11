@@ -76,12 +76,11 @@ class TweetLogin extends LitElement {
             if (!user) {
                 // handle logout
                 localStorage.setItem('logged', false);
+                localStorage.removeItem('user');
             } else {
                 const dbDocument = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
                 dbDocument.get().then((user) => {
-                    console.log("je suis loggé");
-                    document.dispatchEvent(new CustomEvent(EventConstant.USER_LOGGED, {detail: user.data()}));
-                    localStorage.setItem('user', JSON.stringify(user.data()))
+                    this.setLogin(user);
                 });
                 localStorage.setItem('logged', true);
             }
@@ -101,11 +100,10 @@ class TweetLogin extends LitElement {
         }
 
         this.auth.signInWithEmailAndPassword(this.email, this.password)
-            .then(() => {
+            .then((e) => {
                 const document = firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid);
                 document.get().then((user) => {
-                    this.dispatchEvent(new CustomEvent(EventConstant.USER_LOGGED, {detail: user.data()}));
-                    localStorage.setItem('user', JSON.stringify(user.data()));
+                    this.setLogin(user);
                 });
             })
             .catch(error => {
@@ -123,6 +121,12 @@ class TweetLogin extends LitElement {
        <button type="submit" class="button">Login</button>
      </form>
     `
+    }
+
+    setLogin(user) {
+        this.dispatchEvent(new CustomEvent(EventConstant.USER_LOGGED, {detail: user.data()}));
+        const userInfos = {...user.data(), id: user.id};
+        localStorage.setItem('user', JSON.stringify(userInfos));
     }
 }
 

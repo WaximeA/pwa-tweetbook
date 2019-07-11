@@ -104,7 +104,6 @@ export default class TweetSidebar extends LitElement {
     });
     document.addEventListener(EventConstant.USER_LOGGED, (data) => {
       this.handleLogin(data.detail);
-      console.log(data);
       document.dispatchEvent(new CustomEvent(EventConstant.FILL_USER_INFOS, { detail: data.detail}));
     });
     document.addEventListener(EventConstant.EDIT_INFOS, () => {

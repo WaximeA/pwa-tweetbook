@@ -3,6 +3,7 @@ import './data/TweetStore';
 import './modules/Tweet';
 import './layout/navigation/TweetHeader';
 import {EventConstant} from "../Constants/event.constant";
+import {collectionConstant} from "../Constants/collection.constant";
 
 class TweetbookApp extends LitElement {
 
@@ -20,7 +21,6 @@ class TweetbookApp extends LitElement {
     firstUpdated(_changedProperties) {
         document.addEventListener(EventConstant.RESPONSE, console.log);
         document.addEventListener(EventConstant.RT, console.log);
-        document.addEventListener(EventConstant.LIKE, console.log);
     }
 
     childChanged(e) {
@@ -30,7 +30,7 @@ class TweetbookApp extends LitElement {
     render() {
         return html` 
             <tweet-store 
-                collection="tweets" 
+                collection="${collectionConstant.TWEET_COLLECTION}" 
                 @child-changed="${this.childChanged}"
             ></tweet-store>
             <tweet-header></tweet-header>

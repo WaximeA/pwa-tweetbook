@@ -6,7 +6,7 @@ export const EventConstant = {
     RESPONSE: 'response',
     RT: 'RT',
     LIKE: 'like',
-    TWEET_ACTION: 'tweet-action',
+    TWEET_ACTION: 'action',
 
     FILL_USER_INFOS: 'fill-user-info',
     FILL_EMAIL: 'fill-email',

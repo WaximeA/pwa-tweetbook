@@ -69,6 +69,7 @@ export default class Tweet extends LitElement {
         document.dispatchEvent(new CustomEvent(detail, {
             detail: {
                 id: this.tweet.id,
+                like: this.tweet.data.like || 0
             }
         }));
     };
@@ -87,7 +88,7 @@ export default class Tweet extends LitElement {
                         </div>
                         <div class="tweet-content">${this.tweet.data.content}</div>
                     </div>
-                    <button-action @action="${e => this.action(e)}"/>
+                    <button-action .tweet=${this.tweet.data} @action="${e => this.action(e)}"/>
                 </div>
             </div>
         `;

@@ -114,6 +114,7 @@ class TweetAuth extends LitElement {
           nickname: this.nickname,
           follows:[],
           followers:[],
+          likes: [],
           avatar: 'defaultAvatar.jpeg',
           banner: 'defaultBanner.jpg'
       }).then(()=>{

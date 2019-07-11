@@ -5,10 +5,13 @@ export default class ButtonAction extends LitElement {
 
     constructor() {
         super();
+        this.tweet = {}
     }
 
     static get properties() {
-        return {}
+        return {
+            tweet: Object
+        }
     }
 
     static get styles() {
@@ -27,7 +30,7 @@ export default class ButtonAction extends LitElement {
             <div class="button-action">
                 <button @click="${() => this.handleClick(EventConstant.RESPONSE)}">Repondre</button>
                 <button @click="${() => this.handleClick(EventConstant.RT)}">RT</button>
-                <button @click="${() => this.handleClick(EventConstant.LIKE)}">Like</button>
+                <button @click="${() => this.handleClick(EventConstant.LIKE)}">Like (${this.tweet.like})</button>
             </div>
         `
     }
