@@ -19,7 +19,6 @@ class TweetbookApp extends LitElement {
     }
 
     firstUpdated(_changedProperties) {
-        document.addEventListener(EventConstant.RESPONSE, console.log);
         document.addEventListener(EventConstant.RT, console.log);
     }
 

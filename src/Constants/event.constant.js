@@ -4,6 +4,7 @@ export const EventConstant = {
     NEW_TWEET: 'new-tweet',
     DElETE_TWEET: 'delete-tweet',
     RESPONSE: 'response',
+    RESPONSE_TWEET: 'response_tweet',
     RT: 'RT',
     LIKE: 'like',
     TWEET_ACTION: 'action',

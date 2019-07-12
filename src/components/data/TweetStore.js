@@ -43,10 +43,10 @@ class TweetStore extends LitElement {
                 }
             });
         });
-
         document.addEventListener(EventConstant.NEW_TWEET, e => this.push(e));
         document.addEventListener(EventConstant.DElETE_TWEET, e => this.delete(e));
         document.addEventListener(EventConstant.LIKE, e => this.like(e));
+        document.addEventListener(EventConstant.RESPONSE_TWEET, e => this.response(e));
     }
 
     push({detail}) {
@@ -61,6 +61,7 @@ class TweetStore extends LitElement {
             user: {
                 name: userInfos.name
             },
+            responses: [],
             like: 0
         }).then(resp => {
             console.log(resp);
@@ -76,28 +77,51 @@ class TweetStore extends LitElement {
     }
 
     like({detail}) {
-        let like = detail.like;
+        let like = detail.tweet.data.like;
         //on check si on retrouve le like dans la liste des likes de l'user
         const json_user = localStorage.getItem('user');
         const user = JSON.parse(json_user);
         const exist = user.likes.filter(item => {
-            return item === detail.id
+            return item === detail.tweet.id
         });
         if (exist.length === 0) {
             like++;
-            user.likes.push(detail.id);
+            user.likes.push(detail.tweet.id);
             localStorage.setItem('user', JSON.stringify(user));
         } else {
             like--;
             user.likes = user.likes.filter(item => {
-                return item !== detail.id
+                return item !== detail.tweet.id
             });
             localStorage.setItem('user', JSON.stringify(user));
         }
         firebase.firestore().collection(collectionConstant.USER_INFOS_COLLECTION).doc(user.id).update(user);
-        firebase.firestore().collection(this.collection).doc(detail.id).update({
+        firebase.firestore().collection(this.collection).doc(detail.tweet.id).update({
             like: like
         });
+    }
+
+    response({detail}) {
+        const {parent, newTweet} = detail;
+        const user = localStorage.getItem('user');
+        if (!user) {
+            throw new Error('User\'s not logged')
+        }
+        const userInfos = JSON.parse(user);
+        firebase.firestore().collection(this.collection).doc(parent.id).update({
+            responses: [
+                ...parent.data.responses,
+                {
+                    content: newTweet,
+                    date: new Date().getTime(),
+                    user: {
+                        name: userInfos.name
+                    },
+                    responses: [],
+                    like: 0
+                }
+            ]
+        })
     }
 }
 

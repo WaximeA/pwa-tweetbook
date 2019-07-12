@@ -7,13 +7,23 @@ export default class FormAdd extends LitElement {
         super();
         this.newTweet = "";
         this.active = false;
+        this.parent = null;
     }
 
     static get properties() {
         return {
             newTweet: String,
-            active: Boolean
+            active: Boolean,
+            parent: Object
         }
+    }
+
+    firstUpdated(_changedProperties) {
+        document.addEventListener(EventConstant.RESPONSE, ({detail}) => {
+            document.dispatchEvent(new CustomEvent(EventConstant.DISPLAY_SIDEBAR, {detail: true}));
+            this.active = true;
+            this.parent = detail.tweet;
+        });
     }
 
     static get styles() {
@@ -65,7 +75,17 @@ export default class FormAdd extends LitElement {
 
     handleForm(e) {
         e.preventDefault();
-        document.dispatchEvent(new CustomEvent(EventConstant.NEW_TWEET, {detail: this.newTweet}));
+        if (this.parent) {
+            document.dispatchEvent(new CustomEvent(EventConstant.RESPONSE_TWEET, {
+                detail: {
+                    newTweet: this.newTweet,
+                    parent: this.parent
+                }
+            }));
+            this.parent = null;
+        } else {
+            document.dispatchEvent(new CustomEvent(EventConstant.NEW_TWEET, {detail: this.newTweet}));
+        }
         document.dispatchEvent(new CustomEvent(EventConstant.DISPLAY_SIDEBAR, {detail: false}));
         this.newTweet = "";
         this.active = false;

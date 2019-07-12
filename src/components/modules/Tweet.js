@@ -68,8 +68,7 @@ export default class Tweet extends LitElement {
     action({detail}) {
         document.dispatchEvent(new CustomEvent(detail, {
             detail: {
-                id: this.tweet.id,
-                like: this.tweet.data.like || 0
+                tweet: this.tweet
             }
         }));
     };
