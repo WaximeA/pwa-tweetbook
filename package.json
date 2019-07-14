@@ -23,6 +23,6 @@
     "lit-element": "^2.1.0"
   },
   "devDependencies": {
-    "polymer-cli": "^1.9.10"
+    "polymer-cli": "^1.9.11"
   }
 }

@@ -1,15 +1,14 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from "lit-element";
 
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import {EventConstant} from "../../Constants/event.constant";
+import firebase from "firebase/app";
+import "firebase/auth";
+import { EventConstant } from "../../Constants/event.constant";
 
 class TweetLogout extends LitElement {
-
   constructor() {
     super();
     this.auth = {};
-    this.errorMessage = '';
+    this.errorMessage = "";
   }
 
   static get properties() {
@@ -18,11 +17,10 @@ class TweetLogout extends LitElement {
       password: String,
       verifyPassword: String,
       errorMessage: String
-    }
+    };
   }
 
-  static get styles()
-  {
+  static get styles() {
     return css`
       :host {
         display: block
@@ -48,11 +46,8 @@ class TweetLogout extends LitElement {
         padding: 8px 20px;
         border-radius: 5px;
         transition: .2s;
-        &:hover
-          background-color: darken(#55acee, 10%);
-          cursor: pointer;
       }
-    `
+    `;
   }
 
   firstUpdated() {
@@ -62,25 +57,28 @@ class TweetLogout extends LitElement {
   handleForm(e) {
     e.preventDefault();
 
-    this.auth.signOut()
-    .then(user => {
-      console.info('User logout', user);
-      this.dispatchEvent(new CustomEvent(EventConstant.USER_LOGOUT, { detail: { user }}));
-      localStorage.removeItem('user');
-    })
-    .catch(error => {
-      this.errorMessage = 'An error occurred during the logout.';
-      console.error(error);
-    });
+    this.auth
+      .signOut()
+      .then(user => {
+        console.info("User logout", user);
+        this.dispatchEvent(
+          new CustomEvent(EventConstant.USER_LOGOUT, { detail: { user } })
+        );
+        localStorage.removeItem("user");
+      })
+      .catch(error => {
+        this.errorMessage = "An error occurred during the logout.";
+        console.error(error);
+      });
   }
 
   render() {
     return html`
-    <form @submit="${this.handleForm}">
-       <button type="submit" class="button">Logout</button>
-     </form>
-    `
+      <form @submit="${this.handleForm}">
+        <button type="submit" class="button">Logout</button>
+      </form>
+    `;
   }
 }
 
-customElements.define('tweet-logout', TweetLogout);
+customElements.define("tweet-logout", TweetLogout);
