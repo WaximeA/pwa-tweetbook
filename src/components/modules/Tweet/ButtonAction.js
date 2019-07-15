@@ -1,5 +1,5 @@
 import {LitElement, html, css} from 'lit-element';
-import {EventConstant} from "../../Constants/event.constant";
+import {EventConstant} from "../../../Constants/event.constant";
 
 export default class ButtonAction extends LitElement {
 
@@ -16,8 +16,7 @@ export default class ButtonAction extends LitElement {
 
     static get styles() {
         return css`
-            * {  box-sizing: border-box }
-        `
+            * {  box-sizing: border-box }        `
     }
 
     handleClick(action) {
@@ -28,7 +27,7 @@ export default class ButtonAction extends LitElement {
     render() {
         return html` 
             <div class="button-action">
-                <button @click="${() => this.handleClick(EventConstant.RESPONSE)}">Repondre</button>
+                <button @click="${() => this.handleClick(EventConstant.RESPONSE)}">Repondre (${this.tweet.responses.length})</button>
                 <button @click="${() => this.handleClick(EventConstant.RT)}">RT</button>
                 <button @click="${() => this.handleClick(EventConstant.LIKE)}">Like (${this.tweet.like})</button>
             </div>

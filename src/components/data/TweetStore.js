@@ -47,7 +47,7 @@ class TweetStore extends LitElement {
         });
       });
     document.addEventListener(EventConstant.NEW_TWEET, e => this.push(e));
-    document.addEventListener(EventConstant.DElETE_TWEET, e => this.delete(e));
+    document.addEventListener(EventConstant.DELETE_TWEET, e => this.delete(e));
     document.addEventListener(EventConstant.LIKE, e => this.like(e));
     document.addEventListener(EventConstant.RESPONSE_TWEET, e =>
       this.response(e)

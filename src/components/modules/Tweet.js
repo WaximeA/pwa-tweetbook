@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit-element";
-import "../navigation/ButtonAction";
+import "./Tweet/ButtonAction";
 import firebase from "firebase/app";
 import "firebase/storage";
 import { EventConstant } from "../../Constants/event.constant";
@@ -94,6 +94,10 @@ export default class Tweet extends LitElement {
       .tweet-content {
         width: 85%;
       }
+      
+      button-action {
+        width: 210px;
+      }
     `;
   }
 
@@ -109,7 +113,7 @@ export default class Tweet extends LitElement {
 
   render() {
     return html`
-      <div class="tweet">
+      <div class="tweet" @click="${e => this.showInfos(e)}">
         <div class="user-pic-box">
           <div
             class="user-pic"
@@ -151,6 +155,13 @@ export default class Tweet extends LitElement {
     document.dispatchEvent(
       new CustomEvent(EventConstant.DELETE_TWEET, { detail: this.tweet.id })
     );
+  }
+
+  showInfos(e) {
+    e.preventDefault();
+    if (e.target.classList.contains('content') ||e.target.classList.contains('tweet-content') ){
+      document.dispatchEvent(new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {detail: this.tweet}));
+    }
   }
 }
 

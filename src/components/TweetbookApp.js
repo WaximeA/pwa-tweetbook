@@ -1,6 +1,7 @@
 import {LitElement, html, css} from 'lit-element';
 import './data/TweetStore';
 import './modules/Tweet';
+import './modules/InfosTweet';
 import './layout/navigation/TweetHeader';
 import {EventConstant} from "../Constants/event.constant";
 import {collectionConstant} from "../Constants/collection.constant";
@@ -33,6 +34,7 @@ class TweetbookApp extends LitElement {
                 @child-changed="${this.childChanged}"
             ></tweet-store>
             <tweet-header></tweet-header>
+            <infos-tweet active></infos-tweet>
             <div class="tweet-container">
             ${
                 this.tweets.map(item => html`<tweet-elem .tweet="${item}"/>`)
@@ -47,7 +49,7 @@ class TweetbookApp extends LitElement {
             * {  box-sizing: border-box }
             
             tweet-elem {
-                width: 60%;
+                width: 100%;
                 display: block;
             }
 
