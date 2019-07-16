@@ -9,12 +9,14 @@ export default class Tweet extends LitElement {
     super();
     this.tweet = {};
     this.loadedAvatar = "";
+    this.noAction = false;
   }
 
   static get properties() {
     return {
       tweet: Object,
-      loadedAvatar: String
+      loadedAvatar: String,
+      noAction: Boolean
     };
   }
 
@@ -112,7 +114,8 @@ export default class Tweet extends LitElement {
   }
 
   render() {
-    return html`
+    if (this.tweet.data) {
+      return html`
       <div class="tweet" @click="${e => this.showInfos(e)}">
         <div class="user-pic-box">
           <div
@@ -126,8 +129,8 @@ export default class Tweet extends LitElement {
               <div class="user-info">
                 <span class="user-tn"
                   >${this.tweet.data.user.name +
-                    " " +
-                    this.tweet.data.user.surname}
+      " " +
+      this.tweet.data.user.surname}
                 </span>
 
                 <a href="#">
@@ -136,19 +139,24 @@ export default class Tweet extends LitElement {
                   ></a
                 >
               </div>
+              ${this.noAction ? null : html`
               <div class="delete" @click="${e => this.deleteTweet(e)}">
                 <i>X</i>
               </div>
+              `}
+              
             </div>
             <div class="tweet-content">${this.tweet.data.content}</div>
           </div>
-          <button-action
+          ${this.noAction ? null : html`<button-action
             .tweet=${this.tweet.data}
             @action="${e => this.action(e)}"
-          ></button-action>
+          ></button-action>`}
+          
         </div>
       </div>
     `;
+    }
   }
 
   deleteTweet(e) {

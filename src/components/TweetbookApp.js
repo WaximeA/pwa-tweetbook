@@ -35,12 +35,13 @@ class TweetbookApp extends LitElement {
             ></tweet-store>
             <tweet-header></tweet-header>
             <infos-tweet active></infos-tweet>
-            <div class="tweet-container">
-            ${
-                this.tweets.map(item => html`<tweet-elem .tweet="${item}"/>`)
+            ${this.tweets.length !== 0 ?
+            html`
+                    <div class="tweet-container">
+                    ${this.tweets.map(item => html`<tweet-elem .tweet="${item}"/>`)}
+                    </div>`
+            : html`<div>No records</div>`
             }
-            </div>
-       
     `
     }
 

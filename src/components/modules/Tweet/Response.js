@@ -116,7 +116,7 @@ export class TweetResponse extends LitElement {
 
     deleteTweet(e) {
         document.dispatchEvent(
-            new CustomEvent(EventConstant.DELETE_TWEET, { detail: this.tweet.id })
+            new CustomEvent(EventConstant.DELETE_TWEET_RESPONSE, { detail: this.tweet })
         );
     }
 }

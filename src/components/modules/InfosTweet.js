@@ -1,5 +1,6 @@
 import {LitElement, html, css} from "lit-element";
 import './Tweet/Response';
+import './Tweet'
 import {EventConstant} from "../../Constants/event.constant";
 
 export class InfosTweet extends LitElement {
@@ -25,15 +26,87 @@ export class InfosTweet extends LitElement {
     render() {
         return html`
             <div class="infos-tweet">
-                <div id="sidebar" class="${this.active ? 'display' : ''}">
-                    <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}><img src="./src/assets/images/cross-icon.png" alt="Side bar logo"></button>
-                <div>
-                <tweet-elem .tweet="${this.tweet}"></tweet-elem>
-                ${(this.responses.length > 0) ? this.responses.map(item => {
-                    return html`<tweet-response .tweet="${item}"></tweet-response>`  
+                <div class="sidebar ${this.active ? 'display' : ''}">
+                    <div class="header-sidebar">
+                        <h2>Tweet</h2>
+                        <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}></button>
+                    </div>
+                    <div class="tweet-container">
+                        <tweet-elem .tweet="${this.tweet}" noAction=true></tweet-elem>
+                        ${(this.responses.length > 0) ? 
+                this.responses.map(item => {
+                    return html`<tweet-response .tweet="${item}"></tweet-response>`
                 }) : html``}
+                    </div>
+                    <form-add edit="true" .parent="${this.tweet}""></form-add>
+                <div>
             </div>
 `;
+    }
+
+    static get styles() {
+        // language=CSS
+        return css`
+            * {
+                box-sizing: border-box;
+            }
+
+            tweet-elem, tweet-response {
+                width: 100%;
+                display: block;
+            }
+
+            .tweet-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .sidebar {
+                background-color: #fff;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                bottom: 0;
+                right: -100%;
+                text-align: left;
+                position: absolute;
+                margin: 0;
+                padding: 0;
+                transition: 0.2s ease;
+            }
+
+            .display {
+                right: 0 !important;
+                box-shadow: 2px 2px 30px 0px #656565;
+            }
+
+            .header-sidebar {
+                display: flex;
+                flex-direction: row-reverse;
+                align-items: center;
+                justify-content: space-between;
+                height: 48px;
+                border-bottom: solid #eeeeee 1px;
+                box-shadow: #aaaaaa 0px 3px 4px 0px;
+                margin-bottom: 10px;
+            }
+
+            .header-sidebar > h2 {
+                width: 80%;
+            }
+
+            .collapse-button {
+                border: none;
+                height: 100%;
+                display: flex;
+                align-content: center;
+                justify-content: center;
+                width: 50px;
+                background: url("../../../src/assets/images/Back-Arrow-Icon-PNG-715x715.png") no-repeat center;
+                background-size: 100%;
+            }
+        `
     }
 
     displaySidebar() {
