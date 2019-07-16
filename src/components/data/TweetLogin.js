@@ -124,6 +124,7 @@ class TweetLogin extends LitElement {
     }
 
     setLogin(user) {
+        console.info(user);
         document.dispatchEvent(new CustomEvent(EventConstant.USER_LOGGED, {detail: user.data()}));
         const userInfos = {...user.data(), id: user.id};
         localStorage.setItem('user', JSON.stringify(userInfos));

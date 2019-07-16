@@ -1,4 +1,5 @@
 import {LitElement, html, css} from 'lit-element/lit-element';
+import {EventConstant} from "../../../Constants/event.constant";
 
 export default class FormEdit extends LitElement {
 
@@ -22,7 +23,6 @@ export default class FormEdit extends LitElement {
     static get styles() {
         return css`
             * {  box-sizing: border-box }
-
             .inactive{
                 display: none;
             }
@@ -45,6 +45,7 @@ export default class FormEdit extends LitElement {
 
             button{
                 text-decoration: none;
+                width:100%;
                 background-color: #55acee;
                 color: #fff;
                 padding: 8px 20px;
@@ -56,31 +57,88 @@ export default class FormEdit extends LitElement {
             }
 
             textarea{
-                width: 310px;
-                height: 100px;
-                position:absolute;
                 resize: none;
                 border-radius: 8px;
+                width: 100%;
+                margin-top: 2vh;
+                height: 15vh;
             }
 
             #banner{
-                position: absolute;
-                bottom: 45px;
             }
 
             #avatar{
-                position: absolute;
-                bottom: 115px;
             }
 
-            .avatar-label{
-                position: absolute;
-                bottom: 135px;
+            .btn-file {
+                position: relative;
+                overflow: hidden;
+              }
+              .btn-file input[type=file] {
+                  min-width: 100%;
+                  min-height: 100%;
+                  font-size: 100px;
+                  text-align: right;
+                  filter: alpha(opacity=0);
+                  opacity: 0;
+                  outline: none;
+                  background: white;
+                  cursor: inherit;
+                  display: block;
+              }
+              
+            .input-file-html5
+            {
+            cursor:pointer;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 2vh;
+            position: relative;
+            outline: none;
+            color: rgb(100,150,150);
+            background: whitesmoke;
+            padding: 1% 1% 1% 5%;
             }
 
-            .banner-label{
-                position: absolute;
-                bottom: 65px;
+            .input-file-html5-avatar::before
+            {
+            content:'New Avatar';
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 3% 10%;
+            color: white;
+            background: rgb(85, 172, 238);
+            box-shadow: 0 0.2em 0 rgb(100,180,180);
+            transform: translateY(-0.2em);
+            }
+
+            
+            .input-file-html5-banner::before
+            {
+            content:'New Banner';
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 3% 9.3%;
+            color: white;
+            background: rgb(85, 172, 238);
+            box-shadow: 0 0.2em 0 rgb(100,180,180);
+            transform: translateY(-0.2em);
+            }
+
+            .input-file-html5:hover::before
+            {  
+            background: rgb(110,210,210);
+            box-shadow: 0 0.35em 0 rgb(100,180,180);
+            transform: translateY(-0.35em);
+            }
+
+            .input-file-html5:active::before
+            {  
+            background: rgb(100,180,180);
+            box-shadow: 0 0em 0 rgb(100,180,180);
+            transform: translateY(0em);
             }
 
         `
@@ -88,7 +146,7 @@ export default class FormEdit extends LitElement {
 
     handleForm(e) {
         e.preventDefault();
-        document.dispatchEvent(new CustomEvent('edit-info', {
+        document.dispatchEvent(new CustomEvent(EventConstant.EDIT_INFOS, {
             detail: {
                 resume:this.resume,
                 avatar:this.avatar,
@@ -114,15 +172,15 @@ export default class FormEdit extends LitElement {
 
     render() {
         return html` 
-                <button @click="${this.handleClick}" class="${this.active ? "inactive" : ""}">Edit</button>
+                <button @click="${this.handleClick}" class="${this.active ? "inactive" : ""}">Edit Profile</button>
                 <form @submit="${this.handleForm}" class="${!this.active ? "inactive" : ""}">
-                    <button type="submit">Send</button>
-                    <p>Resume :</p>
-                    <textarea name="" id="resume" @input="${e => this.resume = e.target.value}" .value="${this.resume}"></textarea>
-                    <p class="avatar-label">Avatar :</p>
-                    <input type="file" id="avatar" accept="image/*" @change="${this.handleAvatarUploadChange}">
-                    <p class="banner-label">Banner :</p>
-                    <input type="file" id="banner" accept="image/*" @change="${this.handleBannerUploadChange}">
+                    <button type="submit">Save</button>
+                    <textarea placeholder="Describe yourself here..." name="" id="resume" @input="${e => this.resume = e.target.value}" .value="${this.resume}"></textarea>
+                    
+                    <input class="input-file-html5 input-file-html5-avatar" type="file" id="avatar" accept="image/*" @change="${this.handleAvatarUploadChange}">
+
+                    <input class="input-file-html5 input-file-html5-banner" type="file" id="banner" accept="image/*" @change="${this.handleBannerUploadChange}">
+
                 </form>`
     }
 }

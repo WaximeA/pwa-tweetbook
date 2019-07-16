@@ -5,6 +5,8 @@ import './modules/InfosTweet';
 import './layout/navigation/TweetHeader';
 import {EventConstant} from "../Constants/event.constant";
 import {collectionConstant} from "../Constants/collection.constant";
+import './layout/navigation/FormAdd';
+
 
 class TweetbookApp extends LitElement {
 
@@ -42,6 +44,8 @@ class TweetbookApp extends LitElement {
                     </div>`
             : html`<div>No records</div>`
             }
+            </div>
+            <form-add></form-add>
     `
     }
 

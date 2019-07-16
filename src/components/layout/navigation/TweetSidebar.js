@@ -5,8 +5,6 @@ import '../../data/TweetLogin';
 import '../../data/TweetLogout';
 import './UserInfo';
 import './FormEdit';
-import './FormAdd';
-
 
 import '@polymer/paper-tabs/paper-tabs.js';
 import '@polymer/paper-tabs/paper-tab.js';
@@ -85,11 +83,14 @@ export default class TweetSidebar extends LitElement {
 
       .buttons{
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
+        align-items: center;
       }
 
       .user-info-footer{
-        padding-top:15px;
+        padding-top: 8vh;
+        margin-right: 2vh;
+        margin-left: 2vh;
       }
 
     `
@@ -150,7 +151,10 @@ export default class TweetSidebar extends LitElement {
     return html`
       <button class="collapse-button" id="menu-icon" @click=${this.displaySidebar}><img src="./src/assets/images/menu-icon.png" alt="Side bar logo" ></button>
       <div id="sidebar" class="${this.active ? 'display' : ''}">
-        <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}><img src="./src/assets/images/cross-icon.png" alt="Side bar logo"></button>
+        <div class="buttons">
+          <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}><img src="./src/assets/images/cross-icon.png" alt="Side bar logo"></button>
+          <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
+        </div>
         ${!this.logged ? html`
         <paper-tabs selected="${this.selectedTab}">
           <paper-tab @click=${this.displaySignIn}>Sign In</paper-tab>
@@ -163,11 +167,7 @@ export default class TweetSidebar extends LitElement {
         <user-info collection="usersInfo"></user-info>
         </div>
         <div class="user-info-footer">
-          <div class="buttons">
             <form-edit collection="usersInfo"></form-edit>
-            <form-add></form-add>
-            <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
-          </div>
         </div>
         `
         }

@@ -76,12 +76,12 @@ export default class UserInfo extends LitElement {
       position: absolute;
       top: 164px;
       font-weight: 700;
-      left: 10px;
+      left: 2vh;
       letter-spacing: -0.3px;
     }
     .tag {
       color: #364651;
-      left: 11px;
+      left: 2vh;
       letter-spacing: -0.85px;
       position: absolute;
       top: 191px;
@@ -89,8 +89,7 @@ export default class UserInfo extends LitElement {
     .divider {
       background: #E6ECF0;
       height: 10px;
-      position: absolute;
-      top: 346px;
+      margin-top: 2vh;
       width: 100%;
     }
     .bar {
@@ -113,7 +112,7 @@ export default class UserInfo extends LitElement {
     }
     .text {
       font-size: 14px;
-      left: 11px;
+      left: 2vh;
       position: absolute;
       top: 220px;
     }
@@ -172,6 +171,7 @@ export default class UserInfo extends LitElement {
 
   firstUpdated() {
     document.addEventListener(EventConstant.FILL_USER_INFOS, (data) => {
+      console.info(data);
       this.name = data.detail.name;
       this.surname = data.detail.surname;
       this.nickname = data.detail.nickname;
@@ -185,24 +185,35 @@ export default class UserInfo extends LitElement {
         this.banner = url;
       });
     });
-    document.addEventListener('edit-info', (data) => {
-      firebase.storage().ref("avatar/"+firebase.auth().currentUser.uid+'.'+data.detail.avatar.name.split('.').pop()).put(data.detail.avatar).then((metadata) => {
-        metadata.ref.getDownloadURL().then((url)=> {
-          this.avatar = url;
+    document.addEventListener(EventConstant.EDIT_INFOS, (data) => {
+      if(data){
+        let updates = {};
+        if(data.detail.avatar){
+          firebase.storage().ref("avatar/"+firebase.auth().currentUser.uid+'.'+data.detail.avatar.name.split('.').pop()).put(data.detail.avatar).then((metadata) => {
+            metadata.ref.getDownloadURL().then((url)=> {
+              this.avatar = url;
+              updates.avatar = firebase.auth().currentUser.uid+'.'+data.detail.avatar.name.split('.').pop();
+            });
+          });
+        }
+        if(data.detail.banner){
+          firebase.storage().ref("banniere/"+firebase.auth().currentUser.uid+'.'+data.detail.banner.name.split('.').pop()).put(data.detail.banner).then((metadata) => {
+            metadata.ref.getDownloadURL().then((url)=> {
+              this.banner = url;
+              updates.banner =firebase.auth().currentUser.uid+'.'+data.detail.banner.name.split('.').pop()
+            });
+          });
+        }
+        if(data.detail.resume){
+          this.resume=data.detail.resume;
+          updates.resume = data.detail.resumes;
+        }
+        firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid).update(updates).then(()=>{
+          if(data.detail.resume){
+            this.resume=data.detail.resume;
+          }
         });
-      });
-      firebase.storage().ref("banniere/"+firebase.auth().currentUser.uid+'.'+data.detail.banner.name.split('.').pop()).put(data.detail.banner).then((metadata) => {
-        metadata.ref.getDownloadURL().then((url)=> {
-          this.banner = url;
-        });
-      });
-      firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid).update({
-        resume: data.detail.resume,
-        avatar: firebase.auth().currentUser.uid+'.'+data.detail.avatar.name.split('.').pop(),
-        banner: firebase.auth().currentUser.uid+'.'+data.detail.banner.name.split('.').pop()
-      }).then(()=>{
-        this.resume=data.detail.resume;
-      });
+      }
     });
   }
 
