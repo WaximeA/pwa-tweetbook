@@ -41,6 +41,7 @@ class TweetLogout extends LitElement {
       .button{
         padding: 8px 20px;
         text-decoration: none;
+        margin-right:2vh;
         background-color: #f15a22;
         color: #fff;
         padding: 8px 20px;

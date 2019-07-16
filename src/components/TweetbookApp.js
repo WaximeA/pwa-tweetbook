@@ -5,6 +5,8 @@ import './modules/InfosTweet';
 import './layout/navigation/TweetHeader';
 import {EventConstant} from "../Constants/event.constant";
 import {collectionConstant} from "../Constants/collection.constant";
+import './layout/navigation/FormAdd';
+
 
 class TweetbookApp extends LitElement {
 
@@ -40,7 +42,7 @@ class TweetbookApp extends LitElement {
                 this.tweets.map(item => html`<tweet-elem .tweet="${item}"/>`)
             }
             </div>
-       
+            <form-add></form-add>
     `
     }
 
