@@ -13,11 +13,13 @@ class TweetbookApp extends LitElement {
     constructor() {
         super();
         this.tweets = [];
+        this.displayButton = true;
     }
 
     static get properties() {
         return {
-            tweets: Array
+            tweets: Array,
+            displayButton: Boolean
         }
     }
 
@@ -27,6 +29,11 @@ class TweetbookApp extends LitElement {
 
     childChanged(e) {
         this.tweets = e.detail;
+    }
+
+    handleNewTweet() {
+        document.dispatchEvent(new CustomEvent(EventConstant.ASK_NEW_TWEET));
+        this.displayButton = false;
     }
 
     render() {
@@ -45,6 +52,7 @@ class TweetbookApp extends LitElement {
             : html`<div>No records</div>`
             }
             </div>
+            <button id="new-tweet" class="${!this.displayButton ? `none` : ``}" @click="${this.handleNewTweet}">Tweet</button>
             <form-add></form-add>
     `
     }
@@ -69,6 +77,24 @@ class TweetbookApp extends LitElement {
             }
 
             ::slotted(*) { font-family: Helvetica Neue,Helvetica,Arial,sans-serif;  }
+
+            #new-tweet {
+                text-decoration: none;
+                background-color: #55acee;
+                color: #fff;
+                padding: 8px 20px;
+                border-radius: 5px;
+                transition: 0.2s;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                border: none;
+                box-shadow: #636363 2px 2px 5px;
+            }
+
+            .none {
+                display: none;
+            }
 
         `;
     }

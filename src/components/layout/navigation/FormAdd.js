@@ -20,15 +20,20 @@ export default class FormAdd extends LitElement {
     }
 
     firstUpdated(_changedProperties) {
-        if (this.edit) {
-            document.addEventListener(EventConstant.RESPONSE, ({detail}) => {
+        document.addEventListener(EventConstant.ASK_NEW_TWEET, () => {
+            console.log('test');
+            this.active = true;
+        });
+        document.addEventListener(EventConstant.RESPONSE, ({detail}) => {
+            if (!detail.dontNeedDisplay) {
                 document.dispatchEvent(
                     new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {detail: detail.tweet})
                 );
-                this.active = true;
-                this.parent = detail.tweet;
-            });
-        }
+            }
+            this.active = true;
+            this.parent = detail.tweet;
+        });
+
     }
 
     static get styles() {
@@ -41,18 +46,18 @@ export default class FormAdd extends LitElement {
             background-color: #fff;
             width: 100%;
             height: 100%;
-            top: 0;
+            top: 100%;
             bottom: 0;
-            right: -100%;
+            right: 0;
             text-align: left;
-            position: absolute;
+            position: fixed;
             margin: 0;
             padding: 0;
             transition: 0.2s ease;
         }
         
-        .inactive {
-            display: none;
+        .active {
+            top: 0;
         }
         footer {
             position: fixed;
@@ -64,29 +69,61 @@ export default class FormAdd extends LitElement {
             width: 100%;
         }
         
-        button {
-            text-decoration: none;
-            background-color: #55acee;
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 5px;
-            transition: 0.2s;
-        }
-        
         textarea {
-            width: 330px;
-            height: 300px;
-            bottom: 2%;
-            left: 3%;
+            width: 100%;
+            height: 90%;
+            bottom: 0;
+            left: 0;
             position: absolute;
             resize: none;
+            border: none;
+            padding: 10px;
+            font-size: 1.2em;
+        }
+        
+        .form-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            height: 48px;
+        }
+
+        .form-header > .actions{
+            width: 80%;
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .collapse-button {
+            margin-left: 20px;
+            border: none;
+            height: 100%;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            width: 30px;
+            background: url("../../../../src/assets/images/cross-icon.png") no-repeat center;
+            background-size: 100%;
+        }
+        
+        .send-button {
+            border: none;
+            background: #55acee;
+            padding: 5px 10px;
+            border-radius: 100px;
+            width: 110px;
+            font-size: 14px;
+            color: white;
+            line-height: 20px;
+            margin-right: 20px;
         }
     `;
     }
 
     handleForm(e) {
         e.preventDefault();
-        if (this.edit) {
+        if (this.parent) {
             document.dispatchEvent(
                 new CustomEvent(EventConstant.RESPONSE_TWEET, {
                     detail: {
@@ -114,30 +151,30 @@ export default class FormAdd extends LitElement {
 
     render() {
         return html`
-            <button
-              @click="${this.handleClick}"
-              class="${this.active ? "inactive" : ""}"
-            >
-                ${this.edit ? html`Respond` : html`Tweet`}
-            </button>
-            <div class="form-add">
-        
-                <form
-                  @submit="${this.handleForm}"
-              class="${!this.active ? "inactive" : ""}"
-            >
-              <button type="submit">Send</button>
-                <textarea
-                name=""
-                id="new-tweet"
-                @input="${e => (this.newTweet = e.target.value)}"
-                .value="${this.newTweet}"
-                placeholder="${this.edit ? "Tweet your response" : "What's new ?"}"
-                >
-                </textarea>
-            </form>
-        </div>
+            <div class="form-add ${this.active ? "active" : ""}">
+                
+                <form @submit="${this.handleForm}">
+                <div class="form-header">
+                    <button class="collapse-button" @click=${this.closeForm}></button>
+                    <div class="actions">
+                        <button class="send-button" type="submit">${this.parent ? `Respond` : `Send`}</button>   
+                    </div>             
+                </div>
+                    <textarea
+                    name=""
+                    id="new-tweet"
+                    @input="${e => (this.newTweet = e.target.value)}"
+                    .value="${this.newTweet}"
+                    placeholder="${this.edit ? "Tweet your response" : "What's new ?"}"
+                    >
+                    </textarea>
+                </form>
+            </div>
     `;
+    }
+
+    closeForm() {
+        this.active = false;
     }
 }
 

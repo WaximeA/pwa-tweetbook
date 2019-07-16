@@ -21,6 +21,12 @@ export class InfosTweet extends LitElement {
 
     firstUpdated(_changedProperties) {
         document.addEventListener(EventConstant.DISPLAY_INFOS_TWEET, ({detail}) => this.displayInfosTweet(detail))
+        document.addEventListener(EventConstant.RESPONSE_TWEET_DONE, ({detail}) => {
+            if (this.tweet) {
+                this.responses = detail.responses;
+                this.tweet.data.responses = detail.responses;
+            }
+        })
     }
 
     render() {
@@ -33,12 +39,12 @@ export class InfosTweet extends LitElement {
                     </div>
                     <div class="tweet-container">
                         <tweet-elem .tweet="${this.tweet}" noAction=true></tweet-elem>
-                        ${(this.responses.length > 0) ? 
-                this.responses.map(item => {
-                    return html`<tweet-response .tweet="${item}"></tweet-response>`
-                }) : html``}
+                        ${(this.responses.length > 0) ?
+            this.responses.map(item => {
+                return html`<tweet-response .tweet="${item}"></tweet-response>`
+            }) : html``}
                     </div>
-                    <form-add edit="true" .parent="${this.tweet}""></form-add>
+                    <button id="respond" @click="${this.handleClick}">Respond</button>
                 <div>
             </div>
 `;
@@ -118,6 +124,15 @@ export class InfosTweet extends LitElement {
         this.active = true;
         this.tweet = tweet;
         this.responses = tweet.data.responses;
+    }
+
+    handleClick() {
+        document.dispatchEvent(new CustomEvent(EventConstant.RESPONSE, {
+            detail: {
+                tweet: this.tweet,
+                dontNeedDisplay: true
+            }
+        }))
     }
 }
 
