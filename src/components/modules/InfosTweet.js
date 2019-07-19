@@ -80,6 +80,7 @@ export class InfosTweet extends LitElement {
                 margin: 0;
                 padding: 0;
                 transition: 0.2s ease;
+                overflow: auto;
             }
 
             .display {

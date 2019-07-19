@@ -25,6 +25,7 @@ class TweetbookApp extends LitElement {
 
     firstUpdated(_changedProperties) {
         document.addEventListener(EventConstant.RT, console.log);
+        document.addEventListener(EventConstant.NEW_TWEET, () => {this.displayButton = true})
     }
 
     childChanged(e) {
