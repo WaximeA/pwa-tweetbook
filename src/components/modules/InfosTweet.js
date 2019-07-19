@@ -76,7 +76,7 @@ export class InfosTweet extends LitElement {
                 bottom: 0;
                 right: -100%;
                 text-align: left;
-                position: absolute;
+                position: fixed;
                 margin: 0;
                 padding: 0;
                 transition: 0.2s ease;
