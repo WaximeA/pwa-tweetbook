@@ -2,9 +2,10 @@
   "name": "pwa-tweetbook",
   "version": "1.0.0",
   "description": "",
-  "main": "src/components/tweetbook-app.js",
+  "main": "src/components/TweetbookApp.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx polymer serve",
+    "start": "npx polymer serve"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,11 @@
   },
   "homepage": "https://github.com/WaximeA/pwa-tweetbook#readme",
   "dependencies": {
-    "lit-element": "^2.1.0",
-    "polymer-cli": "^1.9.9"
+    "@polymer/paper-tabs": "^3.1.0",
+    "firebase": "^6.1.0",
+    "lit-element": "^2.1.0"
+  },
+  "devDependencies": {
+    "polymer-cli": "^1.9.11"
   }
 }
