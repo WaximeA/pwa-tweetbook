@@ -44,6 +44,7 @@ export default class FormEdit extends LitElement {
             }
 
             button{
+                margin-top: 2vh;
                 text-decoration: none;
                 width:100%;
                 background-color: #55acee;

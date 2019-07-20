@@ -99,11 +99,23 @@ export default class Tweet extends LitElement {
       
       button-action {
         width: 210px;
+        display: flex;
+        justify-content: space-between;
+        padding-top: 2vh;
       }
 
       .rt-info-box {
         display: flex;
         align-items: center;
+      }
+
+      .tweet-image-box{
+        height: 250px;
+        width: 250px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        margin-top: 2vh;
       }
     `;
   }
@@ -150,12 +162,17 @@ export default class Tweet extends LitElement {
               </div>
               ${this.noAction ? null : html`
               <div class="delete" @click="${e => this.deleteTweet(e)}">
-                <i>X</i>
+                <i>❌</i>
               </div>
               `}
               
             </div>
             <div class="tweet-content">${this.tweet.data.content}</div>
+            ${this.tweet.data.image ? html `
+              <div class="tweet-image-box"
+              style="background-image: url('${this.tweet.data.image}');"> 
+              </div>`:``
+            }
           </div>
           ${this.noAction ? null : html`<button-action
             .tweet=${this.tweet.data}

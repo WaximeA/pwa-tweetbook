@@ -58,26 +58,36 @@ class TweetStore extends LitElement {
         const user = localStorage.getItem("user");
         if (!user) throw new Error("User's not logged");
         const userInfos = JSON.parse(user);
-        firebase
-            .firestore()
-            .collection(this.collection)
-            .add({
-                content: detail,
-                date: new Date().getTime(),
-                user: {
-                    id: userInfos.id,
-                    avatar: userInfos.avatar,
-                    banner: userInfos.banner,
-                    name: userInfos.name,
-                    surname: userInfos.surname,
-                    nickname: userInfos.nickname
-                },
-                responses: [],
-                like: 0
-            })
-            .then(resp => {
+
+        let tweetdata = {
+            content: detail.newTweet,
+            date: new Date().getTime(),
+            user: {
+                id: userInfos.id,
+                avatar: userInfos.avatar,
+                banner: userInfos.banner,
+                name: userInfos.name,
+                surname: userInfos.surname,
+                nickname: userInfos.nickname
+            },
+            responses: [],
+            like: 0
+        }
+
+        if(detail.image){
+            firebase.storage().ref("tweetimage/" + firebase.auth().currentUser.uid + new Date().valueOf() + '.' + detail.image.name.split('.').pop()).put(detail.image).then((metadata) => {
+                metadata.ref.getDownloadURL().then((url) => {
+                    tweetdata.image = url;
+                    firebase.firestore().collection(this.collection).add(tweetdata).then(resp => {
+                        console.log(resp);
+                    });
+                });
+            });
+        }else{
+            firebase.firestore().collection(this.collection).add(tweetdata).then(resp => {
                 console.log(resp);
             });
+        }
     }
 
     // -- Gestion de la suppression
@@ -117,7 +127,8 @@ class TweetStore extends LitElement {
         nickname: detail.tweet.data.user.nickname
       },
       responses: [],
-      like: 0
+      like: 0,
+      image: detail.tweet.data.image?detail.tweet.data.image:null
     })
     .then(resp => {
       console.log(resp);
