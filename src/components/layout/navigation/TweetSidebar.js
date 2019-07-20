@@ -39,7 +39,7 @@ export default class TweetSidebar extends LitElement {
       }
 
       #cross-icon {
-        background-color: white;
+        background-color: transparent;
         cursor: pointer;
         border: none;
       }
@@ -57,7 +57,7 @@ export default class TweetSidebar extends LitElement {
 
       #sidebar {
         list-style-type: none;
-        background-color: #fff;
+        background-color: var(--app-bg-color);
         width: 350px;
         height: 100%;
         top: 0;
@@ -75,10 +75,10 @@ export default class TweetSidebar extends LitElement {
 
       .display {
         left: 0 !important;
-        -moz-box-shadow: 2px 2px 30px 0px #656565;
-        -webkit-box-shadow: 2px 2px 30px 0px #656565;
-        -o-box-shadow: 2px 2px 30px 0px #656565;
-        box-shadow: 2px 2px 30px 0px #656565;
+        -moz-box-shadow: 2px 2px 30px 0px var(--app-grey-color);
+        -webkit-box-shadow: 2px 2px 30px 0px var(--app-grey-color);
+        -o-box-shadow: 2px 2px 30px 0px var(--app-grey-color);
+        box-shadow: 2px 2px 30px 0px var(--app-grey-color);
       }
 
       tweet-auth,

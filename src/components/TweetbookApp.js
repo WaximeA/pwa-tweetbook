@@ -53,7 +53,7 @@ class TweetbookApp extends LitElement {
                       ${this.tweets.map(
                         item =>
                           html`
-                            <tweet-elem .tweet="${item}" />
+                            <tweet-elem .tweet="${item}"></tweet-elem>
                           `
                       )}
                     </div>
