@@ -221,7 +221,7 @@ export default class Tweet extends LitElement {
   showInfos(e) {
     e.preventDefault();
     if (
-      e.target.classList.contains("content") ||
+      e.target.classList.contains("content-text") ||
       e.target.classList.contains("tweet-content")
     ) {
       document.dispatchEvent(
