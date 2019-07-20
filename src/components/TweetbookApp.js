@@ -61,7 +61,9 @@ class TweetbookApp extends LitElement {
                     </div>
                   `
                 : html`
-                    <div style="margin:auto;">Loading ...</div>
+                    <div style="margin:auto; width:100%; text-align:center;">
+                      Loading ...
+                    </div>
                   `
             }
             </div>

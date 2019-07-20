@@ -44,7 +44,7 @@ export default class Tweet extends LitElement {
   static get styles() {
     return css`
       .tweet {
-        width: 70%;
+        width: 60%;
         margin: auto;
         min-height: 80px;
         display: flex;
