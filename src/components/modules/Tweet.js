@@ -43,7 +43,7 @@ export default class Tweet extends LitElement {
       .tweet {
         min-height: 80px;
         display: flex;
-        border-bottom: 1px solid #cacaca;
+        border-bottom: 1px solid var(--app-bg-component-color);
         flex-direction: row;
         padding: 20px 15px;
       }
@@ -57,7 +57,7 @@ export default class Tweet extends LitElement {
       .user-pic {
         background-size: 71px 71px;
         border-radius: 50%;
-        border: 3px solid white;
+        border: 3px solid var(--app-bg-component-color);
         height: 71px;
         width: 71px;
       }
@@ -67,6 +67,7 @@ export default class Tweet extends LitElement {
         flex-direction: column;
         justify-content: space-between;
         width: 85%;
+        margin-left: 10px;
       }
 
       .user-info-box {
@@ -83,14 +84,13 @@ export default class Tweet extends LitElement {
       }
 
       .user-tn {
-        color: black;
+        color: var(--app-secondary-text-color);
         font-weight: bold;
       }
 
       .user-at {
-        color: #5a5a5a;
+        color: var(--app-contrast-text-color);
         font-size: 14px;
-        text-decoration: none;
       }
       
       .date {
@@ -102,7 +102,7 @@ export default class Tweet extends LitElement {
       .tweet-content {
         width: 85%;
       }
-      
+
       button-action {
         width: 210px;
         display: flex;
@@ -115,7 +115,7 @@ export default class Tweet extends LitElement {
         align-items: center;
       }
 
-      .tweet-image-box{
+      .tweet-image-box {
         height: 250px;
         width: 250px;
         background-repeat: no-repeat;
@@ -140,56 +140,74 @@ export default class Tweet extends LitElement {
     if (this.tweet.data) {
       const date = new Date(this.tweet.data.date);
       return html`
-      <div class="tweet" @click="${e => this.showInfos(e)}">
-        <div class="user-pic-box">
-          <div
-            class="user-pic"
-            style="background-image: url('${this.loadedAvatar}');"
-          ></div>
-        </div>
-        <div class="content">
-          <div class="content-text">
-            ${this.tweet.data.rtuser ? html `
-              <div class="rt-info-box"> 
-                <p>🔃&nbsp;</p>
-                <a href="#">
-                  <span class="user-at">@${this.tweet.data.rtuser.nickname}</span>
-                </a>
-                <p>&nbsp;à retweetax</p>
-              </div>`:``
-            }
-            <div class="user-info-box">
-              <div class="user-info">
-                <span class="user-tn">
-                  ${this.tweet.data.user.name +" " + this.tweet.data.user.surname }
-                </span>
-                <a href="#">
-                  <span class="user-at">${" @" + this.tweet.data.user.nickname}</span>
-                </a>
-                <span class="date"> - ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</span>
-              </div>
-              ${this.noAction ? null : html`
-              <div class="delete" @click="${e => this.deleteTweet(e)}">
-                <i>❌</i>
-              </div>
-              `}
-              
-            </div>
-            <div class="tweet-content">${this.tweet.data.content}</div>
-            ${this.tweet.data.image ? html `
-              <div class="tweet-image-box"
-              style="background-image: url('${this.tweet.data.image}');"> 
-              </div>`:``
-            }
+        <div class="tweet" @click="${e => this.showInfos(e)}">
+          <div class="user-pic-box">
+            <div
+              class="user-pic"
+              style="background-image: url('${this.loadedAvatar}');"
+            ></div>
           </div>
-          ${this.noAction ? null : html`<button-action
-            .tweet=${this.tweet.data}
-            @action="${e => this.action(e)}"
-          ></button-action>`}
-          
+          <div class="content">
+            <div class="content-text">
+              ${this.tweet.data.rtuser
+                ? html`
+                    <div class="rt-info-box">
+                      🔃&nbsp;
+                      <a href="#" style="text-decoration:none;">
+                        <span class="user-at"
+                          >@${this.tweet.data.rtuser.nickname}</span
+                        >
+                      </a>
+                      &nbsp;à retweetax
+                    </div>
+                  `
+                : ``}
+              <div class="user-info-box">
+                <div class="user-info">
+                  <span class="user-tn">
+                    ${this.tweet.data.user.name +
+                      " " +
+                      this.tweet.data.user.surname}
+                  </span>
+                  <a href="#" style="text-decoration:none;">
+                    <span class="user-at"
+                      >${" @" + this.tweet.data.user.nickname}</span
+                    >
+                  </a>
+                </div>
+                ${this.noAction
+                  ? null
+                  : html`
+                      <div class="delete" @click="${e => this.deleteTweet(e)}">
+                        <img
+                          src="./src/assets/images/cross-icon.png"
+                          alt="delete_tweet"
+                          width="10"
+                        />
+                      </div>
+                    `}
+              </div>
+              <div class="tweet-content">${this.tweet.data.content}</div>
+              ${this.tweet.data.image
+                ? html`
+                    <div
+                      class="tweet-image-box"
+                      style="background-image: url('${this.tweet.data.image}');"
+                    ></div>
+                  `
+                : ``}
+            </div>
+            ${this.noAction
+              ? null
+              : html`
+                  <button-action
+                    .tweet=${this.tweet.data}
+                    @action="${e => this.action(e)}"
+                  ></button-action>
+                `}
+          </div>
         </div>
-      </div>
-    `;
+      `;
     }
   }
 
@@ -201,8 +219,15 @@ export default class Tweet extends LitElement {
 
   showInfos(e) {
     e.preventDefault();
-    if (e.target.classList.contains('content') ||e.target.classList.contains('tweet-content') ){
-      document.dispatchEvent(new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {detail: this.tweet}));
+    if (
+      e.target.classList.contains("content") ||
+      e.target.classList.contains("tweet-content")
+    ) {
+      document.dispatchEvent(
+        new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {
+          detail: this.tweet
+        })
+      );
     }
   }
 }
