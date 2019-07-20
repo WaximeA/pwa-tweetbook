@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import {EventConstant} from "../../../Constants/event.constant";
+import lozad from 'lozad';
 
 export class TweetResponse extends LitElement {
     constructor() {
@@ -11,6 +12,16 @@ export class TweetResponse extends LitElement {
         return {
             tweet: Object,
         };
+    
+    }
+
+    firstUpdated(_changedProperties) {
+      const observer = lozad(this.shadowRoot.querySelectorAll('.lozad'), {
+        load: function(el) {
+            console.info('loading element');
+        }
+      });
+      observer.observe();
     }
 
     static get styles() {
@@ -95,7 +106,8 @@ export class TweetResponse extends LitElement {
         <div class="divider"></div>
         <div class="user-pic-box">
           <div
-            class="user-pic"
+            class="user-pic lozad"
+            data-background-image="image.png"
             style="background-image: url();"
           ></div>
         </div>

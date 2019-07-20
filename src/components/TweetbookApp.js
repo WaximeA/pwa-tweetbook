@@ -7,7 +7,6 @@ import {EventConstant} from "../Constants/event.constant";
 import {collectionConstant} from "../Constants/collection.constant";
 import './layout/navigation/FormAdd';
 
-
 class TweetbookApp extends LitElement {
 
     constructor() {
@@ -25,7 +24,7 @@ class TweetbookApp extends LitElement {
 
     firstUpdated(_changedProperties) {
         document.addEventListener(EventConstant.RT, console.log);
-        document.addEventListener(EventConstant.NEW_TWEET, () => {this.displayButton = true})
+        document.addEventListener(EventConstant.NEW_TWEET, () => {this.displayButton = true});
     }
 
     childChanged(e) {
