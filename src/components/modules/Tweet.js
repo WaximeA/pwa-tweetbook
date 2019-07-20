@@ -92,6 +92,12 @@ export default class Tweet extends LitElement {
         font-size: 14px;
         text-decoration: none;
       }
+      
+      .date {
+        text-align: right;
+        font-size: 14px;
+        color: #5a5a5a;
+      }
 
       .tweet-content {
         width: 85%;
@@ -132,6 +138,7 @@ export default class Tweet extends LitElement {
 
   render() {
     if (this.tweet.data) {
+      const date = new Date(this.tweet.data.date);
       return html`
       <div class="tweet" @click="${e => this.showInfos(e)}">
         <div class="user-pic-box">
@@ -154,11 +161,12 @@ export default class Tweet extends LitElement {
             <div class="user-info-box">
               <div class="user-info">
                 <span class="user-tn">
-                  ${this.tweet.data.user.name +" " + this.tweet.data.user.surname}
+                  ${this.tweet.data.user.name +" " + this.tweet.data.user.surname }
                 </span>
                 <a href="#">
                   <span class="user-at">${" @" + this.tweet.data.user.nickname}</span>
                 </a>
+                <span class="date"> - ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</span>
               </div>
               ${this.noAction ? null : html`
               <div class="delete" @click="${e => this.deleteTweet(e)}">
