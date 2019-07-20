@@ -46,7 +46,7 @@ export default class FormAdd extends LitElement {
         }
         
         .form-add {
-            background-color: #fff;
+            background-color: var(--app-bg-color);
             width: 100%;
             height: 100%;
             top: 100%;
@@ -57,6 +57,7 @@ export default class FormAdd extends LitElement {
             margin: 0;
             padding: 0;
             transition: 0.2s ease;
+            z-index: 100;
         }
         
         .active {
@@ -80,6 +81,8 @@ export default class FormAdd extends LitElement {
             border: none;
             padding: 10px;
             font-size: 1.2em;
+            background: var(--app-bg-color);
+            color: #fff;
         }
         
         .form-header {

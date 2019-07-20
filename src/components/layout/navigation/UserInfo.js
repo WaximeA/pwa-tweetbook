@@ -81,12 +81,12 @@ export default class UserInfo extends LitElement {
         letter-spacing: -0.3px;
       }
       .tag {
-        color: #364651;
+        color: var(--app-color-link);
         letter-spacing: -0.85px;
       }
       .divider {
         background: #e6ecf0;
-        height: 10px;
+        height: 1px;
         margin-top: 2vh;
         width: 100%;
       }

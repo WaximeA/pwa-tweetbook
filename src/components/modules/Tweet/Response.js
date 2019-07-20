@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit-element";
+import {LitElement, html, css} from "lit-element";
 import {EventConstant} from "../../../Constants/event.constant";
 
 export class TweetResponse extends LitElement {
@@ -16,36 +16,42 @@ export class TweetResponse extends LitElement {
     static get styles() {
         return css`
       .tweet {
-        min-height: 80px;
+        min-height: 100px;
         display: flex;
         flex-direction: row;
-        padding: 20px 15px;
+        padding: 0 15px;
         position: relative;
       }
 
        .divider {
-        position: absolute;
-        top: 0;
         height: 100%;
         width: 2px;
         background: #cecece;
-        z-index: 100000;
-        left: 10%;
+        z-index: 1000;
         display: block;
        }
 
       .user-pic-box {
-        width: 71px;
+        width: 100px;
         display: block;
         margin-right: 10px;
+        position: relative;
+        z-index: 1001;
       }
 
       .user-pic {
-        background-size: 71px 71px;
+        background-size: 70px 70px;
         border-radius: 50%;
         border: 3px solid white;
-        height: 71px;
-        width: 71px;
+        height: 70px;
+        width: 70px;
+      }
+      
+      .center-absolute{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
       }
 
       .content {
@@ -53,6 +59,7 @@ export class TweetResponse extends LitElement {
         flex-direction: column;
         justify-content: space-between;
         width: 85%;
+        margin: 20px 0;
       }
 
       .user-info-box {
@@ -92,10 +99,10 @@ export class TweetResponse extends LitElement {
     render() {
         return html`
       <div class="tweet" >
-        <div class="divider"></div>
         <div class="user-pic-box">
+        <div class="divider center-absolute"></div>
           <div
-            class="user-pic"
+            class="user-pic center-absolute"
             style="background-image: url();"
           ></div>
         </div>
@@ -128,7 +135,7 @@ export class TweetResponse extends LitElement {
 
     deleteTweet(e) {
         document.dispatchEvent(
-            new CustomEvent(EventConstant.DELETE_TWEET_RESPONSE, { detail: this.tweet })
+            new CustomEvent(EventConstant.DELETE_TWEET_RESPONSE, {detail: this.tweet})
         );
     }
 }
