@@ -1,52 +1,134 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>PWA Tweetbook</title>
-  <style>
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>PWA Tweetbook</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-    html, body {
-      min-height: 100vh;
-      height: 100%;
-      background-color: #fefefe;
-      font-family: sans-serif;
-    }
+      html,
+      body {
+        /* Define app variables */
+        --app-bg-color: #2b2b2b;
+        --app-secondary-text-color: #dfdfdf;
+        --app-contrast-text-color: #e96112;
+        --app-text-color: #f1f1f1;
+        --app-bg-component-color: #202020;
+        --app-grey-color: #202020;
+        --app-header-shadow: 0 0 4px rgba(24, 24, 24, 0.14),
+          0 4px 8px rgba(20, 20, 20, 0.28);
 
-    form input {
-      display: block;
-      margin: 1rem;
-    }
-    tweetbook-app {
-      display: block;
-      background-color: #ffffff;
-    }
-    tweetbook-app header {
-      height: 48px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-bottom: solid #eeeeee 1px;
-      box-shadow: #aaaaaa 0px 3px 4px 0px
-    }
-    tweetbook-app img {
-      height: 42px;
-      width: 42px;
-      display: block;
-    }
-  </style>
-  <script src="./config.js"></script>
-</head>
-<body>
-  <tweetbook-app>
-    <header><img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo">Tweetbook</header>
-  </tweetbook-app>
-  <script type="module" src="src/components/TweetbookApp.js"></script>
-</body>
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: var(--app-bg-color);
+
+        /* Font */
+        font-size: 16px;
+        color: var(--app-secondary-text-color);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      /* Skeleton */
+      .skeleton {
+        position: relative;
+        margin: 1rem;
+      }
+
+      .skeleton .hero {
+        margin: auto;
+        min-height: 80px;
+        background: var(--app-grey-color);
+        margin-bottom: 1rem;
+        border-radius: 5px;
+        width: 60%;
+      }
+
+      .skeleton::after {
+        display: block;
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateX(-100%);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(49, 49, 49, 0.2),
+          transparent
+        );
+        animation: loading 1.5s infinite;
+      }
+
+      @keyframes loading {
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      header {
+        height: 56px;
+        padding: 3px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        background-color: var(--app-bg-component-color);
+        border-bottom: solid var(--app-header-shadow) 1px;
+        box-shadow: var(--app-header-shadow) 0px 3px 4px 0px;
+      }
+
+      .brand {
+        margin: auto;
+        display: flex;
+        margin-left: 108px;
+        flex-direction: row;
+      }
+
+      .brand img {
+        height: 40px;
+        width: 40px;
+      }
+
+      .brand div {
+        font-weight: bold;
+        vertical-align: middle;
+        line-height: 40px;
+        margin-left: 10px;
+      }
+
+      @media screen and (max-width: 900px) {
+        .skeleton .hero {
+          width: 100%;
+        }
+      }
+    </style>
+    <script src="./config.js"></script>
+  </head>
+  <body>
+    <section id="shadow">
+      <header>
+        <div class="brand">
+          <img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo" />
+          <div>tweetbook</div>
+        </div>
+      </header>
+      <main>
+        <div class="skeleton" active>
+          <div class="hero"></div>
+          <div class="hero"></div>
+          <div class="hero"></div>
+        </div>
+      </main>
+    </section>
+    <tweetbook-app></tweetbook-app>
+    <script type="module" src="src/components/TweetbookApp.js"></script>
+  </body>
 </html>
