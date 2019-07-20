@@ -61,7 +61,6 @@ class TweetLogout extends LitElement {
     this.auth
       .signOut()
       .then(user => {
-        console.info("User logout", user);
         this.dispatchEvent(
           new CustomEvent(EventConstant.USER_LOGOUT, { detail: { user } })
         );

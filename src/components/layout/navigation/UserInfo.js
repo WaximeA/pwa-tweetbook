@@ -171,7 +171,6 @@ export default class UserInfo extends LitElement {
 
   firstUpdated() {
     document.addEventListener(EventConstant.FILL_USER_INFOS, (data) => {
-      console.info(data);
       this.name = data.detail.name;
       this.surname = data.detail.surname;
       this.nickname = data.detail.nickname;

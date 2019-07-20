@@ -49,9 +49,8 @@ class TweetStore extends LitElement {
     document.addEventListener(EventConstant.NEW_TWEET, e => this.push(e));
     document.addEventListener(EventConstant.DELETE_TWEET, e => this.delete(e));
     document.addEventListener(EventConstant.LIKE, e => this.like(e));
-    document.addEventListener(EventConstant.RESPONSE_TWEET, e =>
-      this.response(e)
-    );
+    document.addEventListener(EventConstant.RESPONSE_TWEET, e => this.response(e));
+    document.addEventListener(EventConstant.RT, e => this.retweet(e));
   }
 
   // -- Gestion du push d'un tweet
@@ -93,6 +92,36 @@ class TweetStore extends LitElement {
   // -- Update trigger
   dataUpdated() {
     this.dispatchEvent(new CustomEvent("child-changed", { detail: this.data }));
+  }
+
+  // -- Gestion des retweets
+  retweet({ detail }) {
+    const connecteduser = JSON.parse(localStorage.getItem("user"));
+    if (!connecteduser) throw new Error("User's not logged");
+    firebase
+    .firestore()
+    .collection(this.collection)
+    .add({
+      content: detail.tweet.data.content,
+      rtuser: {
+        id:connecteduser.id,
+        nickname:connecteduser.nickname
+      },
+      date: new Date().getTime(),
+      user: {
+        id: detail.tweet.data.user.id,
+        avatar: detail.tweet.data.user.avatar,
+        banner: detail.tweet.data.user.banner,
+        name: detail.tweet.data.user.name,
+        surname: detail.tweet.data.user.surname,
+        nickname: detail.tweet.data.user.nickname
+      },
+      responses: [],
+      like: 0
+    })
+    .then(resp => {
+      console.log(resp);
+    }); 
   }
 
   // -- Gestion des likes
