@@ -23,30 +23,24 @@ class TweetLogout extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: block
+        display: block;
       }
-      
-      form input {
-        width: 80%;
-        margin: 8px 0;
-        border: 1px solid #ccc;
-        box-shadow: inset 0 1px 3px #ddd;
-        border-radius: 4px;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        padding: 12px 20px 12px 20px;
-      }
-    
-      .button{
+
+      .button {
         padding: 8px 20px;
         text-decoration: none;
-        margin-right:2vh;
+        margin-right: 2vh;
         background-color: #f15a22;
         color: #fff;
         padding: 8px 20px;
-        border-radius: 5px;
-        transition: .2s;
+        border-radius: 10px;
+        transition: 0.2s;
+        border: none;
+        cursor: pointer;
+      }
+
+      .button:hover {
+        background-color: #f16b50;
       }
     `;
   }

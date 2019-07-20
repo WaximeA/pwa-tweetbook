@@ -61,7 +61,9 @@ class TweetbookApp extends LitElement {
                     </div>
                   `
                 : html`
-                    <div style="margin:auto;">Loading ...</div>
+                    <div style="margin:auto; width:100%; text-align:center;">
+                      Loading ...
+                    </div>
                   `
             }
             </div>
@@ -108,7 +110,11 @@ class TweetbookApp extends LitElement {
         bottom: 20px;
         right: 20px;
         border: none;
-        box-shadow: #636363 2px 2px 5px;
+        box-shadow: var(--app-grey-color) 2px 2px 5px;
+      }
+
+      #new-tweet:hover{
+        background-color: #55dddd;
       }
 
       .none {

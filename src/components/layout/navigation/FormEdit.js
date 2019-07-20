@@ -1,189 +1,204 @@
-import {LitElement, html, css} from 'lit-element/lit-element';
-import {EventConstant} from "../../../Constants/event.constant";
+import { LitElement, html, css } from "lit-element/lit-element";
+import { EventConstant } from "../../../Constants/event.constant";
 
 export default class FormEdit extends LitElement {
+  constructor() {
+    super();
+    this.resume = "";
+    this.avatar = {};
+    this.banner = {};
+    this.active = false;
+  }
 
-    constructor() {
-        super();
-        this.resume = "";
-        this.avatar = {};
-        this.banner = {};
-        this.active = false;
-    }
+  static get properties() {
+    return {
+      resume: String,
+      avatar: File,
+      banner: File,
+      active: Boolean
+    };
+  }
 
-    static get properties() {
-        return {
-            resume: String,
-            avatar: File,
-            banner: File,
-            active: Boolean
+  static get styles() {
+    return css`
+      * {
+        box-sizing: border-box;
+      }
+      .inactive {
+        display: none;
+      }
+
+      input {
+        width: 100%;
+      }
+
+      button {
+        margin-top: 2vh;
+        text-decoration: none;
+        width: 100%;
+        background-color: #55acee;
+        color: #fff;
+        padding: 8px 20px;
+        border-radius: 5px;
+        transition: 0.2s;
+        border: none;
+      }
+
+      button:hover {
+        background-color: darken(#55acee, 10%);
+        cursor: pointer;
+      }
+
+      textarea {
+        resize: none;
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 2vh;
+        height: 15vh;
+        color: var(--app-text-color);
+        background-color: transparent;
+        border: 1px solid var(--app-contrast-text-color);
+      }
+
+      .btn-file {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-file input[type="file"] {
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background-color: transparent;
+        color: var(--app-text-color);
+        cursor: inherit;
+        display: block;
+        border: 1px solid rgb(85, 172, 238);
+      }
+
+      .input-file-html5 {
+        cursor: pointer;
+        width: 100%;
+        border-radius: 8px;
+        margin-top: 2vh;
+        position: relative;
+        outline: none;
+        color: rgb(100, 150, 150);
+        background-color: transparent;
+        color: var(--app-text-color);
+        padding: 1% 1% 1% 5%;
+        border: 1px solid rgb(85, 172, 238);
+      }
+
+      .input-file-html5-avatar::before {
+        content: "New Avatar";
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 3% 10%;
+        background-color: transparent;
+        color: var(--app-text-color);
+        background: rgb(85, 172, 238);
+        box-shadow: 0 0.2em 0 rgb(100, 180, 180);
+        transform: translateY(-0.2em);
+      }
+
+      .input-file-html5-banner::before {
+        content: "New Banner";
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 3% 9.3%;
+        background-color: transparent;
+        color: var(--app-text-color);
+        background: rgb(85, 172, 238);
+        box-shadow: 0 0.2em 0 rgb(100, 180, 180);
+        transform: translateY(-0.2em);
+      }
+
+      .input-file-html5:hover::before {
+        background: rgb(110, 210, 210);
+        box-shadow: 0 0.35em 0 rgb(100, 180, 180);
+        transform: translateY(-0.35em);
+      }
+
+      .input-file-html5:active::before {
+        background: rgb(100, 180, 180);
+        box-shadow: 0 0em 0 rgb(100, 180, 180);
+        transform: translateY(0em);
+      }
+    `;
+  }
+
+  handleForm(e) {
+    e.preventDefault();
+    document.dispatchEvent(
+      new CustomEvent(EventConstant.EDIT_INFOS, {
+        detail: {
+          resume: this.resume,
+          avatar: this.avatar,
+          banner: this.banner
         }
-    }
+      })
+    );
+    this.active = false;
+  }
 
-    static get styles() {
-        return css`
-            * {  box-sizing: border-box }
-            .inactive{
-                display: none;
-            }
-            footer {
-                position: fixed;
-                bottom: 0;
-                width: 100%;
-            }
-            footer form {
-                display: flex;
-                justify-content: space-between;
-                background-color: #ffffff;
-                padding: 0.5rem 1rem;
-                width: 100%;
-            }
+  handleClick(e) {
+    this.active = !this.active;
+  }
 
-            footer form input {
-                width: 100%;
-            }
+  handleAvatarUploadChange(e) {
+    this.avatar = e.target.files[0];
+  }
 
-            button{
-                margin-top: 2vh;
-                text-decoration: none;
-                width:100%;
-                background-color: #55acee;
-                color: #fff;
-                padding: 8px 20px;
-                border-radius: 5px;
-                transition: .2s;
-                &:hover
-                  background-color: darken(#55acee, 10%);
-                  cursor: pointer;
-            }
+  handleBannerUploadChange(e) {
+    this.banner = e.target.files[0];
+  }
 
-            textarea{
-                resize: none;
-                border-radius: 8px;
-                width: 100%;
-                margin-top: 2vh;
-                height: 15vh;
-            }
+  render() {
+    return html`
+      <button
+        @click="${this.handleClick}"
+        class="${this.active ? "inactive" : ""}"
+      >
+        Edit Profile
+      </button>
+      <form
+        @submit="${this.handleForm}"
+        class="${!this.active ? "inactive" : ""}"
+      >
+        <button type="submit">Save</button>
+        <textarea
+          placeholder="Describe yourself here..."
+          name=""
+          id="resume"
+          @input="${e => (this.resume = e.target.value)}"
+          .value="${this.resume}"
+        ></textarea>
 
-            #banner{
-            }
+        <input
+          class="input-file-html5 input-file-html5-avatar"
+          type="file"
+          id="avatar"
+          accept="image/*"
+          @change="${this.handleAvatarUploadChange}"
+        />
 
-            #avatar{
-            }
-
-            .btn-file {
-                position: relative;
-                overflow: hidden;
-              }
-              .btn-file input[type=file] {
-                  min-width: 100%;
-                  min-height: 100%;
-                  font-size: 100px;
-                  text-align: right;
-                  filter: alpha(opacity=0);
-                  opacity: 0;
-                  outline: none;
-                  background: white;
-                  cursor: inherit;
-                  display: block;
-              }
-              
-            .input-file-html5
-            {
-            cursor:pointer;
-            width: 100%;
-            border-radius: 8px;
-            margin-top: 2vh;
-            position: relative;
-            outline: none;
-            color: rgb(100,150,150);
-            background: whitesmoke;
-            padding: 1% 1% 1% 5%;
-            }
-
-            .input-file-html5-avatar::before
-            {
-            content:'New Avatar';
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 3% 10%;
-            color: white;
-            background: rgb(85, 172, 238);
-            box-shadow: 0 0.2em 0 rgb(100,180,180);
-            transform: translateY(-0.2em);
-            }
-
-            
-            .input-file-html5-banner::before
-            {
-            content:'New Banner';
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 3% 9.3%;
-            color: white;
-            background: rgb(85, 172, 238);
-            box-shadow: 0 0.2em 0 rgb(100,180,180);
-            transform: translateY(-0.2em);
-            }
-
-            .input-file-html5:hover::before
-            {  
-            background: rgb(110,210,210);
-            box-shadow: 0 0.35em 0 rgb(100,180,180);
-            transform: translateY(-0.35em);
-            }
-
-            .input-file-html5:active::before
-            {  
-            background: rgb(100,180,180);
-            box-shadow: 0 0em 0 rgb(100,180,180);
-            transform: translateY(0em);
-            }
-
-        `
-    }
-
-    handleForm(e) {
-        e.preventDefault();
-        document.dispatchEvent(new CustomEvent(EventConstant.EDIT_INFOS, {
-            detail: {
-                resume:this.resume,
-                avatar:this.avatar,
-                banner:this.banner 
-            }
-        }));
-        this.active = false;
-    }
-
-    handleClick(e) {
-        this.active = !this.active;
-    }
-
-    
-    handleAvatarUploadChange(e) {
-        this.avatar = e.target.files[0];
-    }
-
-    
-    handleBannerUploadChange(e) {
-        this.banner = e.target.files[0];
-    }
-
-    render() {
-        return html` 
-                <button @click="${this.handleClick}" class="${this.active ? "inactive" : ""}">Edit Profile</button>
-                <form @submit="${this.handleForm}" class="${!this.active ? "inactive" : ""}">
-                    <button type="submit">Save</button>
-                    <textarea placeholder="Describe yourself here..." name="" id="resume" @input="${e => this.resume = e.target.value}" .value="${this.resume}"></textarea>
-                    
-                    <input class="input-file-html5 input-file-html5-avatar" type="file" id="avatar" accept="image/*" @change="${this.handleAvatarUploadChange}">
-
-                    <input class="input-file-html5 input-file-html5-banner" type="file" id="banner" accept="image/*" @change="${this.handleBannerUploadChange}">
-
-                </form>`
-    }
+        <input
+          class="input-file-html5 input-file-html5-banner"
+          type="file"
+          id="banner"
+          accept="image/*"
+          @change="${this.handleBannerUploadChange}"
+        />
+      </form>
+    `;
+  }
 }
 
-customElements.define('form-edit', FormEdit);
+customElements.define("form-edit", FormEdit);

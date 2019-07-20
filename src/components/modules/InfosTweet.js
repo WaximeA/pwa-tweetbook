@@ -1,7 +1,7 @@
-import {LitElement, html, css} from "lit-element";
-import './Tweet/Response';
-import './Tweet'
-import {EventConstant} from "../../Constants/event.constant";
+import { LitElement, html, css } from "lit-element";
+import "./Tweet/Response";
+import "./Tweet";
+import { EventConstant } from "../../Constants/event.constant";
 
 export class InfosTweet extends LitElement {
     constructor() {
