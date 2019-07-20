@@ -58,36 +58,41 @@ class TweetStore extends LitElement {
         const user = localStorage.getItem("user");
         if (!user) throw new Error("User's not logged");
         const userInfos = JSON.parse(user);
+        this.getLoadedAvatar().then(loadedAvatar => {
 
-        let tweetdata = {
-            content: detail.newTweet,
-            date: new Date().getTime(),
-            user: {
-                id: userInfos.id,
-                avatar: userInfos.avatar,
-                banner: userInfos.banner,
-                name: userInfos.name,
-                surname: userInfos.surname,
-                nickname: userInfos.nickname
-            },
-            responses: [],
-            like: 0
-        }
+            console.log(loadedAvatar);
+            let tweetdata = {
+                content: detail.newTweet,
+                date: new Date().getTime(),
+                user: {
+                    id: userInfos.id,
+                    avatar: userInfos.avatar,
+                    banner: userInfos.banner,
+                    name: userInfos.name,
+                    surname: userInfos.surname,
+                    nickname: userInfos.nickname,
+                    loadedAvatar
+                },
+                responses: [],
+                like: 0
+            };
 
-        if (detail.image) {
-            firebase.storage().ref("tweetimage/" + firebase.auth().currentUser.uid + new Date().valueOf() + '.' + detail.image.name.split('.').pop()).put(detail.image).then((metadata) => {
-                metadata.ref.getDownloadURL().then((url) => {
-                    tweetdata.image = url;
-                    firebase.firestore().collection(this.collection).add(tweetdata).then(resp => {
-                        console.log(resp);
+            if (detail.image) {
+                firebase.storage().ref("tweetimage/" + firebase.auth().currentUser.uid + new Date().valueOf() + '.' + detail.image.name.split('.').pop()).put(detail.image).then((metadata) => {
+                    metadata.ref.getDownloadURL().then((url) => {
+                        tweetdata.image = url;
+                        firebase.firestore().collection(this.collection).add(tweetdata).then(resp => {
+                            console.log(resp);
+                        });
                     });
                 });
-            });
-        } else {
-            firebase.firestore().collection(this.collection).add(tweetdata).then(resp => {
-                console.log(resp);
-            });
-        }
+            } else {
+                firebase.firestore().collection(this.collection).add(tweetdata).then(resp => {
+                    console.log(resp);
+                });
+            }
+        })
+
     }
 
     // -- Gestion de la suppression
@@ -108,31 +113,34 @@ class TweetStore extends LitElement {
     retweet({detail}) {
         const connecteduser = JSON.parse(localStorage.getItem("user"));
         if (!connecteduser) throw new Error("User's not logged");
-        firebase
-            .firestore()
-            .collection(this.collection)
-            .add({
-                content: detail.tweet.data.content,
-                rtuser: {
-                    id: connecteduser.id,
-                    nickname: connecteduser.nickname
-                },
-                date: new Date().getTime(),
-                user: {
-                    id: detail.tweet.data.user.id,
-                    avatar: detail.tweet.data.user.avatar,
-                    banner: detail.tweet.data.user.banner,
-                    name: detail.tweet.data.user.name,
-                    surname: detail.tweet.data.user.surname,
-                    nickname: detail.tweet.data.user.nickname
-                },
-                responses: [],
-                like: 0,
-                image: detail.tweet.data.image ? detail.tweet.data.image : null
-            })
-            .then(resp => {
-                console.log(resp);
-            });
+        this.getLoadedAvatar(detail.tweet.data.user).then(loadedAvatar => {
+            firebase
+                .firestore()
+                .collection(this.collection)
+                .add({
+                    content: detail.tweet.data.content,
+                    rtuser: {
+                        id: connecteduser.id,
+                        nickname: connecteduser.nickname
+                    },
+                    date: new Date().getTime(),
+                    user: {
+                        id: detail.tweet.data.user.id,
+                        avatar: detail.tweet.data.user.avatar,
+                        banner: detail.tweet.data.user.banner,
+                        name: detail.tweet.data.user.name,
+                        surname: detail.tweet.data.user.surname,
+                        nickname: detail.tweet.data.user.nickname,
+                        loadedAvatar
+                    },
+                    responses: [],
+                    like: 0,
+                    image: detail.tweet.data.image ? detail.tweet.data.image : null
+                })
+                .then(resp => {
+                    console.log(resp);
+                });
+        })
     }
 
     // -- Gestion des likes
@@ -176,26 +184,7 @@ class TweetStore extends LitElement {
         if (!user) throw new Error("User's not logged");
 
         const userInfos = JSON.parse(user);
-        new Promise((resolve, reject) => {
-            try {
-                firebase
-                    .storage()
-                    .ref("avatar")
-                    .child(userInfos.avatar)
-                    .getDownloadURL()
-                    .then(url => {
-                        console.log(url);
-                        resolve(url);
-                    })
-                    .catch(e => {
-                        resolve("/src/assets/images/user.svg");
-                    });
-            } catch (e) {
-                resolve("/src/assets/images/user.svg");
-            }
-        }).then(loadedAvatar => {
-            console.log(userInfos.avatar);
-            console.log(loadedAvatar);
+        this.getLoadedAvatar().then(loadedAvatar => {
             const datas = {
                 responses: [
                     ...parent.data.responses,
@@ -225,6 +214,32 @@ class TweetStore extends LitElement {
                     document.dispatchEvent(new CustomEvent(EventConstant.RESPONSE_TWEET_DONE, {detail: datas}))
                 });
         });
+    }
+
+    getLoadedAvatar(user = null) {
+        return new Promise(resolve => {
+            if (!user) {
+                const userInfos = localStorage.getItem("user");
+                if (!userInfos) throw new Error("User's not logged");
+                user = JSON.parse(user);
+            }
+            try {
+                firebase
+                    .storage()
+                    .ref("avatar")
+                    .child(user.avatar)
+                    .getDownloadURL()
+                    .then(url => {
+                        console.log(url);
+                        resolve(url);
+                    })
+                    .catch(e => {
+                        resolve("/src/assets/images/user.svg");
+                    });
+            } catch (e) {
+                resolve("/src/assets/images/user.svg");
+            }
+        })
     }
 }
 

@@ -9,34 +9,17 @@ export default class Tweet extends LitElement {
   constructor() {
     super();
     this.tweet = {};
-    this.loadedAvatar = "";
     this.noAction = false;
   }
 
   static get properties() {
     return {
       tweet: Object,
-      loadedAvatar: String,
       noAction: Boolean
     };
   }
 
   firstUpdated(_changedProperties) {
-    try {
-      firebase
-        .storage()
-        .ref("avatar")
-        .child(this.tweet.data.user.avatar)
-        .getDownloadURL()
-        .then(url => {
-          this.loadedAvatar = url;
-        })
-        .catch(e => {
-          this.loadedAvatar = "/src/assets/images/user.svg";
-        });
-    } catch (e) {
-      this.loadedAvatar = "/src/assets/images/user.svg";
-    }
     const observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
     observer.observe();
   }
@@ -156,7 +139,7 @@ export default class Tweet extends LitElement {
           <div class="user-pic-box">
             <div
               class="user-pic lozad"
-              style="background-image:url('${this.loadedAvatar}')"
+              style="background-image:url('${this.tweet.data.user.loadedAvatar}')"
             ></div>
           </div>
           <div class="content">
