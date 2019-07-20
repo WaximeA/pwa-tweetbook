@@ -66,7 +66,8 @@ export default class TweetSidebar extends LitElement {
         padding: 0;
         list-style: none;
         transition: 0.3s ease;
-        overflow: auto
+        overflow: auto;
+        z-index: 10;
       }
       
       .display {
