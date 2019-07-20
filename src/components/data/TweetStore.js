@@ -22,12 +22,12 @@ class TweetStore extends LitElement {
         firebase.initializeApp(document.config);
         firebase
             .firestore()
-            .collection(this.collection)
+            .collection(this.collection).orderBy('date')
             .onSnapshot(ref => {
                 ref.docChanges().forEach(change => {
                     const {doc, type} = change;
                     if (type === "added") {
-                        this.data = [...this.data, {id: doc.id, data: doc.data()}];
+                        this.data = [{id: doc.id, data: doc.data()}, ...this.data];
                         this.dataUpdated();
                     } else if (type === "removed") {
                         this.data = this.data.filter(item => {

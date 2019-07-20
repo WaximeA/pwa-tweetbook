@@ -69,7 +69,7 @@ export class InfosTweet extends LitElement {
             }
 
             .sidebar {
-                background-color: #fff;
+                background-color: var(--app-bg-color);
                 width: 100%;
                 height: 100%;
                 top: 0;
