@@ -3,6 +3,7 @@ import "./Tweet/ButtonAction";
 import firebase from "firebase/app";
 import "firebase/storage";
 import { EventConstant } from "../../Constants/event.constant";
+import lozad from 'lozad';
 
 export default class Tweet extends LitElement {
   constructor() {
@@ -36,11 +37,15 @@ export default class Tweet extends LitElement {
     } catch (e) {
       this.loadedAvatar = "/src/assets/images/user.svg";
     }
+    const observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
+    observer.observe();
   }
 
   static get styles() {
     return css`
       .tweet {
+        width: 70%;
+        margin: auto;
         min-height: 80px;
         display: flex;
         border-bottom: 1px solid var(--app-bg-component-color);
@@ -92,7 +97,7 @@ export default class Tweet extends LitElement {
         color: var(--app-contrast-text-color);
         font-size: 14px;
       }
-      
+
       .date {
         text-align: right;
         font-size: 14px;
@@ -123,6 +128,13 @@ export default class Tweet extends LitElement {
         border-radius: 8px;
         margin-top: 2vh;
       }
+
+      @media screen and (max-width: 900px) {
+        .tweet {
+          width: 95%;
+          margin:0px;
+        }
+      }
     `;
   }
 
@@ -143,8 +155,8 @@ export default class Tweet extends LitElement {
         <div class="tweet" @click="${e => this.showInfos(e)}">
           <div class="user-pic-box">
             <div
-              class="user-pic"
-              style="background-image: url('${this.loadedAvatar}');"
+              class="user-pic lozad"
+              style="background-image:url('${this.loadedAvatar}')"
             ></div>
           </div>
           <div class="content">
@@ -174,7 +186,10 @@ export default class Tweet extends LitElement {
                       >${" @" + this.tweet.data.user.nickname}</span
                     >
                   </a>
-                  <span class="date"> - ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</span>
+                  <span class="date">
+                    - ${date.toLocaleDateString()}
+                    ${date.toLocaleTimeString()}</span
+                  >
                 </div>
                 ${this.noAction
                   ? null
@@ -189,14 +204,11 @@ export default class Tweet extends LitElement {
                     `}
               </div>
               <div class="tweet-content">${this.tweet.data.content}</div>
-              ${this.tweet.data.image
-                ? html`
-                    <div
-                      class="tweet-image-box"
-                      style="background-image: url('${this.tweet.data.image}');"
-                    ></div>
-                  `
-                : ``}
+              ${this.tweet.data.image ? html `
+                <div class="tweet-image-box lozad"
+                data-background-image="${this.tweet.data.image}"> 
+                </div>`:``
+              }
             </div>
             ${this.noAction
               ? null

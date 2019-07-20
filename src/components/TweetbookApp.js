@@ -22,15 +22,17 @@ class TweetbookApp extends LitElement {
   }
 
   firstUpdated(_changedProperties) {
+    this.shadowRoot.querySelector("#header").style.visibility = "hidden";
     document.addEventListener(EventConstant.RT, console.log);
     document.addEventListener(EventConstant.NEW_TWEET, () => {
       this.displayButton = true;
     });
-    document.querySelector("#shadow").style.display = "none";
   }
 
   childChanged(e) {
     this.tweets = e.detail;
+    document.querySelector("#shadow").style.display = "none";
+    this.shadowRoot.querySelector("#header").style.visibility = "visible";
   }
 
   handleNewTweet() {
@@ -44,7 +46,7 @@ class TweetbookApp extends LitElement {
                 collection="${collectionConstant.TWEET_COLLECTION}" 
                 @child-changed="${this.childChanged}"
             ></tweet-store>
-            <tweet-header></tweet-header>
+            <tweet-header id="header"></tweet-header>
             <infos-tweet active></infos-tweet>
             ${
               this.tweets.length !== 0
@@ -59,7 +61,7 @@ class TweetbookApp extends LitElement {
                     </div>
                   `
                 : html`
-                    <div>No records</div>
+                    <div style="margin:auto;">Loading ...</div>
                   `
             }
             </div>

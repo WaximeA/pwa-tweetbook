@@ -166,7 +166,7 @@ export default class TweetSidebar extends LitElement {
         id="menu-icon"
         @click=${this.displaySidebar}
       >
-        <img src="./src/assets/images/menu-icon.png" alt="Side bar logo" />
+        <img src="./src/assets/images/menu-icon.png" alt="Side bar logo" width="30" />
       </button>
       <div id="sidebar" class="${this.active ? "display" : ""}">
         <div class="buttons">

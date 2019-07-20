@@ -95,6 +95,8 @@ export class InfosTweet extends LitElement {
                 align-items: center;
                 justify-content: space-between;
                 height: 48px;
+                border-bottom: solid var(--app-header-shadow) 1px;
+                box-shadow: var(--app-header-shadow) 0px 3px 4px 0px;
                 margin-bottom: 10px;
                 background-color: var(--app-bg-component-color);
             }
