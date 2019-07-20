@@ -2,12 +2,14 @@ import {LitElement, html, css} from "lit-element/lit-element";
 import {EventConstant} from "../../../Constants/event.constant";
 
 export default class FormAdd extends LitElement {
+  
     constructor() {
         super();
         this.newTweet = "";
         this.active = false;
         this.parent = null;
         this.edit = false;
+        this.image = {};
     }
 
     static get properties() {
@@ -15,7 +17,8 @@ export default class FormAdd extends LitElement {
             newTweet: String,
             active: Boolean,
             parent: Object,
-            edit: Boolean
+            edit: Boolean,
+            image: Object
         };
     }
 
@@ -59,6 +62,7 @@ export default class FormAdd extends LitElement {
         .active {
             top: 0;
         }
+
         footer {
             position: fixed;
             bottom: 0;
@@ -72,9 +76,6 @@ export default class FormAdd extends LitElement {
         textarea {
             width: 100%;
             height: 90%;
-            bottom: 0;
-            left: 0;
-            position: absolute;
             resize: none;
             border: none;
             padding: 10px;
@@ -118,6 +119,31 @@ export default class FormAdd extends LitElement {
             line-height: 20px;
             margin-right: 20px;
         }
+
+        .input-file-html5 {
+          cursor:pointer;
+          border-radius: 8px;
+          margin-top: 2vh;
+          position: relative;
+          outline: none;
+          color: rgb(100,150,150);
+          background: whitesmoke;
+          width: 350px;
+          padding: 7px 0px 0px 18px;
+        }
+
+        .input-file-html5::before {
+          content:'Add Image';
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding: 3% 10%;
+          color: white;
+          background: rgb(85, 172, 238);
+          box-shadow: 0 0.2em 0 rgb(100,180,180);
+          transform: translateY(-0.2em);
+        }
+
     `;
     }
 
@@ -126,15 +152,21 @@ export default class FormAdd extends LitElement {
         if (this.parent) {
             document.dispatchEvent(
                 new CustomEvent(EventConstant.RESPONSE_TWEET, {
-                    detail: {
-                        newTweet: this.newTweet,
-                        parent: this.parent
-                    }
+                  detail: {
+                      newTweet: this.newTweet,
+                      image: this.image,
+                      parent: this.parent
+                  }
                 })
             );
         } else {
             document.dispatchEvent(
-                new CustomEvent(EventConstant.NEW_TWEET, {detail: this.newTweet})
+                new CustomEvent(EventConstant.NEW_TWEET, {
+                  detail: {
+                    newTweet: this.newTweet,
+                    image: this.image
+                  }
+                })
             );
         }
         document.dispatchEvent(
@@ -149,28 +181,32 @@ export default class FormAdd extends LitElement {
         this.shadowRoot.querySelector("#new-tweet").focus();
     }
 
+    handleImageUploadChange(e) {
+      this.image = e.target.files[0];
+    }
+
     render() {
-        return html`
-            <div class="form-add ${this.active ? "active" : ""}">
-                
-                <form @submit="${this.handleForm}">
-                <div class="form-header">
-                    <button class="collapse-button" @click=${this.closeForm}></button>
-                    <div class="actions">
-                        <button class="send-button" type="submit">${this.parent ? `Respond` : `Send`}</button>   
-                    </div>             
-                </div>
-                    <textarea
-                    name=""
-                    id="new-tweet"
-                    @input="${e => (this.newTweet = e.target.value)}"
-                    .value="${this.newTweet}"
-                    placeholder="${this.edit ? "Tweet your response" : "What's new ?"}"
-                    >
-                    </textarea>
-                </form>
-            </div>
-    `;
+      return html`
+        <div class="form-add ${this.active ? "active" : ""}">
+          <form @submit="${this.handleForm}">
+          <div class="form-header">
+              <button class="collapse-button" @click=${this.closeForm}></button>
+              <div class="actions">
+                  <button class="send-button" type="submit">${this.parent ? `Respond` : `Send`}</button>   
+              </div>             
+          </div>
+              <textarea
+              name=""
+              id="new-tweet"
+              @input="${e => (this.newTweet = e.target.value)}"
+              .value="${this.newTweet}"
+              placeholder="${this.edit ? "Tweet your response" : "What's new ?"}"
+              >
+              </textarea>
+              <input class="input-file-html5" type="file" id="image" accept="image/*" @change="${this.handleImageUploadChange}">
+          </form>
+        </div>
+      `;
     }
 
     closeForm() {
