@@ -49,9 +49,8 @@ class TweetStore extends LitElement {
         document.addEventListener(EventConstant.NEW_TWEET, e => this.push(e));
         document.addEventListener(EventConstant.DELETE_TWEET, e => this.delete(e));
         document.addEventListener(EventConstant.LIKE, e => this.like(e));
-        document.addEventListener(EventConstant.RESPONSE_TWEET, e =>
-            this.response(e)
-        );
+        document.addEventListener(EventConstant.RESPONSE_TWEET, e => this.response(e));
+        document.addEventListener(EventConstant.RT, e => this.retweet(e));
     }
 
     // -- Gestion du push d'un tweet
@@ -94,39 +93,69 @@ class TweetStore extends LitElement {
     dataUpdated() {
         this.dispatchEvent(new CustomEvent("child-changed", {detail: this.data}));
     }
+  
+  // -- Gestion des retweets
+  retweet({ detail }) {
+    const connecteduser = JSON.parse(localStorage.getItem("user"));
+    if (!connecteduser) throw new Error("User's not logged");
+    firebase
+    .firestore()
+    .collection(this.collection)
+    .add({
+      content: detail.tweet.data.content,
+      rtuser: {
+        id:connecteduser.id,
+        nickname:connecteduser.nickname
+      },
+      date: new Date().getTime(),
+      user: {
+        id: detail.tweet.data.user.id,
+        avatar: detail.tweet.data.user.avatar,
+        banner: detail.tweet.data.user.banner,
+        name: detail.tweet.data.user.name,
+        surname: detail.tweet.data.user.surname,
+        nickname: detail.tweet.data.user.nickname
+      },
+      responses: [],
+      like: 0
+    })
+    .then(resp => {
+      console.log(resp);
+    }); 
+  }
 
-    // -- Gestion des likes
-    like({detail}) {
-        let like = detail.tweet.data.like;
-        //on check si on retrouve le like dans la liste des likes de l'user
-        const json_user = localStorage.getItem("user");
-        const user = JSON.parse(json_user);
-        const exist = user.likes.filter(item => {
-            return item === detail.tweet.id;
-        });
-        if (exist.length === 0) {
-            like++;
-            user.likes.push(detail.tweet.id);
-            localStorage.setItem("user", JSON.stringify(user));
-        } else {
-            like--;
-            user.likes = user.likes.filter(item => {
-                return item !== detail.tweet.id;
-            });
-            localStorage.setItem("user", JSON.stringify(user));
-        }
-        firebase
-            .firestore()
-            .collection(collectionConstant.USER_INFOS_COLLECTION)
-            .doc(user.id)
-            .update(user);
-        firebase
-            .firestore()
-            .collection(this.collection)
-            .doc(detail.tweet.id)
-            .update({
-                like: like
-            });
+  // -- Gestion des likes
+  like({detail}) {
+      let like = detail.tweet.data.like;
+      //on check si on retrouve le like dans la liste des likes de l'user
+      const json_user = localStorage.getItem("user");
+      const user = JSON.parse(json_user);
+      const exist = user.likes.filter(item => {
+          return item === detail.tweet.id;
+      });
+      if (exist.length === 0) {
+          like++;
+          user.likes.push(detail.tweet.id);
+          localStorage.setItem("user", JSON.stringify(user));
+      } else {
+          like--;
+          user.likes = user.likes.filter(item => {
+              return item !== detail.tweet.id;
+          });
+          localStorage.setItem("user", JSON.stringify(user));
+      }
+      firebase
+          .firestore()
+          .collection(collectionConstant.USER_INFOS_COLLECTION)
+          .doc(user.id)
+          .update(user);
+      firebase
+          .firestore()
+          .collection(this.collection)
+          .doc(detail.tweet.id)
+          .update({
+              like: like
+          });
     }
 
     // -- Response aux tweets

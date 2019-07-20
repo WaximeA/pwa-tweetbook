@@ -100,6 +100,11 @@ export default class Tweet extends LitElement {
       button-action {
         width: 210px;
       }
+
+      .rt-info-box {
+        display: flex;
+        align-items: center;
+      }
     `;
   }
 
@@ -125,19 +130,23 @@ export default class Tweet extends LitElement {
         </div>
         <div class="content">
           <div class="content-text">
+            ${this.tweet.data.rtuser ? html `
+              <div class="rt-info-box"> 
+                <p>🔃&nbsp;</p>
+                <a href="#">
+                  <span class="user-at">@${this.tweet.data.rtuser.nickname}</span>
+                </a>
+                <p>&nbsp;à retweetax</p>
+              </div>`:``
+            }
             <div class="user-info-box">
               <div class="user-info">
-                <span class="user-tn"
-                  >${this.tweet.data.user.name +
-      " " +
-      this.tweet.data.user.surname}
+                <span class="user-tn">
+                  ${this.tweet.data.user.name +" " + this.tweet.data.user.surname}
                 </span>
-
                 <a href="#">
-                  <span class="user-at"
-                    >${" @" + this.tweet.data.user.nickname}</span
-                  ></a
-                >
+                  <span class="user-at">${" @" + this.tweet.data.user.nickname}</span>
+                </a>
               </div>
               ${this.noAction ? null : html`
               <div class="delete" @click="${e => this.deleteTweet(e)}">

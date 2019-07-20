@@ -35,9 +35,13 @@ export default class TweetSidebar extends LitElement {
       #menu-icon {  
         display: inline-block;
         border:none;
+        background-color: white;
+        cursor: pointer;
       }
 
       #cross-icon {
+        background-color: white;
+        cursor: pointer;
         border:none;
       }
       
