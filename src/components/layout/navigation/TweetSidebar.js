@@ -40,6 +40,10 @@ export default class TweetSidebar extends LitElement {
       #cross-icon {
         border:none;
       }
+      
+      .collapse-button {
+        background: transparent;
+      }
         
       .collapse-button img {
         width: 20px;

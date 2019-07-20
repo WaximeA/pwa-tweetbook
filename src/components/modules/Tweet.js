@@ -49,7 +49,7 @@ export default class Tweet extends LitElement {
       }
 
       .user-pic-box {
-        width: 15%;
+        width: 71px;
         display: block;
         margin-right: 10px;
       }
