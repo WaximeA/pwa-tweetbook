@@ -7,35 +7,35 @@ import {EventConstant} from "../../../Constants/event.constant";
 
 export default class UserInfo extends LitElement {
 
-  constructor() {
-    super();
-    this.name = '';
-    this.surname = '';
-    this.nickname = '';
-    this.follows = [];
-    this.followers = [];
-    this.resume= "Hi, I'm an Eclatax Dev !";
-    this.avatar='';
-    this.banner='';
-    this.collection='';
-  }
-
-  static get properties() {
-    return {
-      name: String,
-      surname: String,
-      nickname: String,
-      follows: Array,
-      followers: Array,
-      resume: String,
-      avatar: String,
-      banner: String,
-      collection: String,
+    constructor() {
+        super();
+        this.name = '';
+        this.surname = '';
+        this.nickname = '';
+        this.follows = [];
+        this.followers = [];
+        this.resume = "Hi, I'm an Eclatax Dev !";
+        this.avatar = '';
+        this.banner = '';
+        this.collection = '';
     }
-  }
 
-  static get styles() {
-    return css`
+    static get properties() {
+        return {
+            name: String,
+            surname: String,
+            nickname: String,
+            follows: Array,
+            followers: Array,
+            resume: String,
+            avatar: String,
+            banner: String,
+            collection: String,
+        }
+    }
+
+    static get styles() {
+        return css`
     body {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -46,16 +46,13 @@ export default class UserInfo extends LitElement {
       justify-content: center;
       margin: 0;
     }
-    .phone {
-      height: 44vh; 
-    }
     img {
       margin-top: -21px;
       position: fixed;
       width: 414px;
     }
     .content {  
-      position: absolute;
+      position: relative;
       width: 100%;
     }
     .image {
@@ -71,20 +68,22 @@ export default class UserInfo extends LitElement {
       background-repeat: no-repeat;
       background-position: center;
     }
+    .sidebar-header {
+        margin-bottom: 50px;
+    }
+    
+    .sidebar-infos-user{
+        padding: 2vh;
+    }
+    
     .name {
       font-size: 20px;
-      position: absolute;
-      top: 164px;
       font-weight: 700;
-      left: 2vh;
       letter-spacing: -0.3px;
     }
     .tag {
       color: #364651;
-      left: 2vh;
       letter-spacing: -0.85px;
-      position: absolute;
-      top: 191px;
     }
     .divider {
       background: #E6ECF0;
@@ -112,9 +111,6 @@ export default class UserInfo extends LitElement {
     }
     .text {
       font-size: 14px;
-      left: 2vh;
-      position: absolute;
-      top: 220px;
     }
     .banner{
       height: 135px;
@@ -126,7 +122,6 @@ export default class UserInfo extends LitElement {
       width: 100%;
       height: 58px;
       display: flex;
-      padding-top: 140px;
     }
     
     nav h4 {
@@ -167,64 +162,68 @@ export default class UserInfo extends LitElement {
       border-left: 1px solid #CCC;
     }
     `
-  }
+    }
 
-  firstUpdated() {
-    document.addEventListener(EventConstant.FILL_USER_INFOS, (data) => {
-      this.name = data.detail.name;
-      this.surname = data.detail.surname;
-      this.nickname = data.detail.nickname;
-      this.followers = data.detail.followers;
-      this.follows = data.detail.follows;
-      this.resume = data.detail.resume
-      firebase.storage().ref("avatar").child(data.detail.avatar).getDownloadURL().then((url) => {
-        this.avatar = url;
-      });
-      firebase.storage().ref("banniere").child(data.detail.banner).getDownloadURL().then((url) => {
-        this.banner = url;
-      });
-    });
-    document.addEventListener(EventConstant.EDIT_INFOS, (data) => {
-      if(data){
-        let updates = {};
-        if(data.detail.avatar){
-          firebase.storage().ref("avatar/"+firebase.auth().currentUser.uid+'.'+data.detail.avatar.name.split('.').pop()).put(data.detail.avatar).then((metadata) => {
-            metadata.ref.getDownloadURL().then((url)=> {
-              this.avatar = url;
-              updates.avatar = firebase.auth().currentUser.uid+'.'+data.detail.avatar.name.split('.').pop();
+    firstUpdated() {
+        document.addEventListener(EventConstant.FILL_USER_INFOS, (data) => {
+            this.name = data.detail.name;
+            this.surname = data.detail.surname;
+            this.nickname = data.detail.nickname;
+            this.followers = data.detail.followers;
+            this.follows = data.detail.follows;
+            this.resume = data.detail.resume
+            firebase.storage().ref("avatar").child(data.detail.avatar).getDownloadURL().then((url) => {
+                this.avatar = url;
             });
-          });
-        }
-        if(data.detail.banner){
-          firebase.storage().ref("banniere/"+firebase.auth().currentUser.uid+'.'+data.detail.banner.name.split('.').pop()).put(data.detail.banner).then((metadata) => {
-            metadata.ref.getDownloadURL().then((url)=> {
-              this.banner = url;
-              updates.banner =firebase.auth().currentUser.uid+'.'+data.detail.banner.name.split('.').pop()
+            firebase.storage().ref("banniere").child(data.detail.banner).getDownloadURL().then((url) => {
+                this.banner = url;
             });
-          });
-        }
-        if(data.detail.resume){
-          this.resume=data.detail.resume;
-          updates.resume = data.detail.resumes;
-        }
-        firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid).update(updates).then(()=>{
-          if(data.detail.resume){
-            this.resume=data.detail.resume;
-          }
         });
-      }
-    });
-  }
+        document.addEventListener(EventConstant.EDIT_INFOS, (data) => {
+            if (data) {
+                let updates = {};
+                if (data.detail.avatar) {
+                    firebase.storage().ref("avatar/" + firebase.auth().currentUser.uid + '.' + data.detail.avatar.name.split('.').pop()).put(data.detail.avatar).then((metadata) => {
+                        metadata.ref.getDownloadURL().then((url) => {
+                            this.avatar = url;
+                            updates.avatar = firebase.auth().currentUser.uid + '.' + data.detail.avatar.name.split('.').pop();
+                        });
+                    });
+                }
+                if (data.detail.banner) {
+                    firebase.storage().ref("banniere/" + firebase.auth().currentUser.uid + '.' + data.detail.banner.name.split('.').pop()).put(data.detail.banner).then((metadata) => {
+                        metadata.ref.getDownloadURL().then((url) => {
+                            this.banner = url;
+                            updates.banner = firebase.auth().currentUser.uid + '.' + data.detail.banner.name.split('.').pop()
+                        });
+                    });
+                }
+                if (data.detail.resume) {
+                    this.resume = data.detail.resume;
+                    updates.resume = data.detail.resumes;
+                }
+                firebase.firestore().collection(this.collection).doc(firebase.auth().currentUser.uid).update(updates).then(() => {
+                    if (data.detail.resume) {
+                        this.resume = data.detail.resume;
+                    }
+                });
+            }
+        });
+    }
 
-  render() {
-    return html`
+    render() {
+        return html`
     <div class="phone">
       <div class="content">
-        <div class="image" style="background-image: url('${this.avatar}');"></div>
-        <div class="banner" style="background-image: url('${this.banner}');"></div>
-        <div class="name">${this.name} ${this.surname}</div>
-        <div class="tag">@${this.nickname}</div>
-        <div class="text">${this.resume}</div>
+        <div class="sidebar-header">
+            <div class="image" style="background-image: url('${this.avatar}');"></div>
+            <div class="banner" style="background-image: url('${this.banner}');"></div>
+        </div>
+        <div class="sidebar-infos-user">
+            <div class="name">${this.name} ${this.surname}</div>
+            <div class="tag">@${this.nickname}</div>
+            <div class="text">${this.resume}</div>
+        </div>
         <nav>
           <div class="count">
             <h4>1537</h4>
@@ -244,7 +243,7 @@ export default class UserInfo extends LitElement {
       </div>
     </div>
     `
-  }
+    }
 }
 
 customElements.define('user-info', UserInfo);

@@ -44,6 +44,10 @@ export default class TweetSidebar extends LitElement {
         cursor: pointer;
         border:none;
       }
+      
+      .collapse-button {
+        background: transparent;
+      }
         
       .collapse-button img {
         width: 20px;
@@ -61,11 +65,13 @@ export default class TweetSidebar extends LitElement {
         bottom: 0;
         left: -100%;
         text-align: left;
-        position: absolute;
+        position: fixed;
         margin: 0;
         padding: 0;
         list-style: none;
         transition: 0.3s ease;
+        overflow: auto;
+        z-index: 10;
       }
       
       .display {
@@ -92,9 +98,7 @@ export default class TweetSidebar extends LitElement {
       }
 
       .user-info-footer{
-        padding-top: 8vh;
-        margin-right: 2vh;
-        margin-left: 2vh;
+        margin: 0 2vh 2vh 2vh;
       }
 
     `

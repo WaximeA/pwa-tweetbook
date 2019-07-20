@@ -1,10 +1,12 @@
 export const EventConstant = {
     DISPLAY_SIDEBAR: 'display-sidebar',
 
+    ASK_NEW_TWEET: 'ask-new-tweet',
     NEW_TWEET: 'new-tweet',
     DELETE_TWEET: 'delete-tweet',
     RESPONSE: 'response',
     RESPONSE_TWEET: 'response_tweet',
+    RESPONSE_TWEET_DONE: 'response-tweet-done',
     RT: 'RT',
     LIKE: 'like',
     DISPLAY_INFOS_TWEET: 'display-infos-tweet',

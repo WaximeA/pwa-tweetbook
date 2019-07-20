@@ -18,13 +18,24 @@ export class TweetResponse extends LitElement {
       .tweet {
         min-height: 80px;
         display: flex;
-        border-bottom: 1px solid #cacaca;
         flex-direction: row;
         padding: 20px 15px;
+        position: relative;
       }
 
+       .divider {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background: #cecece;
+        z-index: 100000;
+        left: 10%;
+        display: block;
+       }
+
       .user-pic-box {
-        width: 15%;
+        width: 71px;
         display: block;
         margin-right: 10px;
       }
@@ -81,6 +92,7 @@ export class TweetResponse extends LitElement {
     render() {
         return html`
       <div class="tweet" >
+        <div class="divider"></div>
         <div class="user-pic-box">
           <div
             class="user-pic"
@@ -116,7 +128,7 @@ export class TweetResponse extends LitElement {
 
     deleteTweet(e) {
         document.dispatchEvent(
-            new CustomEvent(EventConstant.DELETE_TWEET, { detail: this.tweet.id })
+            new CustomEvent(EventConstant.DELETE_TWEET_RESPONSE, { detail: this.tweet })
         );
     }
 }
