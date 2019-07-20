@@ -174,6 +174,7 @@ export default class Tweet extends LitElement {
                       >${" @" + this.tweet.data.user.nickname}</span
                     >
                   </a>
+                  <span class="date"> - ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</span>
                 </div>
                 ${this.noAction
                   ? null
