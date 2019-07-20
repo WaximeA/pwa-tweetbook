@@ -3,6 +3,7 @@ import "./Tweet/ButtonAction";
 import firebase from "firebase/app";
 import "firebase/storage";
 import { EventConstant } from "../../Constants/event.constant";
+import lozad from 'lozad';
 
 export default class Tweet extends LitElement {
   constructor() {
@@ -36,6 +37,8 @@ export default class Tweet extends LitElement {
     } catch (e) {
       this.loadedAvatar = "/src/assets/images/user.svg";
     }
+    const observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
+    observer.observe();
   }
 
   static get styles() {
@@ -152,8 +155,8 @@ export default class Tweet extends LitElement {
         <div class="tweet" @click="${e => this.showInfos(e)}">
           <div class="user-pic-box">
             <div
-              class="user-pic"
-              style="background-image: url('${this.loadedAvatar}');"
+              class="user-pic lozad"
+              style="background-image:url('${this.loadedAvatar}')"
             ></div>
           </div>
           <div class="content">
@@ -201,14 +204,11 @@ export default class Tweet extends LitElement {
                     `}
               </div>
               <div class="tweet-content">${this.tweet.data.content}</div>
-              ${this.tweet.data.image
-                ? html`
-                    <div
-                      class="tweet-image-box"
-                      style="background-image: url('${this.tweet.data.image}');"
-                    ></div>
-                  `
-                : ``}
+              ${this.tweet.data.image ? html `
+                <div class="tweet-image-box lozad"
+                data-background-image="${this.tweet.data.image}"> 
+                </div>`:``
+              }
             </div>
             ${this.noAction
               ? null

@@ -1,16 +1,31 @@
 import {LitElement, html, css} from "lit-element";
 import {EventConstant} from "../../../Constants/event.constant";
+import lozad from 'lozad';
 
 export class TweetResponse extends LitElement {
     constructor() {
         super();
         this.tweet = {};
+        this.key = 0;
+        this.last = 0;
     }
 
     static get properties() {
         return {
             tweet: Object,
+            key: Number,
+            last: Number
         };
+    
+    }
+
+    firstUpdated(_changedProperties) {
+      const observer = lozad(this.shadowRoot.querySelectorAll('.lozad'), {
+        load: function(el) {
+            console.info('loading element');
+        }
+      });
+      observer.observe();
     }
 
     static get styles() {
@@ -29,6 +44,19 @@ export class TweetResponse extends LitElement {
         background: #cecece;
         z-index: 1000;
         display: block;
+        position:absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+       }
+       
+       .divider-first {
+            top: 50%;
+            height: 50%;
+       }
+       
+       .divider-last {
+           height: 50%;
        }
 
       .user-pic-box {
@@ -45,6 +73,8 @@ export class TweetResponse extends LitElement {
         border: 3px solid white;
         height: 70px;
         width: 70px;
+        background-color: var(--app-bg-color);
+        z-index: 11;
       }
       
       .center-absolute{
@@ -65,6 +95,7 @@ export class TweetResponse extends LitElement {
       .user-info-box {
         display: flex;
         justify-content: space-between;
+        color: var(--app-secondary-text-color);
       }
 
       .delete {
@@ -76,12 +107,17 @@ export class TweetResponse extends LitElement {
       }
 
       .user-tn {
-        color: black;
         font-weight: bold;
       }
+        
+        .date {
+            text-align: right;
+            font-size: 14px;
+            color: #5a5a5a;
+        }
 
       .user-at {
-        color: #5a5a5a;
+        color: var(--app-color-link);
         font-size: 14px;
         text-decoration: none;
       }
@@ -97,13 +133,14 @@ export class TweetResponse extends LitElement {
     }
 
     render() {
+        const date = new Date(this.tweet.date);
         return html`
       <div class="tweet" >
         <div class="user-pic-box">
-        <div class="divider center-absolute"></div>
+        <div class="divider ${this.last === this.key ? "divider-last" : ""} ${this.key == 0 ? "divider-first" : ""}"></div>
           <div
-            class="user-pic center-absolute"
-            style="background-image: url();"
+            class="user-pic lozad center-absolute"
+            data-background-image="image.png"
           ></div>
         </div>
         <div class="content">
@@ -115,12 +152,8 @@ export class TweetResponse extends LitElement {
         " " +
         this.tweet.user.surname}
                 </span>
-
-                <a href="#">
-                  <span class="user-at"
-                    >${" @" + this.tweet.user.nickname}</span
-                  ></a
-                >
+                <a href="#"><span class="user-at">${" @" + this.tweet.user.nickname}</span></a>
+              <span class="date"> - ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</span>
               </div>
               <div class="delete" @click="${e => this.deleteTweet(e)}">
                 <i>X</i>
