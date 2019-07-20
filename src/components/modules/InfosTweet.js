@@ -15,7 +15,7 @@ export class InfosTweet extends LitElement {
         return {
             tweet: Object,
             active: Boolean,
-            responses: []
+            responses: [],
         };
     }
 
@@ -40,8 +40,8 @@ export class InfosTweet extends LitElement {
                     <div class="tweet-container">
                         <tweet-elem .tweet="${this.tweet}" noAction=true></tweet-elem>
                         ${(this.responses.length > 0) ?
-            this.responses.map(item => {
-                return html`<tweet-response .tweet="${item}"></tweet-response>`
+            this.responses.map((item, key) => {
+                return html`<tweet-response .tweet="${item}" key=${key} last=${this.responses.length-1}></tweet-response>`
             }) : html``}
                     </div>
                     <button id="respond" @click="${this.handleClick}">Respond</button>
@@ -95,9 +95,8 @@ export class InfosTweet extends LitElement {
                 align-items: center;
                 justify-content: space-between;
                 height: 48px;
-                border-bottom: solid #eeeeee 1px;
-                box-shadow: #aaaaaa 0px 3px 4px 0px;
                 margin-bottom: 10px;
+                background-color: var(--app-bg-component-color);
             }
 
             .header-sidebar > h2 {
