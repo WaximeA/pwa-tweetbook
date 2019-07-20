@@ -1,9 +1,9 @@
 import { LitElement, html, css } from "lit-element/lit-element";
-
 import firebase from "firebase/app";
 import "firebase/storage";
 import "firebase/auth";
 import { EventConstant } from "../../../Constants/event.constant";
+import lozad from 'lozad';
 
 export default class UserInfo extends LitElement {
   constructor() {
@@ -247,6 +247,8 @@ export default class UserInfo extends LitElement {
           });
       }
     });
+      const observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
+      observer.observe();
   }
 
   render() {
@@ -254,12 +256,8 @@ export default class UserInfo extends LitElement {
     <div class="phone">
       <div class="content">
         <div class="sidebar-header">
-            <div class="image" style="background-image: url('${
-              this.avatar
-            }');"></div>
-            <div class="banner" style="background-image: url('${
-              this.banner
-            }');"></div>
+            <div class="image lozad" data-background-image="${this.avatar}"></div>
+            <div class="banner lozad" data-background-image="${this.banner}"></div>
         </div>
         <div class="sidebar-infos-user">
             <div class="name">${this.name} ${this.surname}</div>
