@@ -41,6 +41,8 @@ export default class Tweet extends LitElement {
   static get styles() {
     return css`
       .tweet {
+        width: 70%;
+        margin: auto;
         min-height: 80px;
         display: flex;
         border-bottom: 1px solid var(--app-bg-component-color);
@@ -92,7 +94,7 @@ export default class Tweet extends LitElement {
         color: var(--app-contrast-text-color);
         font-size: 14px;
       }
-      
+
       .date {
         text-align: right;
         font-size: 14px;
@@ -122,6 +124,13 @@ export default class Tweet extends LitElement {
         background-size: cover;
         border-radius: 8px;
         margin-top: 2vh;
+      }
+
+      @media screen and (max-width: 900px) {
+        .tweet {
+          width: 95%;
+          margin:0px;
+        }
       }
     `;
   }
@@ -174,7 +183,10 @@ export default class Tweet extends LitElement {
                       >${" @" + this.tweet.data.user.nickname}</span
                     >
                   </a>
-                  <span class="date"> - ${date.toLocaleDateString()} ${date.toLocaleTimeString()}</span>
+                  <span class="date">
+                    - ${date.toLocaleDateString()}
+                    ${date.toLocaleTimeString()}</span
+                  >
                 </div>
                 ${this.noAction
                   ? null

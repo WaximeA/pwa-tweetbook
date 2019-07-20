@@ -48,7 +48,7 @@ export default class TweetHeader extends LitElement {
         <tweet-sidebar></tweet-sidebar>
         <div class="brand">
           <img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo" />
-          <div>tweetbook</div>
+          <div>TWEETBOOK</div>
         </div>
       </header>
     `;
