@@ -58,6 +58,10 @@ export class TweetResponse extends LitElement {
        .divider-last {
            height: 50%;
        }
+       
+       .none {
+        display: none;
+       }
 
       .user-pic-box {
         width: 100px;
@@ -137,7 +141,7 @@ export class TweetResponse extends LitElement {
         return html`
       <div class="tweet" >
         <div class="user-pic-box">
-        <div class="divider ${this.last === this.key ? "divider-last" : ""} ${this.key == 0 ? "divider-first" : ""}"></div>
+        <div class="divider ${this.last === this.key && this.key == 0 ? "none" : ""} ${this.last === this.key ? "divider-last" : ""} ${this.key == 0 ? "divider-first" : ""}"></div>
           <div
             class="user-pic lozad center-absolute"
             style="background-image: url(${this.tweet.user.loadedAvatar});"

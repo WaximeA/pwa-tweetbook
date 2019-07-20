@@ -35,7 +35,9 @@ export class InfosTweet extends LitElement {
                 <div class="sidebar ${this.active ? 'display' : ''}">
                     <div class="header-sidebar">
                         <h2>Tweet</h2>
-                        <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}></button>
+                        <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}>            
+                            <img src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png" alt="Side bar logo">
+                        </button>
                     </div>
                     <div class="tweet-container">
                         <tweet-elem .tweet="${this.tweet}" noAction=true></tweet-elem>
@@ -112,8 +114,7 @@ export class InfosTweet extends LitElement {
                 align-content: center;
                 justify-content: center;
                 width: 50px;
-                background: url("../../../src/assets/images/Back-Arrow-Icon-PNG-715x715.png") no-repeat center;
-                background-size: 100%;
+                background: none;
             }
         `
     }

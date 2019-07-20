@@ -196,9 +196,8 @@ export default class Tweet extends LitElement {
                   : html`
                       <div class="delete" @click="${e => this.deleteTweet(e)}">
                         <img
-                          src="./src/assets/images/cross-icon.png"
+                          src="/src/assets/images/icons/baseline_highlight_off_white_18dp.png"
                           alt="delete_tweet"
-                          width="10"
                         />
                       </div>
                     `}
@@ -214,7 +213,7 @@ export default class Tweet extends LitElement {
               ? null
               : html`
                   <button-action
-                    .tweet=${this.tweet.data}
+                    .tweet=${this.tweet}
                     @action="${e => this.action(e)}"
                   ></button-action>
                 `}

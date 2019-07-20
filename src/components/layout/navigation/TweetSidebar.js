@@ -49,10 +49,10 @@ export default class TweetSidebar extends LitElement {
       }
 
       .collapse-button img {
-        width: 20px;
         position: relative;
         left: 0%;
         padding: 12px;
+        width: 30px;
       }
 
       #sidebar {
@@ -166,7 +166,7 @@ export default class TweetSidebar extends LitElement {
         id="menu-icon"
         @click=${this.displaySidebar}
       >
-        <img src="./src/assets/images/menu-icon.png" alt="Side bar logo" width="30" />
+        <img src="/src/assets/images/icons/baseline_menu_white_18dp.png" alt="Side bar logo" />
       </button>
       <div id="sidebar" class="${this.active ? "display" : ""}">
         <div class="buttons">
@@ -175,7 +175,7 @@ export default class TweetSidebar extends LitElement {
             id="cross-icon"
             @click=${this.displaySidebar}
           >
-            <img src="./src/assets/images/cross-icon.png" alt="Side bar logo" />
+            <img src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png" alt="Side bar logo" />
           </button>
           <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
         </div>

@@ -24,6 +24,10 @@ export default class ButtonAction extends LitElement {
         border: none;
         color: var(--app-secondary-text-color);
       }
+      
+      .btn img {
+        width: 2em;
+      }
     `;
   }
 
@@ -34,25 +38,30 @@ export default class ButtonAction extends LitElement {
   }
 
   render() {
+    const json_user = localStorage.getItem("user");
+    const user = JSON.parse(json_user);
+    const exist = user.likes.filter(item => {
+      return item === this.tweet.id;
+    });
     return html`
       <div class="button-action">
         <button
           class="btn"
           @click="${() => this.handleClick(EventConstant.RESPONSE)}"
         >
-          💬 ${this.tweet.responses.length}
+          <img src="/src/assets/images/icons/baseline_chat_white_18dp.png" alt="réponses"> ${this.tweet.data.responses.length}
         </button>
         <button
           class="btn"
           @click="${() => this.handleClick(EventConstant.LIKE)}"
         >
-          👍 ${this.tweet.like}
+          <img src="/src/assets/images/icons/baseline_favorite${exist.length === 0 ? "_border" : ""}_white_18dp.png" alt="like"> ${this.tweet.data.like}
         </button>
         <button
           class="btn"
           @click="${() => this.handleClick(EventConstant.RT)}"
         >
-          🔃
+          <img src="/src/assets/images/icons/baseline_repeat_white_18dp.png " alt="retweet">
         </button>
       </div>
     `;
