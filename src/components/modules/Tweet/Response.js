@@ -129,7 +129,7 @@ export class TweetResponse extends LitElement {
         <div class="divider ${this.last === this.key ? "divider-last" : ""} ${this.key == 0 ? "divider-first" : ""}"></div>
           <div
             class="user-pic center-absolute"
-            style="background-image: url();"
+            style="background-image: url(${this.tweet.user.loadedAvatar});"
           ></div>
         </div>
         <div class="content">

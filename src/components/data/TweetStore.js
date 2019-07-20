@@ -74,7 +74,7 @@ class TweetStore extends LitElement {
             like: 0
         }
 
-        if(detail.image){
+        if (detail.image) {
             firebase.storage().ref("tweetimage/" + firebase.auth().currentUser.uid + new Date().valueOf() + '.' + detail.image.name.split('.').pop()).put(detail.image).then((metadata) => {
                 metadata.ref.getDownloadURL().then((url) => {
                     tweetdata.image = url;
@@ -83,7 +83,7 @@ class TweetStore extends LitElement {
                     });
                 });
             });
-        }else{
+        } else {
             firebase.firestore().collection(this.collection).add(tweetdata).then(resp => {
                 console.log(resp);
             });
@@ -103,70 +103,70 @@ class TweetStore extends LitElement {
     dataUpdated() {
         this.dispatchEvent(new CustomEvent("child-changed", {detail: this.data}));
     }
-  
-  // -- Gestion des retweets
-  retweet({ detail }) {
-    const connecteduser = JSON.parse(localStorage.getItem("user"));
-    if (!connecteduser) throw new Error("User's not logged");
-    firebase
-    .firestore()
-    .collection(this.collection)
-    .add({
-      content: detail.tweet.data.content,
-      rtuser: {
-        id:connecteduser.id,
-        nickname:connecteduser.nickname
-      },
-      date: new Date().getTime(),
-      user: {
-        id: detail.tweet.data.user.id,
-        avatar: detail.tweet.data.user.avatar,
-        banner: detail.tweet.data.user.banner,
-        name: detail.tweet.data.user.name,
-        surname: detail.tweet.data.user.surname,
-        nickname: detail.tweet.data.user.nickname
-      },
-      responses: [],
-      like: 0,
-      image: detail.tweet.data.image?detail.tweet.data.image:null
-    })
-    .then(resp => {
-      console.log(resp);
-    }); 
-  }
 
-  // -- Gestion des likes
-  like({detail}) {
-      let like = detail.tweet.data.like;
-      //on check si on retrouve le like dans la liste des likes de l'user
-      const json_user = localStorage.getItem("user");
-      const user = JSON.parse(json_user);
-      const exist = user.likes.filter(item => {
-          return item === detail.tweet.id;
-      });
-      if (exist.length === 0) {
-          like++;
-          user.likes.push(detail.tweet.id);
-          localStorage.setItem("user", JSON.stringify(user));
-      } else {
-          like--;
-          user.likes = user.likes.filter(item => {
-              return item !== detail.tweet.id;
-          });
-          localStorage.setItem("user", JSON.stringify(user));
-      }
-      firebase
-          .firestore()
-          .collection(collectionConstant.USER_INFOS_COLLECTION)
-          .doc(user.id)
-          .update(user);
-      firebase
-          .firestore()
-          .collection(this.collection)
-          .doc(detail.tweet.id)
-          .update({
-              like: like
-          });
+    // -- Gestion des retweets
+    retweet({detail}) {
+        const connecteduser = JSON.parse(localStorage.getItem("user"));
+        if (!connecteduser) throw new Error("User's not logged");
+        firebase
+            .firestore()
+            .collection(this.collection)
+            .add({
+                content: detail.tweet.data.content,
+                rtuser: {
+                    id: connecteduser.id,
+                    nickname: connecteduser.nickname
+                },
+                date: new Date().getTime(),
+                user: {
+                    id: detail.tweet.data.user.id,
+                    avatar: detail.tweet.data.user.avatar,
+                    banner: detail.tweet.data.user.banner,
+                    name: detail.tweet.data.user.name,
+                    surname: detail.tweet.data.user.surname,
+                    nickname: detail.tweet.data.user.nickname
+                },
+                responses: [],
+                like: 0,
+                image: detail.tweet.data.image ? detail.tweet.data.image : null
+            })
+            .then(resp => {
+                console.log(resp);
+            });
+    }
+
+    // -- Gestion des likes
+    like({detail}) {
+        let like = detail.tweet.data.like;
+        //on check si on retrouve le like dans la liste des likes de l'user
+        const json_user = localStorage.getItem("user");
+        const user = JSON.parse(json_user);
+        const exist = user.likes.filter(item => {
+            return item === detail.tweet.id;
+        });
+        if (exist.length === 0) {
+            like++;
+            user.likes.push(detail.tweet.id);
+            localStorage.setItem("user", JSON.stringify(user));
+        } else {
+            like--;
+            user.likes = user.likes.filter(item => {
+                return item !== detail.tweet.id;
+            });
+            localStorage.setItem("user", JSON.stringify(user));
+        }
+        firebase
+            .firestore()
+            .collection(collectionConstant.USER_INFOS_COLLECTION)
+            .doc(user.id)
+            .update(user);
+        firebase
+            .firestore()
+            .collection(this.collection)
+            .doc(detail.tweet.id)
+            .update({
+                like: like
+            });
     }
 
     // -- Response aux tweets
@@ -176,33 +176,55 @@ class TweetStore extends LitElement {
         if (!user) throw new Error("User's not logged");
 
         const userInfos = JSON.parse(user);
-        const datas = {
-            responses: [
-                ...parent.data.responses,
-                {
-                    content: newTweet,
-                    date: new Date().getTime(),
-                    user: {
-                        id: userInfos.id,
-                        avatar: userInfos.avatar,
-                        banner: userInfos.banner,
-                        name: userInfos.name,
-                        surname: userInfos.surname,
-                        nickname: userInfos.nickname
-                    },
-                    responses: [],
-                    like: 0
-                }
-            ]
-        };
-        firebase
-            .firestore()
-            .collection(this.collection)
-            .doc(parent.id)
-            .update(datas)
-            .then(() => {
-                document.dispatchEvent(new CustomEvent(EventConstant.RESPONSE_TWEET_DONE, {detail: datas}))
-            });
+        new Promise((resolve, reject) => {
+            try {
+                firebase
+                    .storage()
+                    .ref("avatar")
+                    .child(userInfos.avatar)
+                    .getDownloadURL()
+                    .then(url => {
+                        console.log(url);
+                        resolve(url);
+                    })
+                    .catch(e => {
+                        resolve("/src/assets/images/user.svg");
+                    });
+            } catch (e) {
+                resolve("/src/assets/images/user.svg");
+            }
+        }).then(loadedAvatar => {
+            console.log(userInfos.avatar);
+            console.log(loadedAvatar);
+            const datas = {
+                responses: [
+                    ...parent.data.responses,
+                    {
+                        content: newTweet,
+                        date: new Date().getTime(),
+                        user: {
+                            id: userInfos.id,
+                            avatar: userInfos.avatar,
+                            banner: userInfos.banner,
+                            name: userInfos.name,
+                            surname: userInfos.surname,
+                            nickname: userInfos.nickname,
+                            loadedAvatar
+                        },
+                        responses: [],
+                        like: 0
+                    }
+                ]
+            };
+            firebase
+                .firestore()
+                .collection(this.collection)
+                .doc(parent.id)
+                .update(datas)
+                .then(() => {
+                    document.dispatchEvent(new CustomEvent(EventConstant.RESPONSE_TWEET_DONE, {detail: datas}))
+                });
+        });
     }
 }
 
