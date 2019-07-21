@@ -218,10 +218,11 @@ class TweetStore extends LitElement {
 
     getLoadedAvatar(user = null) {
         return new Promise(resolve => {
-            if (!user) {
+            if (user === null) {
                 const userInfos = localStorage.getItem("user");
+                console.log(userInfos);
                 if (!userInfos) throw new Error("User's not logged");
-                user = JSON.parse(user);
+                user = JSON.parse(userInfos);
             }
             try {
                 firebase
