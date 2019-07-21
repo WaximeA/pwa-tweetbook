@@ -148,11 +148,8 @@ export default class Tweet extends LitElement {
       const date = new Date(this.tweet.data.date);
       return html`
         <div class="tweet" @click="${e => this.showInfos(e)}">
-          <div class="user-pic-box ${this.tweet.data.rtuser ? "retweet-user-pic-box" : ""}">
-            <div
-              class="user-pic lozad"
-              style="background-image:url('${this.tweet.data.user.loadedAvatar}')"
-            ></div>
+          <div class="user-pic-box${this.tweet.data.rtuser ? " retweet-user-pic-box" : ""}">
+            <div class="user-pic lozad" data-background-image="${this.tweet.data.user.loadedAvatar}"></div>
           </div>
           <div class="content">
             <div class="content-text">
