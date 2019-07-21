@@ -47,7 +47,6 @@ export class TweetResponse extends LitElement {
         left: 50%;
         transform: translateX(-50%);
         z-index: 10;
-<<<<<<< HEAD
        }
        
        .divider-first {
@@ -62,19 +61,6 @@ export class TweetResponse extends LitElement {
        .none {
         display: none;
        }
-=======
-      }
-
-      .divider-first {
-        top: 50%;
-        height: 50%;
-      }
-
-      .divider-last {
-        height: 50%;
-      }
->>>>>>> 7cd4c513ffec2725702bfe12d191da94c2a92eb1
-
       .user-pic-box {
         width: 100px;
         display: block;
