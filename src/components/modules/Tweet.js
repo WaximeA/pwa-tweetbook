@@ -10,6 +10,7 @@ export default class Tweet extends LitElement {
     super();
     this.tweet = {};
     this.noAction = false;
+    this.observer = null;
   }
 
   static get properties() {
@@ -20,8 +21,13 @@ export default class Tweet extends LitElement {
   }
 
   firstUpdated(_changedProperties) {
-    const observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
-    observer.observe();
+    this.observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
+    this.observer.observe();
+  }
+
+  updated(_changedProperties) {
+    this.observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
+    this.observer.observe();
   }
 
   static get styles() {

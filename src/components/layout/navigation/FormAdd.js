@@ -206,7 +206,7 @@ export default class FormAdd extends LitElement {
               </button>
             </div>
           </div>
-          ${this.parent ? html`<p class="response-to">En réponse à @${this.parent.data.rtuser.nickname}</p>` : ""}
+          ${this.parent ? html`<p class="response-to">En réponse à @${this.parent.data.rtuser ? this.parent.data.rtuser.nickname : this.parent.data.user.nickname}</p>` : ""}
           <textarea
             name=""
             id="new-tweet"

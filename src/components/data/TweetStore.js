@@ -27,6 +27,7 @@ class TweetStore extends LitElement {
                 ref.docChanges().forEach(change => {
                     const {doc, type} = change;
                     if (type === "added") {
+                        console.log('added');
                         this.data = [{id: doc.id, data: doc.data()}, ...this.data];
                         this.dataUpdated();
                     } else if (type === "removed") {
@@ -59,15 +60,12 @@ class TweetStore extends LitElement {
         if (!user) throw new Error("User's not logged");
         const userInfos = JSON.parse(user);
         this.getLoadedAvatar().then(loadedAvatar => {
-
-            console.log(loadedAvatar);
             let tweetdata = {
                 content: detail.newTweet,
                 date: new Date().getTime(),
                 user: {
                     id: userInfos.id,
                     avatar: userInfos.avatar,
-                    banner: userInfos.banner,
                     name: userInfos.name,
                     surname: userInfos.surname,
                     nickname: userInfos.nickname,
@@ -76,8 +74,8 @@ class TweetStore extends LitElement {
                 responses: [],
                 like: 0
             };
-
-            if (detail.image) {
+            if (detail.image.name) {
+                console.log(detail.image);
                 firebase.storage().ref("tweetimage/" + firebase.auth().currentUser.uid + new Date().valueOf() + '.' + detail.image.name.split('.').pop()).put(detail.image).then((metadata) => {
                     metadata.ref.getDownloadURL().then((url) => {
                         tweetdata.image = url;
@@ -127,12 +125,12 @@ class TweetStore extends LitElement {
                     user: {
                         id: detail.tweet.data.user.id,
                         avatar: detail.tweet.data.user.avatar,
-                        banner: detail.tweet.data.user.banner,
                         name: detail.tweet.data.user.name,
                         surname: detail.tweet.data.user.surname,
                         nickname: detail.tweet.data.user.nickname,
                         loadedAvatar
                     },
+                    tweetRt: detail.tweet,
                     responses: [],
                     like: 0,
                     image: detail.tweet.data.image ? detail.tweet.data.image : null
@@ -179,6 +177,7 @@ class TweetStore extends LitElement {
 
     // -- Response aux tweets
     response({detail}) {
+        console.log(detail);
         const {parent, newTweet} = detail;
         const user = localStorage.getItem("user");
         if (!user) throw new Error("User's not logged");
@@ -194,7 +193,6 @@ class TweetStore extends LitElement {
                         user: {
                             id: userInfos.id,
                             avatar: userInfos.avatar,
-                            banner: userInfos.banner,
                             name: userInfos.name,
                             surname: userInfos.surname,
                             nickname: userInfos.nickname,
@@ -220,7 +218,6 @@ class TweetStore extends LitElement {
         return new Promise(resolve => {
             if (user === null) {
                 const userInfos = localStorage.getItem("user");
-                console.log(userInfos);
                 if (!userInfos) throw new Error("User's not logged");
                 user = JSON.parse(userInfos);
             }
@@ -231,7 +228,6 @@ class TweetStore extends LitElement {
                     .child(user.avatar)
                     .getDownloadURL()
                     .then(url => {
-                        console.log(url);
                         resolve(url);
                     })
                     .catch(e => {
