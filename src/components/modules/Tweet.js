@@ -41,6 +41,10 @@ export default class Tweet extends LitElement {
         display: block;
         margin-right: 10px;
       }
+      
+      .retweet-user-pic-box {
+        margin-top: 35px;
+      }
 
       .user-pic {
         background-size: 71px 71px;
@@ -82,6 +86,7 @@ export default class Tweet extends LitElement {
       }
 
       .date {
+        display: inline-block;
         text-align: right;
         font-size: 14px;
         color: #5a5a5a;
@@ -101,6 +106,7 @@ export default class Tweet extends LitElement {
       .rt-info-box {
         display: flex;
         align-items: center;
+        margin: 10px 0;
       }
 
       .tweet-image-box {
@@ -136,7 +142,7 @@ export default class Tweet extends LitElement {
       const date = new Date(this.tweet.data.date);
       return html`
         <div class="tweet" @click="${e => this.showInfos(e)}">
-          <div class="user-pic-box">
+          <div class="user-pic-box ${this.tweet.data.rtuser ? "retweet-user-pic-box" : ""}">
             <div
               class="user-pic lozad"
               style="background-image:url('${this.tweet.data.user.loadedAvatar}')"
@@ -147,7 +153,7 @@ export default class Tweet extends LitElement {
               ${this.tweet.data.rtuser
                 ? html`
                     <div class="rt-info-box">
-                      🔃&nbsp;
+                      <img src="/src/assets/images/icons/baseline_repeat_white_18dp.png" alt="retweet" width="20">
                       <a href="#" style="text-decoration:none;">
                         <span class="user-at"
                           >@${this.tweet.data.rtuser.nickname}</span

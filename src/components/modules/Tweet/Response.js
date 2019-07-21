@@ -31,10 +31,19 @@ export class TweetResponse extends LitElement {
     return css`
       .tweet {
         min-height: 100px;
+        width: 60%;
+        margin: auto;
         display: flex;
         flex-direction: row;
         padding: 0 15px;
         position: relative;
+      }
+      
+       @media screen and (max-width: 900px) {
+        .tweet {
+          width: 95%;
+          margin:0px;
+        }
       }
 
       .divider {
@@ -116,6 +125,7 @@ export class TweetResponse extends LitElement {
         text-align: right;
         font-size: 14px;
         color: #5a5a5a;
+        display: inline-block;
       }
 
       .user-at {

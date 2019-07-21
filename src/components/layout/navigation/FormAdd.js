@@ -1,46 +1,46 @@
-import { LitElement, html, css } from "lit-element/lit-element";
-import { EventConstant } from "../../../Constants/event.constant";
+import {LitElement, html, css} from "lit-element/lit-element";
+import {EventConstant} from "../../../Constants/event.constant";
 
 export default class FormAdd extends LitElement {
-  constructor() {
-    super();
-    this.newTweet = "";
-    this.active = false;
-    this.parent = null;
-    this.edit = false;
-    this.image = {};
-  }
+    constructor() {
+        super();
+        this.newTweet = "";
+        this.active = false;
+        this.parent = null;
+        this.edit = false;
+        this.image = {};
+    }
 
-  static get properties() {
-    return {
-      newTweet: String,
-      active: Boolean,
-      parent: Object,
-      edit: Boolean,
-      image: Object
-    };
-  }
+    static get properties() {
+        return {
+            newTweet: String,
+            active: Boolean,
+            parent: Object,
+            edit: Boolean,
+            image: Object
+        };
+    }
 
-  firstUpdated(_changedProperties) {
-    document.addEventListener(EventConstant.ASK_NEW_TWEET, () => {
-      console.log("test");
-      this.active = true;
-    });
-    document.addEventListener(EventConstant.RESPONSE, ({ detail }) => {
-      if (!detail.dontNeedDisplay) {
-        document.dispatchEvent(
-          new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {
-            detail: detail.tweet
-          })
-        );
-      }
-      this.active = true;
-      this.parent = detail.tweet;
-    });
-  }
+    firstUpdated(_changedProperties) {
+        document.addEventListener(EventConstant.ASK_NEW_TWEET, () => {
+            console.log("test");
+            this.active = true;
+        });
+        document.addEventListener(EventConstant.RESPONSE, ({detail}) => {
+            if (!detail.dontNeedDisplay) {
+                document.dispatchEvent(
+                    new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {
+                        detail: detail.tweet
+                    })
+                );
+            }
+            this.active = true;
+            this.parent = detail.tweet;
+        });
+    }
 
-  static get styles() {
-    return css`
+    static get styles() {
+        return css`
       * {
         box-sizing: border-box;
       }
@@ -105,9 +105,8 @@ export default class FormAdd extends LitElement {
         align-content: center;
         justify-content: center;
         width: 20px;
-        background: url("../../../../src/assets/images/cross-icon.png")
-          no-repeat center;
         background-size: 100%;
+        background: none;
       }
 
       .send-button {
@@ -148,52 +147,55 @@ export default class FormAdd extends LitElement {
         transform: translateY(-0.2em);
       }
     `;
-  }
-
-  handleForm(e) {
-    e.preventDefault();
-    if (this.parent) {
-      document.dispatchEvent(
-        new CustomEvent(EventConstant.RESPONSE_TWEET, {
-          detail: {
-            newTweet: this.newTweet,
-            image: this.image,
-            parent: this.parent
-          }
-        })
-      );
-    } else {
-      document.dispatchEvent(
-        new CustomEvent(EventConstant.NEW_TWEET, {
-          detail: {
-            newTweet: this.newTweet,
-            image: this.image
-          }
-        })
-      );
     }
-    document.dispatchEvent(
-      new CustomEvent(EventConstant.DISPLAY_SIDEBAR, { detail: false })
-    );
-    this.newTweet = "";
-    this.active = false;
-  }
 
-  handleClick(e) {
-    this.active = !this.active;
-    this.shadowRoot.querySelector("#new-tweet").focus();
-  }
+    handleForm(e) {
+        e.preventDefault();
+        if (this.newTweet === "") return;
+        if (this.parent) {
+            document.dispatchEvent(
+                new CustomEvent(EventConstant.RESPONSE_TWEET, {
+                    detail: {
+                        newTweet: this.newTweet,
+                        image: this.image,
+                        parent: this.parent
+                    }
+                })
+            );
+        } else {
+            document.dispatchEvent(
+                new CustomEvent(EventConstant.NEW_TWEET, {
+                    detail: {
+                        newTweet: this.newTweet,
+                        image: this.image
+                    }
+                })
+            );
+        }
+        document.dispatchEvent(
+            new CustomEvent(EventConstant.DISPLAY_SIDEBAR, {detail: false})
+        );
+        this.newTweet = "";
+        this.active = false;
+    }
 
-  handleImageUploadChange(e) {
-    this.image = e.target.files[0];
-  }
+    handleClick(e) {
+        this.active = !this.active;
+        this.shadowRoot.querySelector("#new-tweet").focus();
+    }
 
-  render() {
-    return html`
+    handleImageUploadChange(e) {
+        this.image = e.target.files[0];
+    }
+
+    render() {
+        return html`
       <div class="form-add ${this.active ? "active" : ""}">
         <form @submit="${this.handleForm}">
           <div class="form-header">
-            <button class="collapse-button" @click=${this.closeForm}></button>
+            <button class="collapse-button" @click=${this.closeForm}>
+                <img src="/src/assets/images/icons/baseline_highlight_off_white_18dp.png" alt="">
+            </button>
             <div class="actions">
               <button class="send-button" type="submit">
                 ${this.parent ? `Respond` : `Send`}
@@ -208,21 +210,23 @@ export default class FormAdd extends LitElement {
             placeholder="${this.edit ? "Tweet your response" : "What's new ?"}"
           >
           </textarea>
-          <input
+          ${this.parent === null ? html`
+            <input
             class="input-file-html5"
             type="file"
             id="image"
             accept="image/*"
             @change="${this.handleImageUploadChange}"
-          />
+            />` : ""
+            }
         </form>
       </div>
     `;
-  }
+    }
 
-  closeForm() {
-    this.active = false;
-  }
+    closeForm() {
+        this.active = false;
+    }
 }
 
 customElements.define("form-add", FormAdd);

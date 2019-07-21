@@ -67,9 +67,9 @@ class TweetbookApp extends LitElement {
                   `
             }
             </div>
-            <button id="new-tweet" class="${
+            <button title="écrire un nouveau tweet" id="new-tweet" class="${
               !this.displayButton ? `none` : ``
-            }" @click="${this.handleNewTweet}">Tweet</button>
+            }" @click="${this.handleNewTweet}"><img src="/src/assets/images/icons/baseline_create_white_18dp.png" alt=""></button>
             <form-add></form-add>
     `;
   }
@@ -101,17 +101,24 @@ class TweetbookApp extends LitElement {
 
       #new-tweet {
         text-decoration: none;
-        background-color: #55acee;
-        color: #fff;
-        padding: 8px 20px;
-        border-radius: 5px;
         transition: 0.2s;
         position: fixed;
         bottom: 20px;
         right: 20px;
-        border: none;
-        box-shadow: var(--app-grey-color) 2px 2px 5px;
-      }
+        font-size: 14px;
+        color: white;
+        line-height: 20px;
+        margin-right: 20px;
+        border-width: initial;
+        border-style: none;
+        border-color: initial;
+        border-image: initial;
+        background: rgb(85, 172, 238);
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        padding: 0;
+}
 
       #new-tweet:hover{
         background-color: #55dddd;
@@ -120,6 +127,8 @@ class TweetbookApp extends LitElement {
       .none {
         display: none;
       }
+      
+    
     `;
   }
 }

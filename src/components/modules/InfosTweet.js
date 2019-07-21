@@ -34,10 +34,13 @@ export class InfosTweet extends LitElement {
             <div class="infos-tweet">
                 <div class="sidebar ${this.active ? 'display' : ''}">
                     <div class="header-sidebar">
+                        <button class="primary-button" id="respond" @click="${this.handleClick}">Respond</button>
+
                         <h2>Tweet</h2>
                         <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}>            
                             <img src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png" alt="Side bar logo">
                         </button>
+
                     </div>
                     <div class="tweet-container">
                         <tweet-elem .tweet="${this.tweet}" noAction=true></tweet-elem>
@@ -46,7 +49,6 @@ export class InfosTweet extends LitElement {
                 return html`<tweet-response .tweet="${item}" key=${key} last=${this.responses.length-1}></tweet-response>`
             }) : html``}
                     </div>
-                    <button id="respond" @click="${this.handleClick}">Respond</button>
                 <div>
             </div>
 `;
@@ -115,6 +117,20 @@ export class InfosTweet extends LitElement {
                 justify-content: center;
                 width: 50px;
                 background: none;
+            }
+
+            .primary-button {
+                font-size: 14px;
+                color: white;
+                line-height: 20px;
+                margin-right: 20px;
+                border-width: initial;
+                border-style: none;
+                border-color: initial;
+                border-image: initial;
+                background: rgb(85, 172, 238);
+                padding: 5px 30px;
+                border-radius: 100px;
             }
         `
     }
