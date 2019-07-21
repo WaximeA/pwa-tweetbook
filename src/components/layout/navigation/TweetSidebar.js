@@ -166,7 +166,10 @@ export default class TweetSidebar extends LitElement {
         id="menu-icon"
         @click=${this.displaySidebar}
       >
-        <img src="/src/assets/images/icons/baseline_menu_white_18dp.png" alt="Side bar logo" />
+        <img
+          src="/src/assets/images/icons/baseline_menu_white_18dp.png"
+          alt="Side bar logo"
+        />
       </button>
       <div id="sidebar" class="${this.active ? "display" : ""}">
         <div class="buttons">
@@ -175,7 +178,10 @@ export default class TweetSidebar extends LitElement {
             id="cross-icon"
             @click=${this.displaySidebar}
           >
-            <img src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png" alt="Side bar logo" />
+            <img
+              src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png"
+              alt="Side bar logo"
+            />
           </button>
           <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
         </div>
