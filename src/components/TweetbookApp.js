@@ -1,47 +1,51 @@
-import { LitElement, html, css } from "lit-element";
+import {LitElement, html, css} from "lit-element";
 import "./data/TweetStore";
 import "./modules/Tweet";
 import "./modules/InfosTweet";
 import "./layout/navigation/TweetHeader";
-import { EventConstant } from "../Constants/event.constant";
-import { collectionConstant } from "../Constants/collection.constant";
+import {EventConstant} from "../Constants/event.constant";
+import {collectionConstant} from "../Constants/collection.constant";
 import "./layout/navigation/FormAdd";
 
 class TweetbookApp extends LitElement {
-  constructor() {
-    super();
-    this.tweets = [];
-    this.displayButton = true;
-  }
+    constructor() {
+        super();
+        this.tweets = [];
+        this.displayButton = true;
+        this.fetched = false;
+    }
 
-  static get properties() {
-    return {
-      tweets: Array,
-      displayButton: Boolean
-    };
-  }
+    static get properties() {
+        return {
+            tweets: Array,
+            displayButton: Boolean,
+            fetched: Boolean
+        };
+    }
 
-  firstUpdated(_changedProperties) {
-    this.shadowRoot.querySelector("#header").style.visibility = "hidden";
-    document.addEventListener(EventConstant.RT, console.log);
-    document.addEventListener(EventConstant.NEW_TWEET, () => {
-      this.displayButton = true;
-    });
-  }
+    firstUpdated(_changedProperties) {
+        this.shadowRoot.querySelector("#header").style.visibility = "hidden";
 
-  childChanged(e) {
-    this.tweets = e.detail;
-    document.querySelector("#shadow").style.display = "none";
-    this.shadowRoot.querySelector("#header").style.visibility = "visible";
-  }
+        document.querySelector("#shadow").style.display = "none";
+        this.shadowRoot.querySelector("#header").style.visibility = "visible";
+        document.addEventListener(EventConstant.RT, console.log);
+        document.addEventListener(EventConstant.NEW_TWEET, () => {
+            this.displayButton = true;
+        });
+    }
 
-  handleNewTweet() {
-    document.dispatchEvent(new CustomEvent(EventConstant.ASK_NEW_TWEET));
-    this.displayButton = false;
-  }
+    childChanged(e) {
+        this.tweets = e.detail;
+        this.fetched = true;
+    }
 
-  render() {
-    return html` 
+    handleNewTweet() {
+        document.dispatchEvent(new CustomEvent(EventConstant.ASK_NEW_TWEET));
+        this.displayButton = false;
+    }
+
+    render() {
+        return html` 
             <tweet-store 
                 collection="${collectionConstant.TWEET_COLLECTION}" 
                 @child-changed="${this.childChanged}"
@@ -49,33 +53,37 @@ class TweetbookApp extends LitElement {
             <tweet-header id="header"></tweet-header>
             <infos-tweet active></infos-tweet>
             ${
-              this.tweets.length !== 0
-                ? html`
+            this.fetched !== false
+                ? this.tweets.length === 0 ? html`<div class="tweet-container"><p class="no-tweet">There is no tweet yet :(</p></div>` : html`
                     <div class="tweet-container">
                       ${this.tweets.map(
-                        item =>
-                          html`
+                item =>
+                    html`
                             <tweet-elem .tweet="${item}"></tweet-elem>
                           `
-                      )}
+                )}
                     </div>
                   `
                 : html`
                     <div style="margin:auto; width:100%; text-align:center;">
-                      Loading ...
+                      <div class="skeleton" active>
+                          <div class="hero"></div>
+                          <div class="hero"></div>
+                          <div class="hero"></div>
+                        </div>
                     </div>
                   `
             }
             </div>
             <button title="écrire un nouveau tweet" id="new-tweet" class="${
-              !this.displayButton ? `none` : ``
+            !this.displayButton ? `none` : ``
             }" @click="${this.handleNewTweet}"><img src="/src/assets/images/icons/baseline_create_white_18dp.png" alt=""></button>
             <form-add></form-add>
     `;
-  }
+    }
 
-  static get styles() {
-    return css`
+    static get styles() {
+        return css`
       * {
         box-sizing: border-box;
       }
@@ -128,9 +136,54 @@ class TweetbookApp extends LitElement {
         display: none;
       }
       
+      .no-tweet {
+        color: var(--app-secondary-text-color);
+        font-size: 12px;
+      }
+      .skeleton {
+        position: relative;
+        margin: 1rem;
+      }
+
+      .skeleton .hero {
+        margin: auto;
+        min-height: 80px;
+        background: var(--app-grey-color);
+        margin-bottom: 1rem;
+        border-radius: 5px;
+        width: 60%;
+      }
+
+      .skeleton::after {
+        display: block;
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateX(-100%);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(49, 49, 49, 0.2),
+          transparent
+        );
+        animation: loading 1.5s infinite;
+      }
+
+      @keyframes loading {
+        100% {
+          transform: translateX(100%);
+        }
+      }
+      @media screen and (max-width: 900px) {
+        .skeleton .hero {
+          width: 100%;
+        }
+      }
     
     `;
-  }
+    }
 }
 
 customElements.define("tweetbook-app", TweetbookApp);

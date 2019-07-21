@@ -64,6 +64,10 @@ export default class FormAdd extends LitElement {
         top: 0;
       }
 
+        .response-to {
+            padding: 10px;
+        }
+
       form input {
         width: 100%;
         padding: 10px;
@@ -202,12 +206,13 @@ export default class FormAdd extends LitElement {
               </button>
             </div>
           </div>
+          ${this.parent ? html`<p class="response-to">En réponse à @${this.parent.data.rtuser.nickname}</p>` : ""}
           <textarea
             name=""
             id="new-tweet"
             @input="${e => (this.newTweet = e.target.value)}"
             .value="${this.newTweet}"
-            placeholder="${this.edit ? "Tweet your response" : "What's new ?"}"
+            placeholder="${this.parent ? "Tweet your response" : "What's new ?"}"
           >
           </textarea>
           ${this.parent === null ? html`
