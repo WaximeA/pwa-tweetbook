@@ -180,7 +180,9 @@ export default class FormAdd extends LitElement {
             new CustomEvent(EventConstant.DISPLAY_SIDEBAR, {detail: false})
         );
         this.newTweet = "";
+        this.shadowRoot.querySelector('#image').value="";
         this.active = false;
+        this.image = {};
     }
 
     handleClick(e) {
