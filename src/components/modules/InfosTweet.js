@@ -2,6 +2,7 @@ import {LitElement, html, css} from "lit-element";
 import "./Tweet/Response";
 import "./Tweet";
 import {EventConstant} from "../../Constants/event.constant";
+import {listenerUser} from "../../_helper/utils";
 
 export class InfosTweet extends LitElement {
     constructor() {
@@ -28,9 +29,8 @@ export class InfosTweet extends LitElement {
                 this.responses = detail.responses;
                 this.tweet.data.responses = detail.responses;
             }
-        })
-        document.addEventListener(EventConstant.USER_LOGGED, () => this.user = JSON.parse(localStorage.getItem('user')));
-        document.addEventListener(EventConstant.USER_LOGOUT, () => this.user = null);
+        });
+        listenerUser(this);
     }
 
     render() {

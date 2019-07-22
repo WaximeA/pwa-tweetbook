@@ -6,6 +6,7 @@ import "./layout/navigation/TweetHeader";
 import {EventConstant} from "../Constants/event.constant";
 import {collectionConstant} from "../Constants/collection.constant";
 import "./layout/navigation/FormAdd";
+import {listenerUser} from "../_helper/utils";
 
 class TweetbookApp extends LitElement {
     constructor() {
@@ -30,13 +31,11 @@ class TweetbookApp extends LitElement {
 
         document.querySelector("#shadow").style.display = "none";
         this.shadowRoot.querySelector("#header").style.visibility = "visible";
-        document.addEventListener(EventConstant.RT, console.log);
         document.addEventListener(EventConstant.NEW_TWEET, () => {
             this.displayButton = true;
         });
 
-        document.addEventListener(EventConstant.USER_LOGGED, () => {this.user = JSON.parse(localStorage.getItem('user'))});
-        document.addEventListener(EventConstant.USER_LOGOUT, () => {this.user = null});
+        listenerUser(this);
     }
 
     childChanged(e) {

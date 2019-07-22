@@ -1,47 +1,41 @@
-import { LitElement, html, css } from "lit-element";
+import {LitElement, html, css} from "lit-element";
 import "./Tweet/ButtonAction";
 import firebase from "firebase/app";
 import "firebase/storage";
-import { EventConstant } from "../../Constants/event.constant";
+import {EventConstant} from "../../Constants/event.constant";
 import lozad from 'lozad';
+import {disableLozad, listenerUser} from "../../_helper/utils";
 
 export default class Tweet extends LitElement {
-  constructor() {
-    super();
-    this.tweet = {};
-    this.noAction = false;
-    this.observer = null;
-    this.user = null;
-  }
-
-  static get properties() {
-    return {
-      tweet: Object,
-      noAction: Boolean,
-      user: Object
-    };
-  }
-
-  firstUpdated(_changedProperties) {
-    document.addEventListener(EventConstant.USER_LOGGED, () => this.user = JSON.parse(localStorage.getItem('user')));
-    document.addEventListener(EventConstant.USER_LOGOUT, () => this.user = null);
-  }
-
-  updated(_changedProperties) {
-    const lozadelem = this.shadowRoot.querySelectorAll('.lozad');
-    if (this.observer !== null) {
-      lozadelem.forEach(item => {
-        this.observer.observer.unobserve(item);
-        item.style = "";
-        item.dataset.loaded = "false";
-      });
+    constructor() {
+        super();
+        this.tweet = {};
+        this.noAction = false;
+        this.observer = null;
+        this.user = null;
     }
-    this.observer = lozad(lozadelem);
-    this.observer.observe();
-  }
 
-  static get styles() {
-    return css`
+    static get properties() {
+        return {
+            tweet: Object,
+            noAction: Boolean,
+            user: Object
+        };
+    }
+
+    firstUpdated(_changedProperties) {
+        listenerUser(this);
+    }
+
+    updated(_changedProperties) {
+        const lozadelem = this.shadowRoot.querySelectorAll('.lozad');
+        disableLozad(this, lozadelem);
+        this.observer = lozad(lozadelem);
+        this.observer.observe();
+    }
+
+    static get styles() {
+        return css`
       .tweet {
         width: 60%;
         margin: auto;
@@ -141,22 +135,22 @@ export default class Tweet extends LitElement {
         }
       }
     `;
-  }
+    }
 
-  action({ detail }) {
-    document.dispatchEvent(
-      new CustomEvent(detail, {
-        detail: {
-          tweet: this.tweet
-        }
-      })
-    );
-  }
+    action({detail}) {
+        document.dispatchEvent(
+            new CustomEvent(detail, {
+                detail: {
+                    tweet: this.tweet
+                }
+            })
+        );
+    }
 
-  render() {
-    if (this.tweet.data) {
-      const date = new Date(this.tweet.data.date);
-      return html`
+    render() {
+        if (this.tweet.data) {
+            const date = new Date(this.tweet.data.date);
+            return html`
         <div class="tweet" @click="${e => this.showInfos(e)}">
           <div class="user-pic-box${this.tweet.data.rtuser ? " retweet-user-pic-box" : ""}">
             <div class="user-pic lozad" data-background-image="${this.tweet.data.user.loadedAvatar}"></div>
@@ -180,8 +174,8 @@ export default class Tweet extends LitElement {
                 <div class="user-info">
                   <span class="user-tn">
                     ${this.tweet.data.user.name +
-                      " " +
-                      this.tweet.data.user.surname}
+            " " +
+            this.tweet.data.user.surname}
                   </span>
                   <a href="#" style="text-decoration:none;">
                     <span class="user-at"
@@ -194,8 +188,8 @@ export default class Tweet extends LitElement {
                   >
                 </div>
                 ${this.noAction || !this.user
-                  ? null
-                  : ( this.isOwner() ? html`
+                ? null
+                : (this.isOwner() ? html`
                       <div class="delete" @click="${e => this.deleteTweet(e)}">
                         <img
                           src="/src/assets/images/icons/baseline_highlight_off_white_18dp.png"
@@ -205,15 +199,15 @@ export default class Tweet extends LitElement {
                     ` : null)}
               </div>
               <div class="tweet-content">${this.tweet.data.content}</div>
-              ${this.tweet.data.image ? html `
+              ${this.tweet.data.image ? html`
                 <div class="tweet-image-box lozad"
                 data-background-image="${this.tweet.data.image}"> 
-                </div>`:``
-              }
+                </div>` : ``
+                }
             </div>
             ${this.noAction || !this.user
-              ? null
-              : html`
+                ? null
+                : html`
                   <button-action
                     .tweet=${this.tweet}
                     @action="${e => this.action(e)}"
@@ -222,34 +216,34 @@ export default class Tweet extends LitElement {
           </div>
         </div>
       `;
+        }
     }
-  }
 
-  isOwner() {
-    return (!this.tweet.data.rtuser && this.user.id == this.tweet.data.user.id || this.tweet.data.rtuser && this.user.id == this.tweet.data.rtuser.id)
-  }
-
-  deleteTweet(e) {
-    if (this.isOwner()) {
-      document.dispatchEvent(
-          new CustomEvent(EventConstant.DELETE_TWEET, { detail: this.tweet.id })
-      );
+    isOwner() {
+        return (!this.tweet.data.rtuser && this.user.id == this.tweet.data.user.id || this.tweet.data.rtuser && this.user.id == this.tweet.data.rtuser.id)
     }
-  }
 
-  showInfos(e) {
-    e.preventDefault();
-    if (
-      e.target.classList.contains("content-text") ||
-      e.target.classList.contains("tweet-content")
-    ) {
-      document.dispatchEvent(
-        new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {
-          detail: this.tweet
-        })
-      );
+    deleteTweet(e) {
+        if (this.isOwner()) {
+            document.dispatchEvent(
+                new CustomEvent(EventConstant.DELETE_TWEET, {detail: this.tweet.id})
+            );
+        }
     }
-  }
+
+    showInfos(e) {
+        e.preventDefault();
+        if (
+            e.target.classList.contains("content-text") ||
+            e.target.classList.contains("tweet-content")
+        ) {
+            document.dispatchEvent(
+                new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {
+                    detail: this.tweet
+                })
+            );
+        }
+    }
 }
 
 customElements.define("tweet-elem", Tweet);
