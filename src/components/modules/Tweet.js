@@ -161,12 +161,12 @@ export default class Tweet extends LitElement {
                 ? html`
                     <div class="rt-info-box">
                       <img src="/src/assets/images/icons/baseline_repeat_white_18dp.png" alt="retweet" width="20">
-                      <a href="#" style="text-decoration:none;">
+                      <a href="#" @click="${e => this.showProfileSidebar(e)}" style="text-decoration:none;">
                         <span class="user-at"
                           >@${this.tweet.data.rtuser.nickname}</span
                         >
                       </a>
-                      &nbsp;à retweetax
+                      &nbsp;retweet
                     </div>
                   `
                 : ``}
@@ -177,7 +177,7 @@ export default class Tweet extends LitElement {
                       " " +
                       this.tweet.data.user.surname}
                   </span>
-                  <a href="#" style="text-decoration:none;">
+                  <a href="#" @click="${e => this.showProfileSidebar(e)}" style="text-decoration:none;">
                     <span class="user-at"
                       >${" @" + this.tweet.data.user.nickname}</span
                     >
@@ -237,6 +237,15 @@ export default class Tweet extends LitElement {
         })
       );
     }
+  }
+
+  showProfileSidebar(e) {
+    e.preventDefault();
+    document.dispatchEvent(new CustomEvent(EventConstant.DISPLAY_PROFILE_SIDEBAR, {detail:
+      {
+        profileUser: this.tweet.data.user
+      }
+    }));
   }
 }
 
