@@ -68,10 +68,8 @@ export class ProfileSidebar extends LitElement {
   }
 
   firstUpdated(_changedProperties) {
-    console.log('PROFILE SIDEBAR firstUpdated');
     document.addEventListener(EventConstant.DISPLAY_PROFILE_SIDEBAR, ({detail}) =>
     {
-      console.log('in DISPLAY_PROFILE_SIDEBAR event listener');
       this.displaySidebar();
       this.profileUser = detail.profileUser;
       this.active = true;
@@ -86,8 +84,6 @@ export class ProfileSidebar extends LitElement {
   }
 
   render() {
-
-    console.log('in SIDEBAR = ' + this.profileUser.id);
     return html`
     
             <div class="sidebar ${this.active ? 'display' : ''}">
@@ -95,8 +91,7 @@ export class ProfileSidebar extends LitElement {
                     <h2>@${this.profileUser.nickname}  </h2>
                     <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}>            
                         <img src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png" alt="Side bar logo">
-                    </button>
-                                                                             
+                    </button>                                                                    
                 </div>
                 <div class="header-body">
                  ${this.profileUser.id ?
