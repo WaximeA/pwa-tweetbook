@@ -189,14 +189,14 @@ export default class Tweet extends LitElement {
                 </div>
                 ${this.noAction || !this.user
                   ? null
-                  : html`
+                  : ( this.isOwner() ? html`
                       <div class="delete" @click="${e => this.deleteTweet(e)}">
                         <img
                           src="/src/assets/images/icons/baseline_highlight_off_white_18dp.png"
                           alt="delete_tweet"
                         />
                       </div>
-                    `}
+                    ` : null)}
               </div>
               <div class="tweet-content">${this.tweet.data.content}</div>
               ${this.tweet.data.image ? html `
@@ -219,10 +219,16 @@ export default class Tweet extends LitElement {
     }
   }
 
+  isOwner() {
+    return (!this.tweet.data.rtuser && this.user.id == this.tweet.data.user.id || this.tweet.data.rtuser && this.user.id == this.tweet.data.rtuser.id)
+  }
+
   deleteTweet(e) {
-    document.dispatchEvent(
-      new CustomEvent(EventConstant.DELETE_TWEET, { detail: this.tweet.id })
-    );
+    if (this.isOwner()) {
+      document.dispatchEvent(
+          new CustomEvent(EventConstant.DELETE_TWEET, { detail: this.tweet.id })
+      );
+    }
   }
 
   showInfos(e) {
