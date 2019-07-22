@@ -1,137 +1,150 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0"
-    />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="theme-color" content="#202020" />
-    <meta name="msapplication-navbutton-color" content="#202020" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="#202020" />
-    <link rel="manifest" href="manifest.json" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="theme-color" content="#202020"/>
+    <meta name="msapplication-navbutton-color" content="#202020"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="#202020"/>
+    <link rel="manifest" href="manifest.json"/>
     <link rel="shortcut icon" type="image/png" href="./src/assets/images/tweetbook.png"/>
     <meta name="Description" content="Tweetbook is an app use to share with people">
+    <!--    <link rel="preload" href="./node_modules/lit-element/lit-element.js" as="script">-->
+    <!--    <link rel="preload" href="./src/components/data/TweetStore.js" as="script">-->
+    <!--    <link rel="preload" href="./src/Constants/event.constant.js" as="script">-->
+    <!--    <link rel="preload" href="./src/components/layout/navigation/FormAdd.js" as="script">-->
     <title>TWEETBOOK</title>
     <style>
-      * {
-        box-sizing: border-box;
-      }
-
-      html,
-      body {
-        /* Define app variables */
-        --app-bg-color: #2b2b2b;
-        --app-secondary-text-color: #dfdfdf;
-        --app-contrast-text-color: #e96112;
-        --app-text-color: #f1f1f1;
-        --app-bg-component-color: #202020;
-        --app-grey-color: #202020;
-        --app-color-link: #e96112;
-        --app-divider: #707070;
-        --app-header-shadow: 0 0 4px rgb(0, 0, 0),
-          0 4px 8px rgba(20, 20, 20, 0.438);
-
-        min-height: 100%;
-        margin: 0;
-        padding: 0;
-        background-color: var(--app-bg-color);
-
-        /* Font */
-        font-size: 16px;
-        color: var(--app-secondary-text-color);
-        font-family: Arial, Helvetica, sans-serif;
-      }
-
-      /* Skeleton */
-      .skeleton {
-        position: relative;
-        margin: 1rem;
-      }
-
-      .skeleton .hero {
-        margin: auto;
-        min-height: 80px;
-        background: var(--app-grey-color);
-        margin-bottom: 1rem;
-        border-radius: 5px;
-        width: 60%;
-      }
-
-      .skeleton::after {
-        display: block;
-        content: "";
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        transform: translateX(-100%);
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(49, 49, 49, 0.2),
-          transparent
-        );
-        animation: loading 1.5s infinite;
-      }
-
-      @keyframes loading {
-        100% {
-          transform: translateX(100%);
+        * {
+            box-sizing: border-box;
         }
-      }
 
-      header {
-        height: 56px;
-        padding: 3px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        background-color: var(--app-bg-component-color);
-        border-bottom: solid var(--app-header-shadow) 1px;
-        box-shadow: var(--app-header-shadow) 0px 3px 4px 0px;
-      }
+        html,
+        body {
+            /* Define app variables */
+            --app-bg-color: #2b2b2b;
+            --app-secondary-text-color: #dfdfdf;
+            --app-contrast-text-color: #e96112;
+            --app-text-color: #f1f1f1;
+            --app-bg-component-color: #202020;
+            --app-grey-color: #202020;
+            --app-color-link: #e96112;
+            --app-divider: #707070;
+            --app-header-shadow: 0 0 4px rgb(0, 0, 0),
+            0 4px 8px rgba(20, 20, 20, 0.438);
 
-      .brand {
-        margin: auto;
-        display: flex;
-        margin-left: 30%;
-        flex-direction: row;
-      }
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: var(--app-bg-color);
 
-      .brand div {
-        font-weight: bold;
-        vertical-align: middle;
-        line-height: 40px;
-        margin-left: 10px;
-      }
+            /* Font */
+            font-size: 16px;
+            color: var(--app-secondary-text-color);
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-      @media screen and (max-width: 900px) {
+        /* Skeleton */
+        .skeleton {
+            position: relative;
+            margin: 1rem;
+        }
+
         .skeleton .hero {
-          width: 100%;
+            margin: auto;
+            min-height: 80px;
+            background: var(--app-grey-color);
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            width: 60%;
         }
-      }
+
+        .skeleton::after {
+            display: block;
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            transform: translateX(-100%);
+            background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(49, 49, 49, 0.2),
+                    transparent
+            );
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        header {
+            height: 56px;
+            padding: 3px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            background-color: var(--app-bg-component-color);
+            border-bottom: solid var(--app-header-shadow) 1px;
+            box-shadow: var(--app-header-shadow) 0px 3px 4px 0px;
+        }
+
+        .brand {
+            margin: auto;
+            display: flex;
+            margin-left: 30%;
+            flex-direction: row;
+        }
+
+        .brand div {
+            font-weight: bold;
+            vertical-align: middle;
+            line-height: 40px;
+            margin-left: 10px;
+        }
+
+        @media screen and (max-width: 900px) {
+            .skeleton .hero {
+                width: 100%;
+            }
+        }
     </style>
-    <script src="./config.js"></script>
-  </head>
-  <body>
-    <section id="shadow">
-      <header>
+    <script src="./config.js" async></script>
+</head>
+<body>
+<section id="shadow">
+    <header>
         <div class="brand">
-          <img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo" width="33" height="38" />
-          <div>TWEETBOOK</div>
+            <img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo" width="33" height="38"/>
+            <div>TWEETBOOK</div>
         </div>
-      </header>
-      <main>
+    </header>
+    <main>
         <div class="skeleton" active>
-          <div class="hero"></div>
-          <div class="hero"></div>
-          <div class="hero"></div>
+            <div class="hero"></div>
+            <div class="hero"></div>
+            <div class="hero"></div>
         </div>
-      </main>
-    </section>
-    <tweetbook-app></tweetbook-app>
-    <script type="module" src="src/components/TweetbookApp.js"></script>
-  </body>
+    </main>
+</section>
+<tweetbook-app></tweetbook-app>
+<check-connexion></check-connexion>
+<script type="module" src="src/components/TweetbookApp.js" async></script>
+<script type="module" src="node_modules/wcomponent-check-connexion/dist-web/index.min.js" async></script>
+<script>
+    (async function (document) {
+        if ('serviceWorker' in navigator) {
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    })(document)
+</script>
+</body>
 </html>
