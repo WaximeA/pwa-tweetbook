@@ -18,7 +18,6 @@ export default class ProfileInfo extends LitElement {
     this.resume = "Hi, I'm an Eclatax Dev !";
     this.avatar = '';
     this.banner = '';
-    this.userTweets = {}
   }
 
   static get properties() {
@@ -31,8 +30,7 @@ export default class ProfileInfo extends LitElement {
       followers: Array,
       resume: String,
       avatar: String,
-      banner: String,
-      userTweets: Object
+      banner: String
     }
   }
 
@@ -166,41 +164,30 @@ export default class ProfileInfo extends LitElement {
     `
   }
 
+  setProfileUserData() {
+    firebase.firestore().collection('usersInfo').doc(this.profileUser.id).get().then((userInfo) => {
+      this.name = userInfo.data().name;
+      this.surname = userInfo.data().surname;
+      this.nickname = userInfo.data().nickname;
+      this.followers = userInfo.data().followers;
+      this.follows = userInfo.data().follows;
+      this.resume = userInfo.data().resume;
+      firebase.storage().ref("avatar").child(userInfo.data().avatar).getDownloadURL().then((url) => {
+        this.avatar = url;
+      });
+      firebase.storage().ref("banniere").child(userInfo.data().banner).getDownloadURL().then((url) => {
+        this.banner = url;
+      });
+    });
+  }
+
   firstUpdated(_changedProperties) {
-    console.log('PROFILE INFOS firstUpdated');
-    if (this.profileUser.id) {
-      firebase.firestore().collection('usersInfo').doc(this.profileUser.id).get().then((userInfo) => {
-        let userData = userInfo.data();
-
-        this.name = userData.name;
-        this.surname = userData.surname;
-        this.nickname = userData.nickname;
-        this.followers = userData.followers;
-        this.follows = userData.follows;
-        this.resume = userData.resume;
-        console.log(this.name);
-        console.log(userData.avatar);
-        firebase.storage().ref("avatar").child(userData.avatar).getDownloadURL().then((url) => {
-          this.avatar = url;
-        });
-        firebase.storage().ref("banniere").child(userData.banner).getDownloadURL().then((url) => {
-          this.banner = url;
-        });
-      });
-
-      firebase.firestore().collection('tweets/user/').doc(this.profileUser.id).get().then((tweet) => {
-        console.log(tweet);
-        let tweetsData = tweet.data();
-        console.log(tweetsData);
-      });
-
-
-    }
+    document.addEventListener(EventConstant.DISPLAY_PROFILE_SIDEBAR, ({detail}) => {
+      this.profileUser = detail.profileUser;
+      this.setProfileUserData();
+    });
   }
 
-  updated(_changedProperties) {
-
-  }
 
   render() {
     return html`

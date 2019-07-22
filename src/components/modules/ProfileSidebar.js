@@ -94,10 +94,7 @@ export class ProfileSidebar extends LitElement {
                     </button>                                                                    
                 </div>
                 <div class="header-body">
-                 ${this.profileUser.id ?
-                    html`
-                      <profile-info .profileUser="${this.profileUser}"></profile-info>
-                    ` :  ''}                       
+                  <profile-info></profile-info>                               
                 </div>  
             <div>
     
