@@ -23,14 +23,20 @@ export default class Tweet extends LitElement {
   }
 
   firstUpdated(_changedProperties) {
-    this.observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
-    this.observer.observe();
     document.addEventListener(EventConstant.USER_LOGGED, () => this.user = JSON.parse(localStorage.getItem('user')));
     document.addEventListener(EventConstant.USER_LOGOUT, () => this.user = null);
   }
 
   updated(_changedProperties) {
-    this.observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
+    const lozadelem = this.shadowRoot.querySelectorAll('.lozad');
+    if (this.observer !== null) {
+      lozadelem.forEach(item => {
+        this.observer.observer.unobserve(item);
+        item.style = "";
+        item.dataset.loaded = "false";
+      });
+    }
+    this.observer = lozad(lozadelem);
     this.observer.observe();
   }
 

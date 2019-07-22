@@ -181,6 +181,8 @@ export default class FormAdd extends LitElement {
         );
         this.newTweet = "";
         this.active = false;
+        this.shadowRoot.querySelector('#image').value = "";
+        this.image = {};
     }
 
     handleClick(e) {
