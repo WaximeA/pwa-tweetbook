@@ -13,13 +13,15 @@ class TweetbookApp extends LitElement {
         this.tweets = [];
         this.displayButton = true;
         this.fetched = false;
+        this.user = null
     }
 
     static get properties() {
         return {
             tweets: Array,
             displayButton: Boolean,
-            fetched: Boolean
+            fetched: Boolean,
+            user: Object
         };
     }
 
@@ -32,6 +34,9 @@ class TweetbookApp extends LitElement {
         document.addEventListener(EventConstant.NEW_TWEET, () => {
             this.displayButton = true;
         });
+
+        document.addEventListener(EventConstant.USER_LOGGED, () => {this.user = JSON.parse(localStorage.getItem('user'))});
+        document.addEventListener(EventConstant.USER_LOGOUT, () => {this.user = null});
     }
 
     childChanged(e) {
@@ -75,9 +80,9 @@ class TweetbookApp extends LitElement {
                   `
             }
             </div>
-            <button title="écrire un nouveau tweet" id="new-tweet" class="${
+            ${this.user && html`<button title="écrire un nouveau tweet" id="new-tweet" class="${
             !this.displayButton ? `none` : ``
-            }" @click="${this.handleNewTweet}"><img src="/src/assets/images/icons/baseline_create_white_18dp.png" alt=""></button>
+            }" @click="${this.handleNewTweet}"><img src="/src/assets/images/icons/baseline_create_white_18dp.png" alt=""></button>`}
             <form-add></form-add>
     `;
     }

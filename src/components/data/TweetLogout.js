@@ -55,8 +55,8 @@ class TweetLogout extends LitElement {
     this.auth
       .signOut()
       .then(user => {
-        this.dispatchEvent(
-          new CustomEvent(EventConstant.USER_LOGOUT, { detail: { user } })
+        document.dispatchEvent(
+          new CustomEvent(EventConstant.USER_LOGOUT, { detail: "logged out"})
         );
         localStorage.removeItem("user");
       })

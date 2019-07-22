@@ -127,6 +127,8 @@ export default class TweetSidebar extends LitElement {
     document.addEventListener(EventConstant.DISPLAY_SIDEBAR, ({ detail }) => {
       this.active = detail;
     });
+
+    document.addEventListener(EventConstant.USER_LOGOUT, () => this.logged = false)
   }
 
   displaySidebar() {
@@ -183,7 +185,7 @@ export default class TweetSidebar extends LitElement {
               alt="Side bar logo"
             />
           </button>
-          <tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>
+          ${this.logged ? html`<tweet-logout @user-logout="${this.handleLogout}"></tweet-logout>` : null}
         </div>
         ${!this.logged
           ? html`

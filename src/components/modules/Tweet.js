@@ -11,18 +11,22 @@ export default class Tweet extends LitElement {
     this.tweet = {};
     this.noAction = false;
     this.observer = null;
+    this.user = null;
   }
 
   static get properties() {
     return {
       tweet: Object,
-      noAction: Boolean
+      noAction: Boolean,
+      user: Object
     };
   }
 
   firstUpdated(_changedProperties) {
     this.observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
     this.observer.observe();
+    document.addEventListener(EventConstant.USER_LOGGED, () => this.user = JSON.parse(localStorage.getItem('user')));
+    document.addEventListener(EventConstant.USER_LOGOUT, () => this.user = null);
   }
 
   updated(_changedProperties) {
@@ -183,7 +187,7 @@ export default class Tweet extends LitElement {
                     ${date.toLocaleTimeString()}</span
                   >
                 </div>
-                ${this.noAction
+                ${this.noAction || !this.user
                   ? null
                   : html`
                       <div class="delete" @click="${e => this.deleteTweet(e)}">
@@ -201,7 +205,7 @@ export default class Tweet extends LitElement {
                 </div>`:``
               }
             </div>
-            ${this.noAction
+            ${this.noAction || !this.user
               ? null
               : html`
                   <button-action

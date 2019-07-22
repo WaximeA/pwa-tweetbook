@@ -1,7 +1,7 @@
-import { LitElement, html, css } from "lit-element";
+import {LitElement, html, css} from "lit-element";
 import "./Tweet/Response";
 import "./Tweet";
-import { EventConstant } from "../../Constants/event.constant";
+import {EventConstant} from "../../Constants/event.constant";
 
 export class InfosTweet extends LitElement {
     constructor() {
@@ -9,6 +9,7 @@ export class InfosTweet extends LitElement {
         this.tweet = {};
         this.active = false;
         this.responses = [];
+        this.user = null;
     }
 
     static get properties() {
@@ -16,6 +17,7 @@ export class InfosTweet extends LitElement {
             tweet: Object,
             active: Boolean,
             responses: [],
+            user: Object
         };
     }
 
@@ -27,6 +29,8 @@ export class InfosTweet extends LitElement {
                 this.tweet.data.responses = detail.responses;
             }
         })
+        document.addEventListener(EventConstant.USER_LOGGED, () => this.user = JSON.parse(localStorage.getItem('user')));
+        document.addEventListener(EventConstant.USER_LOGOUT, () => this.user = null);
     }
 
     render() {
@@ -34,7 +38,7 @@ export class InfosTweet extends LitElement {
             <div class="infos-tweet">
                 <div class="sidebar ${this.active ? 'display' : ''}">
                     <div class="header-sidebar">
-                        <button class="primary-button" id="respond" @click="${this.handleClick}">Respond</button>
+                        ${this.user ? html`<button class="primary-button" id="respond" @click="${this.handleClick}">Respond</button>` : null}
 
                         <h2>Tweet</h2>
                         <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}>            
@@ -46,7 +50,7 @@ export class InfosTweet extends LitElement {
                         <tweet-elem .tweet="${this.tweet}" noAction=true></tweet-elem>
                         ${(this.responses.length > 0) ?
             this.responses.map((item, key) => {
-                return html`<tweet-response .tweet="${item}" key=${key} last=${this.responses.length-1}></tweet-response>`
+                return html`<tweet-response .tweet="${item}" key=${key} last=${this.responses.length - 1}></tweet-response>`
             }) : html``}
                     </div>
                 <div>
