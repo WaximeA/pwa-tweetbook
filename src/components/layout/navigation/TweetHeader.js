@@ -23,11 +23,6 @@ export default class TweetHeader extends LitElement {
         flex-direction: row;
       }
 
-      .brand img {
-        height: 40px;
-        width: 40px;
-      }
-
       .brand div {
         font-weight: bold;
         vertical-align: middle;
@@ -47,7 +42,7 @@ export default class TweetHeader extends LitElement {
       <header>
         <tweet-sidebar></tweet-sidebar>
         <div class="brand">
-          <img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo" />
+          <img src="./src/assets/images/tweetbook.png" alt="Tweetbook logo" width="33px" height="38px" />
           <div>TWEETBOOK</div>
         </div>
       </header>
