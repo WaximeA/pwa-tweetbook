@@ -1,5 +1,6 @@
 export const EventConstant = {
     DISPLAY_SIDEBAR: 'display-sidebar',
+    DISPLAY_PROFILE_SIDEBAR: 'display-profile-sidebar',
 
     ASK_NEW_TWEET: 'ask-new-tweet',
     NEW_TWEET: 'new-tweet',
