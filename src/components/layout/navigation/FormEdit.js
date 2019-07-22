@@ -165,6 +165,7 @@ export default class FormEdit extends LitElement {
       <button
         @click="${this.handleClick}"
         class="${this.active ? "inactive" : ""}"
+        aria-label="edit profile"
       >
         Edit Profile
       </button>
@@ -172,7 +173,7 @@ export default class FormEdit extends LitElement {
         @submit="${this.handleForm}"
         class="${!this.active ? "inactive" : ""}"
       >
-        <button type="submit">Save</button>
+        <button type="submit" aria-label="save">Save</button>
         <textarea
           placeholder="Describe yourself here..."
           name=""

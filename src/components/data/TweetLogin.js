@@ -28,9 +28,18 @@ class TweetLogin extends LitElement {
       :host {
         display: block;
       }
+      
+      form {
+        margin: 5%;
+        text-align: left;
+      }
+      
+      form label {
+        font-size: 14px;
+      }
 
       form input {
-        width: 80%;
+        width: 90%;
         margin: 8px 0;
         border: 1px solid var(--app-contrast-text-color);
         border-radius: 4px;
@@ -43,7 +52,7 @@ class TweetLogin extends LitElement {
         font-size: 15px;
         padding: 0.3em 1.2em;
         margin: 0 0.3em 0.3em 0;
-        border-radius: 5px;
+        border-radius: 100px;
         box-sizing: border-box;
         text-decoration: none;
         font-weight: 300;
@@ -119,13 +128,17 @@ class TweetLogin extends LitElement {
     return html`
       <h4>Sign in</h4>
       <form @submit="${this.handleForm}">
+        <label for="email_login">Email</label>
         <input
+          id="email_login"
           type="text"
           placeholder="email"
           .value="${this.email}"
           @input="${e => (this.email = e.target.value)}"
         />
+        <label for="password_login">Password</label>
         <input
+          id="password_login"
           type="password"
           placeholder="password"
           .value="${this.password}"
@@ -136,7 +149,7 @@ class TweetLogin extends LitElement {
           id="login-error"
           >${this.errorMessage}</span
         >
-        <button type="submit" class="button">Login</button>
+        <button type="submit" class="button" aria-label="login">Login</button>
       </form>
     `;
   }

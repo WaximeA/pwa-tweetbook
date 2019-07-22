@@ -80,7 +80,7 @@ class TweetbookApp extends LitElement {
                   `
             }
             </div>
-            ${this.user && html`<button title="écrire un nouveau tweet" id="new-tweet" class="${
+            ${this.user && html`<button title="écrire un nouveau tweet" aria-label="write a new tweet" id="new-tweet" class="${
             !this.displayButton ? `none` : ``
             }" @click="${this.handleNewTweet}"><img src="/src/assets/images/icons/baseline_create_white_18dp.png" alt=""></button>`}
             <form-add></form-add>

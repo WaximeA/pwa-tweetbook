@@ -69,7 +69,7 @@ class TweetLogout extends LitElement {
   render() {
     return html`
       <form @submit="${this.handleForm}">
-        <button type="submit" class="button">Logout</button>
+        <button type="submit" class="button" aria-label="log out">Logout</button>
       </form>
     `;
   }
