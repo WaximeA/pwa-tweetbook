@@ -121,7 +121,6 @@ export default class TweetSidebar extends LitElement {
       );
     });
     document.addEventListener(EventConstant.EDIT_INFOS, data => {
-      console.log(data);
       document.dispatchEvent(
         new CustomEvent(EventConstant.FILL_USER_INFOS, { detail: data.detail })
       );

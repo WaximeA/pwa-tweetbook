@@ -147,8 +147,7 @@ export default class FormEdit extends LitElement {
 
   handleForm(e) {
     e.preventDefault();
-    console.log(this.avatar);
-    console.log(this.banner);
+
     document.dispatchEvent(
       new CustomEvent(EventConstant.EDIT_INFOS, {
         detail: {

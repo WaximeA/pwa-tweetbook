@@ -167,12 +167,13 @@ export default class UserInfo extends LitElement {
     document.addEventListener(EventConstant.FILL_USER_INFOS, data => {
       console.log("last");
       console.log(data);
-      this.name = data.detail.name;
-      this.surname = data.detail.surname;
-      this.nickname = data.detail.nickname;
-      this.followers = (data.detail.followers) ? data.detail.followers : [];
-      this.follows =  (data.detail.follows) ? data.detail.followers : [];
-      this.resume = data.detail.resume;
+      if(data.detail.name)this.name = data.detail.name;
+      if(data.detail.surname)this.surname = data.detail.surname;
+      if(data.detail.nickname)this.nickname = data.detail.nickname;
+      if(data.detail.followers)this.followers = data.detail.followers;
+      if(data.detail.follows)this.follows = data.detail.follows;
+      if(data.detail.resume)this.resume = data.detail.resume;
+      if(data.detail.avatar){
       firebase
         .storage()
         .ref("avatar")
@@ -182,6 +183,8 @@ export default class UserInfo extends LitElement {
           console.log(url);
           this.avatar = url;
         });
+      }
+      if(data.detail.banner){
       firebase
         .storage()
         .ref("banniere")
@@ -191,12 +194,15 @@ export default class UserInfo extends LitElement {
           console.log(url);
           this.banner = url;
         });
+      }
     });
+    
     document.addEventListener(EventConstant.EDIT_INFOS, data => {
       if (data) {
+        console.log("last");
         console.log(data);
         let updates = {};
-        if (data.detail.avatar.name) {
+        if (data.detail.avatar) {
           firebase
             .storage()
             .ref(
@@ -216,7 +222,7 @@ export default class UserInfo extends LitElement {
               });
             });
         }
-        if (data.detail.banner.name) {
+        if (data.detail.banner) {
           firebase
             .storage()
             .ref(

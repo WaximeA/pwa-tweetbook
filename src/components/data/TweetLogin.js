@@ -113,7 +113,6 @@ class TweetLogin extends LitElement {
     this.auth
       .signInWithEmailAndPassword(this.email, this.password)
       .then(e => {
-        console.log(e);
         const document = firebase
           .firestore()
           .collection(this.collection)

@@ -23,7 +23,6 @@ export default class FormAdd extends LitElement {
 
     firstUpdated(_changedProperties) {
         document.addEventListener(EventConstant.ASK_NEW_TWEET, () => {
-            console.log("test");
             this.active = true;
         });
         document.addEventListener(EventConstant.RESPONSE, ({detail}) => {
