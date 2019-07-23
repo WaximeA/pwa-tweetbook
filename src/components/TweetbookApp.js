@@ -7,6 +7,7 @@ import {EventConstant} from "../Constants/event.constant";
 import {collectionConstant} from "../Constants/collection.constant";
 import "./layout/navigation/FormAdd";
 import {listenerUser} from "../_helper/utils";
+import './modules/ProfileSidebar';
 
 class TweetbookApp extends LitElement {
     constructor() {
@@ -55,6 +56,7 @@ class TweetbookApp extends LitElement {
                 @child-changed="${this.childChanged}"
             ></tweet-store>
             <tweet-header id="header"></tweet-header>
+            <profile-sidebar></profile-sidebar>
             <infos-tweet active></infos-tweet>
             ${
             this.fetched !== false
