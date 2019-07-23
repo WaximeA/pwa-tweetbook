@@ -32,19 +32,23 @@ self.__precacheManifest = [
   },
   {
     "url": "index.html",
-    "revision": "a8049ab2be7a1b8d4d562420175a4c40"
+    "revision": "ddac045330413181d04a4c0aad75cfc9"
   },
   {
     "url": "manifest.json",
     "revision": "87c871a7e0fb1a184d6500a97a02d5ad"
   },
   {
+    "url": "src/_helper/utils.js",
+    "revision": "53fc2078af662baa6a27a98eef9d516d"
+  },
+  {
     "url": "src/components/data/TweetAuth.js",
-    "revision": "b2cc229b5ecb90bf2a8351db2ddfef2f"
+    "revision": "162ef0653c0c7f07dd8569f6de07e15a"
   },
   {
     "url": "src/components/data/TweetLogin.js",
-    "revision": "6be53ba7ad41209d2a3e16472164ceab"
+    "revision": "2ab7a801769cc0857ef2d4602e4eb10e"
   },
   {
     "url": "src/components/data/TweetLogout.js",
@@ -52,15 +56,15 @@ self.__precacheManifest = [
   },
   {
     "url": "src/components/data/TweetStore.js",
-    "revision": "2bdeb8bb89ea21b4b02ca91c8fa224a9"
+    "revision": "8ffe1f13134dc57eea8b2dedb04136d4"
   },
   {
     "url": "src/components/layout/navigation/FormAdd.js",
-    "revision": "fa39d88151e8e69428f3df4d590a947c"
+    "revision": "11f34e411d7e4589fa776ed3858b1fd8"
   },
   {
     "url": "src/components/layout/navigation/FormEdit.js",
-    "revision": "56600d98c6b86518e05c8b4e52ed6d47"
+    "revision": "e4e66bf09ada7af333a3915053c71401"
   },
   {
     "url": "src/components/layout/navigation/TweetHeader.js",
@@ -68,19 +72,27 @@ self.__precacheManifest = [
   },
   {
     "url": "src/components/layout/navigation/TweetSidebar.js",
-    "revision": "028758548efb3e9ff9ec29e284c57bf3"
+    "revision": "4cc79836d7be3f8c107d643b03b79518"
   },
   {
     "url": "src/components/layout/navigation/UserInfo.js",
-    "revision": "b89c439f941f5fdae6ff54b1e6e994fb"
+    "revision": "ba7dc83ff6e22201dc2d9fe2dfc371c8"
   },
   {
     "url": "src/components/modules/InfosTweet.js",
-    "revision": "f352c0dd7d05cd02fd644de793e49643"
+    "revision": "7891fbbbe997a566f550b66c1acfb817"
+  },
+  {
+    "url": "src/components/modules/ProfileInfo.js",
+    "revision": "78a069fdb55843efe232ef710144f3b7"
+  },
+  {
+    "url": "src/components/modules/ProfileSidebar.js",
+    "revision": "bed91a3a660dc281dd35f946e26dfd9d"
   },
   {
     "url": "src/components/modules/Tweet.js",
-    "revision": "54660df10f5a8db2714df4afac6bd31d"
+    "revision": "9a8d39ae7644595b1d680d00b037bc91"
   },
   {
     "url": "src/components/modules/Tweet/ButtonAction.js",
@@ -92,7 +104,7 @@ self.__precacheManifest = [
   },
   {
     "url": "src/components/TweetbookApp.js",
-    "revision": "e933ebf3ae2cfc1bd1638dfd735209d7"
+    "revision": "676ab64b6197a3cc5ebcad03f7f824fa"
   },
   {
     "url": "src/Constants/collection.constant.js",
@@ -100,7 +112,7 @@ self.__precacheManifest = [
   },
   {
     "url": "src/Constants/event.constant.js",
-    "revision": "f8969faaa24b2f0d53f5337a2930d1d2"
+    "revision": "d9712d66d690814b62b5e7676991f3b4"
   },
   {
     "url": "node_modules/wcomponent-check-connexion/dist-src/index.js",
