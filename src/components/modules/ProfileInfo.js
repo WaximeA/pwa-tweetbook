@@ -165,7 +165,7 @@ export default class ProfileInfo extends LitElement {
       this.profileUser.nickname = userInfo.data().nickname;
       this.profileUser.followers = userInfo.data().followers;
       this.profileUser.follows = userInfo.data().follows;
-      this.profileUser.resume = userInfo.data().resume;
+      // this.profileUser.resume = userInfo.data().resume;
 
       firebase.storage().ref("avatar").child(userInfo.data().avatar).getDownloadURL().then((url) => {
         this.avatar = url;
@@ -286,6 +286,7 @@ export default class ProfileInfo extends LitElement {
     // else console.log("object already exists");
 
 
+    // Update current user follows
     let index = this.connectedUser.follows.findIndex(json => json.id === this.profileUser.id);
     if (index === -1) {
       this.connectedUser.follows.push({
@@ -306,6 +307,30 @@ export default class ProfileInfo extends LitElement {
     .collection(collectionConstant.USER_INFOS_COLLECTION)
     .doc(this.connectedUser.id)
     .update(this.connectedUser);
+
+
+
+    // Update profile user followers
+    let index2 = this.profileUser.followers.findIndex(json => json.id === this.connectedUser.id);
+    if (index2 === -1) {
+      this.profileUser.followers.push({
+        id: this.connectedUser.id,
+        name: this.connectedUser.name,
+        surname: this.connectedUser.surname,
+        nickname: this.connectedUser.nickname,
+        followersLenght: this.connectedUser.followers.length,
+        followsLenght: this.connectedUser.follows.length
+      });
+
+    } else {
+      console.log("You ar already in the user followers")
+    }
+
+    firebase
+    .firestore()
+    .collection(collectionConstant.USER_INFOS_COLLECTION)
+    .doc(this.profileUser.id)
+    .update(this.profileUser);
 
     // firebase
     // .firestore()
