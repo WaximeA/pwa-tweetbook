@@ -12,6 +12,7 @@ export const EventConstant = {
     LIKE: 'like',
     DISPLAY_INFOS_TWEET: 'display-infos-tweet',
     FOLLOW: 'follow',
+    IS_FOLLOWING: 'is-following',
 
     TWEET_ACTION: 'action',
     FILL_USER_INFOS: 'fill-user-info',

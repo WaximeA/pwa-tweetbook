@@ -210,7 +210,9 @@ export default class ProfileInfo extends LitElement {
       .collection(collectionConstant.USER_INFOS_COLLECTION)
       .doc(this.profileUser.id)
       .update(this.profileUser);
+      document.dispatchEvent(new CustomEvent(EventConstant.IS_FOLLOWING, {detail: {isUserFollowing: true}}));
     } else {
+      // @todo UNFOLLOW HERE => delete current user from profile user followers and delete profile user from current user follows
       console.log("You already follow this user")
     }
   }

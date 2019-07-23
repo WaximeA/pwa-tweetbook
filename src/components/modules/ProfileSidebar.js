@@ -10,12 +10,16 @@ export class ProfileSidebar extends LitElement {
     super();
     this.active = false;
     this.profileUser = {};
+    this.isUserFollowing = false;
+    this.connectedUser = {}
   }
 
   static get properties() {
     return {
       active: Boolean,
       profileUser: Object,
+      isFollowing: Boolean,
+      connectedUser: Object
     };
   }
 
@@ -76,16 +80,28 @@ export class ProfileSidebar extends LitElement {
             padding: 5px 30px;
             border-radius: 100px;
         }
+
+        .following {
+            background: transparent;
+            border: solid 1px;
+        }
         `
   }
 
   firstUpdated(_changedProperties) {
+    document.addEventListener(EventConstant.USER_LOGGED, () => this.connectedUser = JSON.parse(localStorage.getItem('user')));
+    document.addEventListener(EventConstant.USER_LOGOUT, () => this.connectedUser = null);
+
     document.addEventListener(EventConstant.DISPLAY_PROFILE_SIDEBAR, ({detail}) =>
     {
       this.displaySidebar();
       this.profileUser = detail.profileUser;
       this.active = true;
     })
+
+    document.addEventListener(EventConstant.IS_FOLLOWING, ({detail}) => {
+      this.isUserFollowing = detail.profileUser;
+    });
   }
 
   handleFollow() {
@@ -103,7 +119,9 @@ export class ProfileSidebar extends LitElement {
     
             <div class="sidebar ${this.active ? 'display' : ''}">
                 <div class="header-sidebar">
-                      ${this.profileUser.id ? html`<button class="primary-button" id="respond" @click="${this.handleFollow}">Follow</button>` : null}
+                      ${this.connectedUser.id !== this.profileUser.id && this.connectedUser.id ? html`
+                          <button class="primary-button ${this.isUserFollowing ? 'following' : '' }" id="respond" @click="${this.handleFollow}">${this.isUserFollowing ? 'Unfollow' : 'Follow' }</button>
+                        ` : null}
                       <h2>@${this.profileUser.nickname}  </h2>
                     <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}>            
                         <img src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png" alt="Side bar logo">
