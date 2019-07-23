@@ -134,6 +134,7 @@ class TweetLogin extends LitElement {
         <input
           id="email_login"
           type="text"
+          title="email_login"
           placeholder="email"
           .value="${this.email}"
           @input="${e => (this.email = e.target.value)}"
@@ -142,6 +143,7 @@ class TweetLogin extends LitElement {
         <input
           id="password_login"
           type="password"
+          title="password_login"
           placeholder="password"
           .value="${this.password}"
           @input="${e => (this.password = e.target.value)}"

@@ -99,7 +99,7 @@ export default class Tweet extends LitElement {
         display: inline-block;
         text-align: right;
         font-size: 14px;
-        color: #5a5a5a;
+        color: var(--app-secondary-text-color);
       }
 
       .tweet-content {
