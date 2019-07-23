@@ -194,7 +194,7 @@ export default class ProfileInfo extends LitElement {
       .firestore()
       .collection(collectionConstant.USER_INFOS_COLLECTION)
       .doc(this.connectedUser.id)
-      .update(this.connectedUser);
+      .update({follows: this.connectedUser.follows});
 
       // Update profile user followers
       this.profileUser.followers.push({
@@ -209,7 +209,7 @@ export default class ProfileInfo extends LitElement {
       .firestore()
       .collection(collectionConstant.USER_INFOS_COLLECTION)
       .doc(this.profileUser.id)
-      .update(this.profileUser);
+      .update({followers: this.profileUser.followers});
       document.dispatchEvent(new CustomEvent(EventConstant.IS_FOLLOWING, {detail: {isUserFollowing: true}}));
     } else {
       // @todo UNFOLLOW HERE => delete current user from profile user followers and delete profile user from current user follows
