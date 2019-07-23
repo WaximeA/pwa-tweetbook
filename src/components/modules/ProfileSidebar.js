@@ -10,14 +10,12 @@ export class ProfileSidebar extends LitElement {
     super();
     this.active = false;
     this.profileUser = {};
-    this.updating = false;
   }
 
   static get properties() {
     return {
       active: Boolean,
       profileUser: Object,
-      updating: Boolean
     };
   }
 
@@ -64,6 +62,20 @@ export class ProfileSidebar extends LitElement {
         .header-sidebar > h2 {
             width: 80%;
         }
+
+        .primary-button {
+            font-size: 14px;
+            color: white;
+            line-height: 20px;
+            margin-right: 20px;
+            border-width: initial;
+            border-style: none;
+            border-color: initial;
+            border-image: initial;
+            background: rgb(85, 172, 238);
+            padding: 5px 30px;
+            border-radius: 100px;
+        }
         `
   }
 
@@ -73,8 +85,11 @@ export class ProfileSidebar extends LitElement {
       this.displaySidebar();
       this.profileUser = detail.profileUser;
       this.active = true;
-      this.updating = !this.updating;
     })
+  }
+
+  handleFollow() {
+    document.dispatchEvent(new CustomEvent(EventConstant.FOLLOW));
   }
 
 
@@ -88,7 +103,8 @@ export class ProfileSidebar extends LitElement {
     
             <div class="sidebar ${this.active ? 'display' : ''}">
                 <div class="header-sidebar">
-                    <h2>@${this.profileUser.nickname}  </h2>
+                      ${this.profileUser.id ? html`<button class="primary-button" id="respond" @click="${this.handleFollow}">Follow</button>` : null}
+                      <h2>@${this.profileUser.nickname}  </h2>
                     <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}>            
                         <img src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png" alt="Side bar logo">
                     </button>                                                                    
