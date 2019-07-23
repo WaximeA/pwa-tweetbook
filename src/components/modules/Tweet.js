@@ -244,7 +244,6 @@ export default class Tweet extends LitElement {
       );
     }
   }
-}
 
   showProfileSidebar(e) {
     e.preventDefault();
