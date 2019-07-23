@@ -44,32 +44,45 @@ class TweetAuth extends LitElement {
         display: block
       }
       
+      form {
+        margin: 5%;
+        text-align: left;
+        display:flex;
+        flex-direction: column;
+      }
+      
+      form label {
+        font-size: 14px;
+      }
+
       form input {
-        width: 80%;
         margin: 8px 0;
-        border: 1px solid #ccc;
-        box-shadow: inset 0 1px 3px #ddd;
+        border: 1px solid var(--app-contrast-text-color);
         border-radius: 4px;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         padding: 12px 20px 12px 20px;
+        background-color: transparent;
+        color: var(--app-text-color);
       }
       
       form .button {
         font-size: 15px;
-        padding:0.3em 1.2em;
+        padding: 0.3em 1.2em;
         margin: 0 0.3em 0.3em 0;
-        border-radius: 5px;
-        box-sizing: border-box;  
-        text-decoration:none;
-        font-weight:300;
-        color:#FFFFFF;
-        background-color:#4eb5f1;
-        text-align:center;
+        border-radius: 100px;
+        box-sizing: border-box;
+        text-decoration: none;
+        font-weight: 300;
+        color: #ffffff;
+        background-color: #4eb5f1;
+        text-align: center;
         transition: all 0.2s;
+        border: none;
+        align-self: center;
+        cursor: pointer;
       }
-      
       .errors {
         margin: 10px;
         color: red;
@@ -132,14 +145,20 @@ class TweetAuth extends LitElement {
     return html`
     <h4>Sign up</h4>
     <form @submit="${this.handleForm}">
-       <input type="text" placeholder="Email" .value="${this.email}" @input="${e => this.email = e.target.value}">
-       <input type="password" placeholder="Password" .value="${this.password}" @input="${e => this.password = e.target.value}">
-       <input type="password" placeholder="Repeat your password" .value="${this.verifyPassword}" @input="${e => this.verifyPassword = e.target.value}">
-       <input type="text" placeholder="Name" .value="${this.name}" @input="${e => this.name = e.target.value}">
-       <input type="text" placeholder="Surname" .value="${this.surname}" @input="${e => this.surname = e.target.value}">
-       <input type="text" placeholder="Twittax Nickname" .value="${this.nickname}" @input="${e => this.nickname = e.target.value}">
+       <label for="auth_email">Email</label>
+       <input id="auth_email" type="text" placeholder="Email" .value="${this.email}" @input="${e => this.email = e.target.value}">
+       <label for="auth_password">Password</label>
+       <input id="auth_password" type="password" placeholder="Password" .value="${this.password}" @input="${e => this.password = e.target.value}">
+       <label for="auth_repeat_password">Repeat your password</label>
+       <input id="auth_repeat_password" type="password" placeholder="Repeat your password" .value="${this.verifyPassword}" @input="${e => this.verifyPassword = e.target.value}">
+       <label for="auth_name">Name</label>
+       <input id="auth_name" type="text" placeholder="Name" .value="${this.name}" @input="${e => this.name = e.target.value}">
+       <label for="auth_surname">Surname</label>
+       <input id="auth_surname" type="text" placeholder="Surname" .value="${this.surname}" @input="${e => this.surname = e.target.value}">
+       <label for="auth_nickname">Twittax Nickname</label>
+       <input id="auth_nickname" type="text" placeholder="Twittax Nickname" .value="${this.nickname}" @input="${e => this.nickname = e.target.value}">
        <span class="errors ${this.errorMessage ? "active" : ""}" id="login-error">${this.errorMessage}</span>
-       <button type="submit" class="button">Register</button>
+       <button type="submit" class="button" aria-label="register">Register</button>
      </form>
     `
   }

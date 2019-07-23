@@ -1,63 +1,65 @@
-import { LitElement, html, css } from "lit-element";
+import {LitElement, html, css} from "lit-element";
 import "./Tweet/ButtonAction";
 import firebase from "firebase/app";
 import "firebase/storage";
-import { EventConstant } from "../../Constants/event.constant";
+import {EventConstant} from "../../Constants/event.constant";
+import lozad from 'lozad';
+import {disableLozad, listenerUser} from "../../_helper/utils";
 
 export default class Tweet extends LitElement {
-  constructor() {
-    super();
-    this.tweet = {};
-    this.loadedAvatar = "";
-    this.noAction = false;
-  }
-
-  static get properties() {
-    return {
-      tweet: Object,
-      loadedAvatar: String,
-      noAction: Boolean
-    };
-  }
-
-  firstUpdated(_changedProperties) {
-    try {
-      firebase
-        .storage()
-        .ref("avatar")
-        .child(this.tweet.data.user.avatar)
-        .getDownloadURL()
-        .then(url => {
-          this.loadedAvatar = url;
-        })
-        .catch(e => {
-          this.loadedAvatar = "/src/assets/images/user.svg";
-        });
-    } catch (e) {
-      this.loadedAvatar = "/src/assets/images/user.svg";
+    constructor() {
+        super();
+        this.tweet = {};
+        this.noAction = false;
+        this.observer = null;
+        this.user = null;
     }
-  }
 
-  static get styles() {
-    return css`
+    static get properties() {
+        return {
+            tweet: Object,
+            noAction: Boolean,
+            user: Object
+        };
+    }
+
+    firstUpdated(_changedProperties) {
+        listenerUser(this);
+    }
+
+    updated(_changedProperties) {
+        const lozadelem = this.shadowRoot.querySelectorAll('.lozad');
+        disableLozad(this, lozadelem);
+        this.observer = lozad(lozadelem);
+        this.observer.observe();
+    }
+
+    static get styles() {
+        return css`
       .tweet {
+        width: 60%;
+        margin: auto;
         min-height: 80px;
         display: flex;
-        border-bottom: 1px solid #cacaca;
+        border-bottom: 1px solid var(--app-bg-component-color);
         flex-direction: row;
         padding: 20px 15px;
       }
 
       .user-pic-box {
-        width: 15%;
+        width: 71px;
         display: block;
         margin-right: 10px;
+      }
+      
+      .retweet-user-pic-box {
+        margin-top: 35px;
       }
 
       .user-pic {
         background-size: 71px 71px;
         border-radius: 50%;
-        border: 3px solid white;
+        border: 3px solid var(--app-bg-component-color);
         height: 71px;
         width: 71px;
       }
@@ -67,6 +69,7 @@ export default class Tweet extends LitElement {
         flex-direction: column;
         justify-content: space-between;
         width: 85%;
+        margin-left: 10px;
       }
 
       .user-info-box {
@@ -83,93 +86,172 @@ export default class Tweet extends LitElement {
       }
 
       .user-tn {
-        color: black;
+        color: var(--app-secondary-text-color);
         font-weight: bold;
       }
 
       .user-at {
-        color: #5a5a5a;
+        color: var(--app-contrast-text-color);
         font-size: 14px;
-        text-decoration: none;
+      }
+
+      .date {
+        display: inline-block;
+        text-align: right;
+        font-size: 14px;
+        color: #5a5a5a;
       }
 
       .tweet-content {
         width: 85%;
       }
-      
+
       button-action {
         width: 210px;
+        display: flex;
+        justify-content: space-between;
+        padding-top: 2vh;
+      }
+
+      .rt-info-box {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+      }
+
+      .tweet-image-box {
+        height: 250px;
+        width: 250px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 8px;
+        margin-top: 2vh;
+      }
+
+      @media screen and (max-width: 900px) {
+        .tweet {
+          width: 95%;
+          margin:0px;
+        }
       }
     `;
-  }
-
-  action({ detail }) {
-    document.dispatchEvent(
-      new CustomEvent(detail, {
-        detail: {
-          tweet: this.tweet
-        }
-      })
-    );
-  }
-
-  render() {
-    if (this.tweet.data) {
-      return html`
-      <div class="tweet" @click="${e => this.showInfos(e)}">
-        <div class="user-pic-box">
-          <div
-            class="user-pic"
-            style="background-image: url('${this.loadedAvatar}');"
-          ></div>
-        </div>
-        <div class="content">
-          <div class="content-text">
-            <div class="user-info-box">
-              <div class="user-info">
-                <span class="user-tn"
-                  >${this.tweet.data.user.name +
-      " " +
-      this.tweet.data.user.surname}
-                </span>
-
-                <a href="#">
-                  <span class="user-at"
-                    >${" @" + this.tweet.data.user.nickname}</span
-                  ></a
-                >
-              </div>
-              ${this.noAction ? null : html`
-              <div class="delete" @click="${e => this.deleteTweet(e)}">
-                <i>X</i>
-              </div>
-              `}
-              
-            </div>
-            <div class="tweet-content">${this.tweet.data.content}</div>
-          </div>
-          ${this.noAction ? null : html`<button-action
-            .tweet=${this.tweet.data}
-            @action="${e => this.action(e)}"
-          ></button-action>`}
-          
-        </div>
-      </div>
-    `;
     }
-  }
 
-  deleteTweet(e) {
-    document.dispatchEvent(
-      new CustomEvent(EventConstant.DELETE_TWEET, { detail: this.tweet.id })
-    );
-  }
+    action({detail}) {
+        document.dispatchEvent(
+            new CustomEvent(detail, {
+                detail: {
+                    tweet: this.tweet
+                }
+            })
+        );
+    }
+
+    render() {
+        if (this.tweet.data) {
+            const date = new Date(this.tweet.data.date);
+            return html`
+        <div class="tweet" @click="${e => this.showInfos(e)}">
+          <div class="user-pic-box${this.tweet.data.rtuser ? " retweet-user-pic-box" : ""}">
+            <div class="user-pic lozad" data-background-image="${this.tweet.data.user.loadedAvatar}"></div>
+          </div>
+          <div class="content">
+            <div class="content-text">
+              ${this.tweet.data.rtuser
+                ? html`
+                    <div class="rt-info-box">
+                      <img src="/src/assets/images/icons/baseline_repeat_white_18dp.png" alt="retweet" width="20">
+                      <a href="#" @click="${e => this.showProfileSidebar(e)}" style="text-decoration:none;">
+                        <span class="user-at"
+                          >@${this.tweet.data.rtuser.nickname}</span
+                        >
+                      </a>
+                      &nbsp;retweet
+                    </div>
+                  `
+                : ``}
+              <div class="user-info-box">
+                <div class="user-info">
+                  <span class="user-tn">
+                    ${this.tweet.data.user.name +
+            " " +
+            this.tweet.data.user.surname}
+                  </span>
+                  <a href="#" @click="${e => this.showProfileSidebar(e)}" style="text-decoration:none;">
+                    <span class="user-at"
+                      >${" @" + this.tweet.data.user.nickname}</span
+                    >
+                  </a>
+                  <span class="date">
+                    - ${date.toLocaleDateString()}
+                    ${date.toLocaleTimeString()}</span
+                  >
+                </div>
+                ${this.noAction || !this.user
+                ? null
+                : (this.isOwner() ? html`
+                      <div class="delete" @click="${e => this.deleteTweet(e)}">
+                        <img
+                          src="/src/assets/images/icons/baseline_highlight_off_white_18dp.png"
+                          alt="delete_tweet"
+                        />
+                      </div>
+                    ` : null)}
+              </div>
+              <div class="tweet-content">${this.tweet.data.content}</div>
+              ${this.tweet.data.image ? html`
+                <div class="tweet-image-box lozad"
+                data-background-image="${this.tweet.data.image}"> 
+                </div>` : ``
+                }
+            </div>
+            ${this.noAction || !this.user
+                ? null
+                : html`
+                  <button-action
+                    .tweet=${this.tweet}
+                    @action="${e => this.action(e)}"
+                  ></button-action>
+                `}
+          </div>
+        </div>
+      `;
+        }
+    }
+
+    isOwner() {
+        return (!this.tweet.data.rtuser && this.user.id == this.tweet.data.user.id || this.tweet.data.rtuser && this.user.id == this.tweet.data.rtuser.id)
+    }
+
+    deleteTweet(e) {
+        if (this.isOwner()) {
+            document.dispatchEvent(
+                new CustomEvent(EventConstant.DELETE_TWEET, {detail: this.tweet.id})
+            );
+        }
+    }
 
   showInfos(e) {
     e.preventDefault();
-    if (e.target.classList.contains('content') ||e.target.classList.contains('tweet-content') ){
-      document.dispatchEvent(new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {detail: this.tweet}));
+    if (
+        e.target.classList.contains("content-text") ||
+        e.target.classList.contains("tweet-content")
+    ) {
+      document.dispatchEvent(
+          new CustomEvent(EventConstant.DISPLAY_INFOS_TWEET, {
+            detail: this.tweet
+          })
+      );
     }
+  }
+
+  showProfileSidebar(e) {
+    e.preventDefault();
+    document.dispatchEvent(new CustomEvent(EventConstant.DISPLAY_PROFILE_SIDEBAR, {detail:
+      {
+        profileUser: this.tweet.data.user
+      }
+    }));
   }
 }
 
