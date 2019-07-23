@@ -177,7 +177,7 @@ export default class Tweet extends LitElement {
             " " +
             this.tweet.data.user.surname}
                   </span>
-                  <a href="#" style="text-decoration:none;">
+                  <a href="#" @click="${e => this.showProfileSidebar(e)}" style="text-decoration:none;">
                     <span class="user-at"
                       >${" @" + this.tweet.data.user.nickname}</span
                     >
