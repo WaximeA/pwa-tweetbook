@@ -99,6 +99,8 @@ export default class TweetSidebar extends LitElement {
 
       .user-info-footer {
         margin: 0 2vh 2vh 2vh;
+        display:flex;
+        justify-content:center
       }
     `;
   }
@@ -118,7 +120,7 @@ export default class TweetSidebar extends LitElement {
         new CustomEvent(EventConstant.FILL_USER_INFOS, { detail: data.detail })
       );
     });
-    document.addEventListener(EventConstant.EDIT_INFOS, () => {
+    document.addEventListener(EventConstant.EDIT_INFOS, data => {
       document.dispatchEvent(
         new CustomEvent(EventConstant.FILL_USER_INFOS, { detail: data.detail })
       );
@@ -167,6 +169,7 @@ export default class TweetSidebar extends LitElement {
         class="collapse-button"
         id="menu-icon"
         @click=${this.displaySidebar}
+        aria-label="open menu"
       >
         <img
           src="/src/assets/images/icons/baseline_menu_white_18dp.png"
@@ -179,6 +182,7 @@ export default class TweetSidebar extends LitElement {
             class="collapse-button"
             id="cross-icon"
             @click=${this.displaySidebar}
+            aria-label="back"
           >
             <img
               src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png"

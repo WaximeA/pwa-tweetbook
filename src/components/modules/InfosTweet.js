@@ -2,6 +2,7 @@ import {LitElement, html, css} from "lit-element";
 import "./Tweet/Response";
 import "./Tweet";
 import {EventConstant} from "../../Constants/event.constant";
+import {listenerUser} from "../../_helper/utils";
 
 export class InfosTweet extends LitElement {
     constructor() {
@@ -28,9 +29,8 @@ export class InfosTweet extends LitElement {
                 this.responses = detail.responses;
                 this.tweet.data.responses = detail.responses;
             }
-        })
-        document.addEventListener(EventConstant.USER_LOGGED, () => this.user = JSON.parse(localStorage.getItem('user')));
-        document.addEventListener(EventConstant.USER_LOGOUT, () => this.user = null);
+        });
+        listenerUser(this);
     }
 
     render() {
@@ -38,10 +38,10 @@ export class InfosTweet extends LitElement {
             <div class="infos-tweet">
                 <div class="sidebar ${this.active ? 'display' : ''}">
                     <div class="header-sidebar">
-                        ${this.user ? html`<button class="primary-button" id="respond" @click="${this.handleClick}">Respond</button>` : null}
+                        ${this.user ? html`<button class="primary-button" id="respond" @click="${this.handleClick}" aria-label="respond">Respond</button>` : null}
 
                         <h2>Tweet</h2>
-                        <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar}>            
+                        <button class="collapse-button" id="cross-icon" @click=${this.displaySidebar} aria-label="back">            
                             <img src="/src/assets/images/icons/baseline_keyboard_backspace_white_18dp.png" alt="Side bar logo">
                         </button>
 

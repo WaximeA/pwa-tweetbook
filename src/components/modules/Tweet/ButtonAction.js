@@ -48,16 +48,19 @@ export default class ButtonAction extends LitElement {
         <button
           class="btn"
           @click="${() => this.handleClick(EventConstant.RESPONSE)}"
+          aria-label="respond"
         >
           <img src="/src/assets/images/icons/baseline_chat_white_18dp.png" alt="réponses"> ${this.tweet.data.responses.length}
         </button>
         <button
+          aria-label="like"
           class="btn"
           @click="${() => this.handleClick(EventConstant.LIKE)}"
         >
           <img src="/src/assets/images/icons/baseline_favorite${exist.length === 0 ? "_border" : ""}_white_18dp.png" alt="like"> ${this.tweet.data.like}
         </button>
         <button
+          aria-label="retweet"
           class="btn"
           @click="${() => this.handleClick(EventConstant.RT)}"
         >

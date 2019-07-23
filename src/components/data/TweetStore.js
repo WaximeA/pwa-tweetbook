@@ -27,7 +27,6 @@ class TweetStore extends LitElement {
                 ref.docChanges().forEach(change => {
                     const {doc, type} = change;
                     if (type === "added") {
-                        console.log('added');
                         this.data = [{id: doc.id, data: doc.data()}, ...this.data];
                         this.dataUpdated();
                     } else if (type === "removed") {
@@ -75,18 +74,15 @@ class TweetStore extends LitElement {
                 like: 0
             };
             if (detail.image.name) {
-                console.log(detail.image);
                 firebase.storage().ref("tweetimage/" + firebase.auth().currentUser.uid + new Date().valueOf() + '.' + detail.image.name.split('.').pop()).put(detail.image).then((metadata) => {
                     metadata.ref.getDownloadURL().then((url) => {
                         tweetdata.image = url;
                         firebase.firestore().collection(this.collection).add(tweetdata).then(resp => {
-                            console.log(resp);
                         });
                     });
                 });
             } else {
                 firebase.firestore().collection(this.collection).add(tweetdata).then(resp => {
-                    console.log(resp);
                 });
             }
         })
@@ -136,7 +132,6 @@ class TweetStore extends LitElement {
                     image: detail.tweet.data.image ? detail.tweet.data.image : null
                 })
                 .then(resp => {
-                    console.log(resp);
                 });
         })
     }
@@ -177,7 +172,6 @@ class TweetStore extends LitElement {
 
     // -- Response aux tweets
     response({detail}) {
-        console.log(detail);
         const {parent, newTweet} = detail;
         const user = localStorage.getItem("user");
         if (!user) throw new Error("User's not logged");

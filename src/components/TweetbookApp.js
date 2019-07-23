@@ -6,6 +6,7 @@ import "./layout/navigation/TweetHeader";
 import {EventConstant} from "../Constants/event.constant";
 import {collectionConstant} from "../Constants/collection.constant";
 import "./layout/navigation/FormAdd";
+import {listenerUser} from "../_helper/utils";
 import './modules/ProfileSidebar';
 
 class TweetbookApp extends LitElement {
@@ -31,13 +32,11 @@ class TweetbookApp extends LitElement {
 
         document.querySelector("#shadow").style.display = "none";
         this.shadowRoot.querySelector("#header").style.visibility = "visible";
-        document.addEventListener(EventConstant.RT, console.log);
         document.addEventListener(EventConstant.NEW_TWEET, () => {
             this.displayButton = true;
         });
 
-        document.addEventListener(EventConstant.USER_LOGGED, () => {this.user = JSON.parse(localStorage.getItem('user'))});
-        document.addEventListener(EventConstant.USER_LOGOUT, () => {this.user = null});
+        listenerUser(this);
     }
 
     childChanged(e) {
@@ -66,7 +65,7 @@ class TweetbookApp extends LitElement {
                       ${this.tweets.map(
                 item =>
                     html`
-                            <tweet-elem .tweet="${item}"></tweet-elem>
+                            <tweet-elem .tweet="${item}" .user="${this.user}"></tweet-elem>
                           `
                 )}
                     </div>
@@ -82,7 +81,7 @@ class TweetbookApp extends LitElement {
                   `
             }
             </div>
-            ${this.user && html`<button title="écrire un nouveau tweet" id="new-tweet" class="${
+            ${this.user && html`<button title="écrire un nouveau tweet" aria-label="write a new tweet" id="new-tweet" class="${
             !this.displayButton ? `none` : ``
             }" @click="${this.handleNewTweet}"><img src="/src/assets/images/icons/baseline_create_white_18dp.png" alt=""></button>`}
             <form-add></form-add>

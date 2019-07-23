@@ -23,7 +23,6 @@ export default class FormAdd extends LitElement {
 
     firstUpdated(_changedProperties) {
         document.addEventListener(EventConstant.ASK_NEW_TWEET, () => {
-            console.log("test");
             this.active = true;
         });
         document.addEventListener(EventConstant.RESPONSE, ({detail}) => {
@@ -180,8 +179,8 @@ export default class FormAdd extends LitElement {
             new CustomEvent(EventConstant.DISPLAY_SIDEBAR, {detail: false})
         );
         this.newTweet = "";
-        this.shadowRoot.querySelector('#image').value="";
         this.active = false;
+        this.shadowRoot.querySelector('#image').value = "";
         this.image = {};
     }
 
@@ -199,16 +198,16 @@ export default class FormAdd extends LitElement {
       <div class="form-add ${this.active ? "active" : ""}">
         <form @submit="${this.handleForm}">
           <div class="form-header">
-            <button class="collapse-button" @click=${this.closeForm}>
+            <button class="collapse-button" @click=${this.closeForm} aria-label="close">
                 <img src="/src/assets/images/icons/baseline_highlight_off_white_18dp.png" alt="">
             </button>
             <div class="actions">
-              <button class="send-button" type="submit">
+              <button class="send-button" type="submit" aria-label="send">
                 ${this.parent ? `Respond` : `Send`}
               </button>
             </div>
           </div>
-          ${this.parent ? html`<p class="response-to">En réponse à @${this.parent.data.rtuser ? this.parent.data.rtuser.nickname : this.parent.data.user.nickname}</p>` : ""}
+          ${this.parent ? html`<label for="new-tweet" class="response-to">En réponse à @${this.parent.data.rtuser ? this.parent.data.rtuser.nickname : this.parent.data.user.nickname}</label>` : html`<label for="new-tweet">New tweet</label>`}
           <textarea
             name=""
             id="new-tweet"
@@ -218,6 +217,7 @@ export default class FormAdd extends LitElement {
           >
           </textarea>
           ${this.parent === null ? html`
+            <label for="image">Insert an image</label>
             <input
             class="input-file-html5"
             type="file"

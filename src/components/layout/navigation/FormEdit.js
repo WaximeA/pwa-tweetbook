@@ -32,20 +32,31 @@ export default class FormEdit extends LitElement {
         width: 100%;
       }
 
+      form{
+        text-align:center;
+      }
+
       button {
         margin-top: 2vh;
-        text-decoration: none;
-        width: 100%;
-        background-color: #55acee;
-        color: #fff;
+        margin: 2vh 0.3em 0.3em 0;
+        background-color: #4eb5f1;
+        color: #ffffff;
         padding: 8px 20px;
-        border-radius: 5px;
-        transition: 0.2s;
+        border-radius: 100px;
+        font-size: 15px;
+        padding: 0.3em 1.2em;
+        box-sizing: border-box;
+        text-decoration: none;
+        font-weight: 300;
+        text-align: center;
+        transition: all 0.2s;
         border: none;
+        align-self: center;
+        cursor: pointer;
       }
 
       button:hover {
-        background-color: darken(#55acee, 10%);
+        filter: brightness(120%);
         cursor: pointer;
       }
 
@@ -136,6 +147,7 @@ export default class FormEdit extends LitElement {
 
   handleForm(e) {
     e.preventDefault();
+
     document.dispatchEvent(
       new CustomEvent(EventConstant.EDIT_INFOS, {
         detail: {
@@ -165,6 +177,7 @@ export default class FormEdit extends LitElement {
       <button
         @click="${this.handleClick}"
         class="${this.active ? "inactive" : ""}"
+        aria-label="edit profile"
       >
         Edit Profile
       </button>
@@ -172,7 +185,7 @@ export default class FormEdit extends LitElement {
         @submit="${this.handleForm}"
         class="${!this.active ? "inactive" : ""}"
       >
-        <button type="submit">Save</button>
+        <button type="submit" aria-label="save">Save</button>
         <textarea
           placeholder="Describe yourself here..."
           name=""
