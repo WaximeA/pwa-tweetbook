@@ -165,11 +165,13 @@ export default class UserInfo extends LitElement {
 
   firstUpdated() {
     document.addEventListener(EventConstant.FILL_USER_INFOS, data => {
+      console.log("last");
+      console.log(data);
       this.name = data.detail.name;
       this.surname = data.detail.surname;
       this.nickname = data.detail.nickname;
-      this.followers = data.detail.followers;
-      this.follows = data.detail.follows;
+      this.followers = (data.detail.followers) ? data.detail.followers : [];
+      this.follows =  (data.detail.follows) ? data.detail.followers : [];
       this.resume = data.detail.resume;
       firebase
         .storage()
@@ -177,6 +179,7 @@ export default class UserInfo extends LitElement {
         .child(data.detail.avatar)
         .getDownloadURL()
         .then(url => {
+          console.log(url);
           this.avatar = url;
         });
       firebase
@@ -185,13 +188,15 @@ export default class UserInfo extends LitElement {
         .child(data.detail.banner)
         .getDownloadURL()
         .then(url => {
+          console.log(url);
           this.banner = url;
         });
     });
     document.addEventListener(EventConstant.EDIT_INFOS, data => {
       if (data) {
+        console.log(data);
         let updates = {};
-        if (data.detail.avatar) {
+        if (data.detail.avatar.name) {
           firebase
             .storage()
             .ref(
@@ -211,7 +216,7 @@ export default class UserInfo extends LitElement {
               });
             });
         }
-        if (data.detail.banner) {
+        if (data.detail.banner.name) {
           firebase
             .storage()
             .ref(
@@ -233,7 +238,7 @@ export default class UserInfo extends LitElement {
         }
         if (data.detail.resume) {
           this.resume = data.detail.resume;
-          updates.resume = data.detail.resumes;
+          updates.resume = data.detail.resume;
         }
         firebase
           .firestore()
@@ -247,8 +252,6 @@ export default class UserInfo extends LitElement {
           });
       }
     });
-      const observer = lozad(this.shadowRoot.querySelectorAll('.lozad'));
-      observer.observe();
   }
 
   render() {
@@ -256,8 +259,8 @@ export default class UserInfo extends LitElement {
     <div class="phone">
       <div class="content">
         <div class="sidebar-header">
-            <div class="image lozad" data-background-image="${this.avatar}"></div>
-            <div class="banner lozad" data-background-image="${this.banner}"></div>
+            <div class="image" style="background-image:url('${this.avatar}')"></div>
+            <div class="banner" style="background-image:url('${this.banner}')"></div>
         </div>
         <div class="sidebar-infos-user">
             <div class="name">${this.name} ${this.surname}</div>

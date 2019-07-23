@@ -32,6 +32,8 @@ class TweetLogin extends LitElement {
       form {
         margin: 5%;
         text-align: left;
+        display:flex;
+        flex-direction: column;
       }
       
       form label {
@@ -39,7 +41,6 @@ class TweetLogin extends LitElement {
       }
 
       form input {
-        width: 90%;
         margin: 8px 0;
         border: 1px solid var(--app-contrast-text-color);
         border-radius: 4px;
@@ -61,6 +62,8 @@ class TweetLogin extends LitElement {
         text-align: center;
         transition: all 0.2s;
         border: none;
+        align-self: center;
+        cursor: pointer;
       }
 
       .errors {

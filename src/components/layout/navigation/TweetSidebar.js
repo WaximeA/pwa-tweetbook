@@ -99,6 +99,8 @@ export default class TweetSidebar extends LitElement {
 
       .user-info-footer {
         margin: 0 2vh 2vh 2vh;
+        display:flex;
+        justify-content:center
       }
     `;
   }
@@ -118,7 +120,8 @@ export default class TweetSidebar extends LitElement {
         new CustomEvent(EventConstant.FILL_USER_INFOS, { detail: data.detail })
       );
     });
-    document.addEventListener(EventConstant.EDIT_INFOS, () => {
+    document.addEventListener(EventConstant.EDIT_INFOS, data => {
+      console.log(data);
       document.dispatchEvent(
         new CustomEvent(EventConstant.FILL_USER_INFOS, { detail: data.detail })
       );
